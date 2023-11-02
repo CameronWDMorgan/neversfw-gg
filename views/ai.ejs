@@ -76,6 +76,9 @@
     </script>
 </head>
 <body>
+
+    <%- include('../../partials/_popunder'); -%>
+
     <div class="page-sidebar">
         <!-- Side Navigation Partial -->
         <% include('../partials/_sideNav'); %>
@@ -88,9 +91,16 @@
 
     <div class="page-right">
         <div class="center-content">
-            <img src="https://www.neversfw.gg/nsfwlogobanner.png" alt="Logo Banner" style="max-width: 100%; height: auto;">
+                    
+            <img src="https://www.neversfw.gg/nsfwlogobanner.png" style="max-width: 100%; height: auto;">
+            <br>
+            <br>
+                <%- include('../../partials/_bannerAdvert'); -%>
+            
+            <br><br>
+            <%- include('../../partials/_mobileNavigation'); -%>
             <!-- Banner Advert Partial -->
-            <% include('../partials/_bannerAdvert'); %>
+
         </div>
 
         <div class="instructions">
