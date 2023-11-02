@@ -1,0 +1,615 @@
+
+/*
+rgb	(255,163,26)
+rgb (128,128,128)
+rgb	(41,41,41)
+rgb (27,27,27)
+*/
+
+:root {
+    --main-bg-color: rgb(43, 28, 50);
+    --main-bg-color-darker: rgb(22, 21, 25);
+    --white-01: rgba(255, 255, 255, 0.1);
+    --white-025: rgba(255,255,255,0.25);
+    --white-05: rgba(255,255,255,0.5);
+    --black-01: rgba(0, 0, 0, 0.1);
+    --black-025: rgba(0, 0, 0, 0.25);
+    --black-05: rgba(0, 0, 0, 0.5);
+    --tab-inactive-bg: rgb(15, 13, 18);
+    --tab-inactive: rgb(184, 146, 249);
+    --tab-active: rgb(255, 255, 255);
+}
+                
+@font-face {
+    font-family: Dimbo;
+    src: url('./dimbo-font/DimboRegular.ttf');
+}
+
+.progress { display: none; }
+
+.hidden {
+    display: none;
+}
+
+.uploader {
+    width: 500px;
+    height: 300px;
+    border: 2px dashed #ccc;
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    color: #777;
+}
+
+* {
+    font-family: Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(128,128,128);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(41,41,41);
+    border-radius: 10px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--white-01);
+}
+
+img {
+    max-width: 100%
+}
+
+a {
+    color: rgb(255, 255, 255);
+}
+
+p {
+    color: rgb(255, 255, 255);
+}
+
+div {
+    color: rgb(255, 255, 255);
+}
+
+label {
+    color: rgb(255, 255, 255);
+}
+
+ul {
+    color: rgb(255, 255, 255);
+}
+
+ol {
+    color: rgb(255, 255, 255);
+}
+
+h1 {
+    color: rgb(255, 255, 255);
+    font-family: Dimbo;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--main-bg-color);
+    margin: 0px !important;
+}
+
+input {
+    border: transparent;
+    color: rgb(255, 255, 255);
+    padding: 0.4rem;
+    background-color: rgba(150, 0, 155, 0.115)
+}
+
+textarea {
+    border: transparent;
+    color: rgb(255, 255, 255);
+    padding: 0.4rem;
+    background-color: rgba(150, 0, 155, 0.115)
+}
+
+button {
+    color: rgb(255, 255, 255);
+    background-color: var(--black-01);
+    padding: 7px;
+}
+
+button:hover {
+    background-color: rgb(187, 0, 255);
+}
+
+
+
+.showMoreForm{
+    margin-bottom: 12px;
+}
+
+
+
+#myProgress {
+    position: relative;
+    width: 50%;
+    height: 30px;
+    background-color: grey;
+}
+
+#myBar {
+    position: absolute;
+    width: 1%;
+    height: 100%;
+    background-color: rgb(174, 11, 255);
+}
+
+#myProgressArt {
+    position: relative;
+    width: 50%;
+    height: 30px;
+    background-color: grey;
+}
+
+#myBarArt {
+    position: absolute;
+    width: 1%;
+    height: 100%;
+    background-color: rgb(133, 11, 255);
+}
+
+
+
+
+
+.navigation-side {
+    display: block;
+    background-color: var(--main-bg-color-darker);
+    overflow: hidden;
+    min-height: 100vh;
+    position: fixed;
+    width: 13%;
+    top: 0;
+}
+
+.navigation-side a {
+    padding: 12px;
+    transition: 0.25s;
+}
+
+.navigation-side a:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+
+
+
+
+
+
+.page-sidebar {
+    display: none;
+}
+
+.mobileNavigation {
+    display: block;
+    text-decoration: none;
+}
+
+.mobileNavigation a {
+    text-decoration: none;
+    padding: 12px
+}
+
+
+
+@media screen and (min-width: 720px) {
+    .page-sidebar {
+        display: block;
+        float: left;
+        width: 5vw;
+        margin-left: 0px !important;
+        margin-right: 20px;
+    }
+    .mobileNavigation {
+        display: none;
+    }
+}
+
+
+.page-left {
+    display: none;
+}
+
+@media screen and (min-width: 800px) {
+    .page-left {
+        display: block;
+        float: left;
+        width: 3rem;
+        margin-left: 14% !important;
+    }
+}
+
+
+
+.page-right {
+    width: 80%;
+    margin-left: 34px;
+    margin-right: 12px;
+}
+
+@media screen and (min-width: 720px) {
+    .page-right {
+        width: 40%;
+        margin-left: 35%;
+        margin-right: 5%;
+    }
+}
+
+
+
+
+
+
+.artPost {
+    width: 95%;
+}
+
+.artworkDate {
+    font-size: small;
+    float: right !important;
+    margin-right: 4px;
+}
+
+.artworkTags {
+    background-color: var(--black-01);
+    font-size: x-small;
+    width: fit-content;
+    text-decoration: none;
+    padding: 4px;
+    margin: 2px;
+    margin-bottom: 0px !important;
+}
+
+.tag {
+    background-color: var(--black-01);
+    font-size: x-small;
+    width: fit-content;
+    padding-right: 3px;
+}
+
+.artworkDescription {
+    background-color: var(--black-01);
+    font-size: small;
+    width: fit-content;
+    padding: 4px;
+    margin: 2px;
+}
+
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow: hidden;
+    width: 200px;
+    background-color: var(--tab-inactive-bg);
+}
+  
+.tabs button {
+    text-decoration: solid;
+    color: var(--tab-inactive);
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 2px 2px;
+    font-size: 50px;
+    font-family: Dimbo;
+    
+}
+  
+.tabs button.active {
+    color:var(--tab-active);
+}
+
+.tabs button:hover {
+    color:rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.subtabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    overflow: hidden;
+    background-color: var(--tab-inactive-bg);
+    width: 200px;
+}
+  
+.subtabs button {
+    color: var(--tab-inactive);
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 2px;
+    font-size: 24px;
+    font-family: Dimbo;
+    
+}
+  
+.subtabs button.active {
+    color: var(--tab-active);
+}
+
+.subtabs button:hover {
+    color:rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.tabcontent {
+    background-color: var(--tab-inactive-bg);
+    border-radius: 10px;
+}
+
+
+
+
+
+
+.home-profile-avatar {
+    display: inline;
+    align-items: center;
+    justify-content: center;
+    border: 3px ridge rgb(175, 26, 255);
+    border-radius: 10%;
+    transform: translateY(11px) translateX(-8px);
+}
+
+
+#Art.tabcontent {
+    display: flex;
+    flex: 1 0 auto;
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.art-details {
+    display: block;
+    width: 100%;
+    font-size: 20px;
+    margin: 10px;
+}
+
+.art-details a {
+    text-decoration: none;
+    padding: 5px
+}
+
+.art-gallery {
+    display: flex;
+    flex-direction:row;
+    flex: auto;
+    width: 100%;
+    height: inherit;
+    flex-wrap: wrap;
+    margin: 5px;
+}
+
+
+
+.art-piece {
+    margin: 2px;
+    display: inline-flex;
+    margin: auto;
+    width: 49%;
+    height: 100%;
+}
+
+.art-piece-solo {
+    margin: 2px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    height: auto;
+    max-height: 28rem;
+
+}
+
+.art-below {
+    text-decoration: none;
+    display: block;
+    width: 98%;
+    font-size: 20px;
+    margin-top: 0px !important;
+}
+
+.postButton{
+    display: block;
+    background: none;
+    border-style: none;
+    overflow: hidden;
+    font-size: 140%;
+}
+
+.commentBox {
+    display: block;
+    background: none;
+    border-style: double;
+    overflow: hidden;
+    margin-top: 8px;
+    height: 30px;
+    width: 15vw;
+}
+
+.comment {
+    padding: 5px;
+    margin: 5px;
+    padding-left: 10px;
+    background-color: var(--black-01)
+}
+
+.comment-details {
+    text-decoration: none;
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+#games.tabcontent {
+    display: flex;
+    flex: 1 0 auto;
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+
+
+.game-container {
+    display: flex;
+    flex: 1 0 auto;
+    width: 99%;
+    height: 360px;
+    flex-wrap: wrap;
+    margin: 5px;
+    background-color: var(--black-01);
+    justify-content: center;
+}
+
+.game-thumbnail {
+    margin: 2px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 460px;
+    height: inherit;
+}
+
+.game-text {
+    text-align: left;
+    display: flex;
+    font-size: 20px;
+    margin-top: 340px;
+    margin-bottom: 5px;
+    background-color: var(--black-05);
+    position: absolute;
+}
+
+
+.searchUserBox {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    padding: 20px;
+    margin: 5px;
+    padding-left: 10px;
+    background-color: var(--black-05);
+}
+
+
+
+
+
+
+.user-profile {
+    background-color: var(--black-025);
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 10px;
+}
+
+.user-profile-container {
+    width: fit-content;
+    display:flex;
+    padding: 4px
+}
+
+.user-profile-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 20%;
+    max-height: 20%; 
+    border-width: 8px;
+    border-style: outset;
+    border-color: rgb(175, 26, 255);
+    border-radius: 20%;
+}
+
+.user-profile-bio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 3%;
+}
+
+.upload-all {
+    display: flex;
+    flex: 1 0 auto;
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.upload {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    margin-left: 40px;
+    margin-right: 40px;
+    padding: 40px;
+    padding-bottom: 40px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+
+
+.notification {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 85%;
+    padding: 2px;
+    padding-bottom: 20px;
+    margin: 12px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+
+
+
+
+
+.footer-bar {
+    margin-top: auto;
+    width: 100%;
+    display:block;
+    background-color: rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    margin-bottom: 0px;
+}
+
+.footer-bar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    font-family: Dimbo;
+    box-sizing: border-box;
+}
+
+.footer-bar a:hover {
+    background-color: rgba(166, 0, 255, 0.25);
+}

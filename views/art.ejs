@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-FFEW0Y6QFQ');
+        </script>
+
+        <title><%=artwork.name%> | NeverSFW.gg</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+        <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+        <meta name="author" content="MiningP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <% let artworkTagsCleaned = '' %>
+        <% artwork.tags.forEach(tag => { %>
+            <% artworkTagsCleaned = `${artworkTagsCleaned}, ${tag}` %>
+        <% }) %>
+
+        <% let contentCountText = '[1] Image' %>
+        <% if (artwork.contentUrl[1]) { %>
+            <% contentCountText = `[${artwork.contentUrl.length}] Images` %>
+        <% } %>
+
+        <meta content="<%=contentCountText%> | <%=artwork.name%> | NeverSFW.gg" property="og:title">
+
+        <meta content="<%=contentCountText%> | Description: <%=artwork.description%> | Tags: <%=artworkTagsCleaned%>" property="og:description">
+        <meta content="https://www.neversfw.gg/art/<%=artwork.contentId%>" property="og:url">
+
+        <meta content="<%=artwork.contentUrl[0]%>" property="og:image" />
+        <meta name="twitter:card" content="summary_large_image">
+
+        <meta content="#8744c9" data-react-helmet="true" name="theme-color">
+
+        <link rel="stylesheet" href="https://www.neversfw.gg/site.css"></link>
+    </head>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            toggleButtons()
+        })
+    </script>
+    <script>
+        function commentFunction(index,form){
+            $(form).submit(function(event) {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+        
+                // Get the form data
+                var formData = $(this).serialize();
+        
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/artworkComment',
+                    data: formData,
+                    success: async function(response) {
+                        // Handle the server's response
+                        formData = formData.split('&')
+                        contentId = formData[0].split('=')[1]
+                        var commentHtml = ''
+                        let accounts = response.accounts
+                        response.comments.reverse()
+                        await response.comments.forEach(commentDocument => {
+                            commentHtml += '<div class="comment">'
+                                for( let index = 0; index < accounts.length;) {
+                                    account = accounts[index]
+                                    if (account.accountId == commentDocument.accountId) { 
+                                        let date = new Date(Number(commentDocument.timestamp));
+                                        let day = date.getDate().toString().padStart(2, '0');
+                                        let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                        let year = date.getFullYear();
+                                        let hour = date.getHours().toString().padStart(2, '0');
+                                        let minute = date.getMinutes().toString().padStart(2, '0');
+                                        let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                        commentHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + ' - ' + formattedDate + '</a>'
+                                        commentHtml += '<p>' + commentDocument.comment + '</p>'
+                                        index = accounts.length +1 
+                                    }
+                                    index++
+                                }
+                            
+                            
+
+                            commentHtml += '</div>';
+                        })
+                        commentHtml += '</div>';
+                        
+                        
+                        // Insert the new comment into the DOM
+                        const contentDiv = document.getElementById('contentComments'+contentId)
+                        contentDiv.classList.remove('hidden');
+                        $('#contentComments'+contentId).html(`${commentHtml}`);
+                        $('#contentCommentsCount'+contentId).html(`${response.count}`);
+                        $('#commentBox'+contentId).val(``);
+                        setTimeout(() => {
+                            $('#commentBox'+contentId).attr("placeholder", "Send Comment...");
+                        }, 2000);
+                        $('#commentBox'+contentId).attr("placeholder", "Sent Comment!");
+
+                    }
+                });
+            });
+        }
+        function likeFunction(index,form){
+            $(form).submit(function(event) {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+        
+                // Get the form data
+                var formData = $(this).serialize();
+
+                console.log(formData)
+        
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/artworkLike',
+                    data: formData,
+                    success: function(response) {
+                        // Handle the server's response
+                        formData = formData.split('&')
+                        contentId = formData[0].split('=')[1]
+                        $('#contentLikes'+contentId).html(`${response.likes}`);
+                    }
+                });
+            });
+        }
+    </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.likeForm').each(function(index, form) {
+                    if (!$(form).data('submitEventBound')) {
+                        likeFunction(index, form)
+                        $(form).data('submitEventBound', true);
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.commentForm').each(function(index, form) {
+                    if (!$(form).data('submitEventBound')) {
+                        commentFunction(index, form)
+                        $(form).data('submitEventBound', true);
+                    }
+                });
+            });
+        </script>
+    
+    <body>
+        <%- include('../partials/_nav'); -%>
+        <%- include('../partials/_popunder'); -%>
+
+        <center>
+            <div class="artPost">
+                <div class="art-details" style="text-align:left !important;">
+                    <% for( let index = 0; index < accounts.length;) { %>
+                        <% account = accounts[index] %>
+                        <% if (account.accountId == artwork.accountId) { %>
+                            
+                            <a href="https://www.neversfw.gg/user/<%=account.username%>"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="32px" height="32px"><%=account.username%> - </a>
+                            
+                            <%_
+                                let date = new Date(Number(artwork.timestamp));
+                                let day = date.getDate().toString().padStart(2, '0');
+                                let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                let year = date.getFullYear();
+                                let hour = date.getHours().toString().padStart(2, '0');
+                                let minute = date.getMinutes().toString().padStart(2, '0');
+                                let formattedDate = `${day}/${month}/${year}`;
+                            _%>
+    
+                            <a><%=artwork.name%></a>
+                            <a class="artworkDate"><%=formattedDate%></a>
+                            <% index = accounts.length +1 %>
+                        <% } %>
+                        <% index++ %>
+                    <% } %>
+                </div>
+                
+                <div class="art-gallery">
+    
+                    <% if (artwork.contentUrl.length == 1) { %>
+                        <% var ext = artwork.contentUrl[0].slice(-3) %>
+                        <% if (ext == "mp4" || ext == "mov" || ext == "wmv" || ext == "avi" || ext == "mkv" || ext == "ebm" || ext == "flv" || ext == ".rm") { %>
+                            <video class="art-piece-solo" controls>
+                                <source src="<%=artwork.contentUrl[0]%>" width="auto" height="100%">
+                            </video>
+                        <% } else { %>
+                            <a class="art-piece-solo" target="_blank" href="<%=artwork.contentUrl[0]%>">
+                                <img class="art-piece-solo" src="<%=artwork.contentUrl[0]%>" width="auto" height="100%">
+                            </a>
+                        <% } %>
+    
+                    <% } else { %>
+    
+                        <% artwork.contentUrl.forEach(artImage => { %>
+
+                            <%_
+                                var n = artImage.lastIndexOf('-');
+                                var imageUrlNumber = artImage.substring(n + 1);
+
+                                // Check if there is a full stop in the extracted substring
+                                var dotIndex = imageUrlNumber.indexOf('.');
+                                if (dotIndex !== -1) {
+                                imageUrlNumber = imageUrlNumber.substring(0, dotIndex);
+                                }
+                            _%>
+
+                            <% var ext = artImage.slice(-3) %>
+                            <% if (ext == "mp4" || ext == "mov" || ext == "wmv" || ext == "avi" || ext == "mkv" || ext == "ebm" || ext == "flv" || ext == ".rm") { %>
+                                <video class="art-piece" controls>
+                                    <source src="<%=artImage%>" width="auto" height="100%">
+                                </video>
+                            <% } else { %>
+                                <a class="art-piece" target="_blank" href="https://www.neversfw.gg/art/<%=artwork.contentId%>/<%=imageUrlNumber%>">
+                                    <img  src="<%=artImage%>" width="auto" height="100%">
+                                </a>
+                            <% } %>
+                        <% }) %>
+                    <% } %>
+    
+    
+    
+                </div>
+                <div class="art-below">
+                    <% if (artwork.description) { %>
+                        <p class="artworkDescription">Description: <%=artwork.description%></p>
+                    <% } %>
+                    <div class="artworkTags">
+                        <a>Tags: </a>
+                        <% artwork.tags.forEach(tag => { %>
+                            <a><a href="https://www.neversfw.gg/search?searchTerm=<%=tag%>"><%=tag%></a>, </a>
+                            
+                        <% }) %>
+                    </div>
+                    <form class="likeForm" style="display:inline-flex">
+                        <input name="contentId" type="hidden" value=<%=artwork.contentId%>>
+                        <input name="likes" type="hidden" value=<%=artwork.likes.length%>>
+                        <button type="submit" style="display:inline-flex">
+                            <i class="fa fa-heart"><a style="margin-left: 6px;" id="contentLikes<%=artwork.contentId%>"><%= artwork.likes.length %></a></i>
+                        </button>
+                    </form>
+                    <form class="commentForm" style="display:inline-flex">
+                        <input name="contentId" type="hidden" value=<%=artwork.contentId%>>
+                        <input name="comment" required class="commentBox" id="commentBox<%=artwork.contentId%>" placeholder="Send Comment...">
+                        <button type="submit" style="display:inline-flex; margin-left: 6px;">
+                            <i class="fa fa-comment"><a style="margin-left: 6px;" id="contentCommentsCount<%=artwork.contentId%>"><%= artwork.comments.length %></a></i>
+                        </button>
+                    </form>
+                    <button class="toggle-comments-button">Hide/Show Comments</button>
+                    <div id="contentComments<%=artwork.contentId%>" class="hidden">
+                        <% artwork.comments.reverse() %>
+                        <% artwork.comments.forEach(comment => { %>
+                            <div class="comment" style="text-align:left !important;">
+                                <% for( let index = 0; index < accounts.length;) { %>
+                                    <% account = accounts[index] %>
+                                    <% if (account.accountId == comment.accountId) { %>
+                                        <%_
+                                            let date = new Date(Number(comment.timestamp));
+                                            let day = date.getDate().toString().padStart(2, '0');
+                                            let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                            let year = date.getFullYear();
+                                            let hour = date.getHours().toString().padStart(2, '0');
+                                            let minute = date.getMinutes().toString().padStart(2, '0');
+                                            let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                        _%>
+                                        <a href="https://www.neversfw.gg/user/<%=account.username%>" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="32px" height="32px"><%=account.username%>  -  <%=formattedDate%></a>
+                                        <% index = accounts.length +1 %>
+                                    <% } %>
+                                    <% index++ %>
+                                <% } %>
+                                <p><%=comment.comment%></p>
+                            </div>
+                        <% }) %>
+                                            
+                    </div>
+                </div>
+                <br>
+            </div>
+        </center>
+
+        
+        
+
+        <%- include('../partials/_footer'); -%>
+
+        <script>
+            function toggleButtons() {
+                console.log(`ran: toggleButtons`);
+                const toggleButtons = document.querySelectorAll('.toggle-comments-button');
+                toggleButtons.forEach(button => {
+                    if (!button.hasAttribute('data-clicked')) {
+                        button.setAttribute('data-clicked', 'true');
+
+                        const toggleComments = () => {
+                            const content = button.nextElementSibling;
+                            content.classList.toggle('hidden');
+                        };
+
+                        button.removeEventListener('click', toggleComments);
+                        button.addEventListener('click', toggleComments);
+                    }
+                });
+            }
+        </script>
+
+
+    </body>
+</html>

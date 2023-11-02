@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-FFEW0Y6QFQ');
+        </script>
+
+        <title><%=game.gameId%> - v<%=game.version%> | NeverSFW.gg</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+        <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+        <meta name="author" content="MiningP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://www.neversfw.gg/site.css"></link>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+
+    <script>
+        function commentFunction(index,form){
+            $(form).submit(function(event) {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+        
+                // Get the form data
+                var formData = {
+                    contentId: $('input[name="contentId"]').val(),
+                    comment: $('input[name="comment"]').val()
+                }
+        
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/gameComment',
+                    data: formData,
+                    success: async function(response) {
+                        // Handle the server's response
+                        contentId = formData.contentId
+                        var commentHtml = ''
+                        let accounts = response.accounts
+                        response.comments.reverse()
+                        await response.comments.forEach(commentDocument => {
+                            commentHtml += '<div class="comment">'
+                                for( let index = 0; index < accounts.length;) {
+                                    account = accounts[index]
+                                    if (account.accountId == commentDocument.accountId) { 
+                                        let date = new Date(Number(commentDocument.timestamp));
+                                        let day = date.getDate().toString().padStart(2, '0');
+                                        let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                        let year = date.getFullYear();
+                                        let hour = date.getHours().toString().padStart(2, '0');
+                                        let minute = date.getMinutes().toString().padStart(2, '0');
+                                        let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                        commentHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + ' - ' + formattedDate + '</a>'
+                                        commentHtml += '<p>' + commentDocument.comment + '</p>'
+                                        index = accounts.length +1 
+                                    }
+                                    index++
+                                }
+                            
+                            
+
+                            commentHtml += '</div>';
+                        })
+                        commentHtml += '</div>';
+                        
+                        
+                        // Insert the new comment into the DOM
+                        const contentDiv = document.getElementById('contentComments')
+                        contentDiv.classList.remove('hidden');
+                        $('#contentComments').html(`${commentHtml}`);
+                        $('#contentCommentsCount').html(`${response.count}`);
+                        $('#commentBox').val(``);
+                        setTimeout(() => {
+                            $('#commentBox').attr("placeholder", "Send Comment...");
+                        }, 2000);
+                        $('#commentBox').attr("placeholder", "Sent Comment!");
+
+                    }
+                });
+            });
+        }
+        function likeFunction(index,form){
+            $(form).submit(function(event) {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+        
+                // Get the form data
+                var formData = {
+                    contentId: $('input[name="contentId"]').val(),
+                    likes: $('input[name="likes"]').val()
+                }
+        
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/gameLike',
+                    data: formData,
+                    success: function(response) {
+                        // Handle the server's response
+                        contentId = formData.contentId
+                        $('#contentLikes').html(`${response.likes}`);
+                    }
+                });
+            });
+        }
+    </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.likeForm').each(function(index, form) {
+                    likeFunction(index, form)
+                });
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.commentForm').each(function(index, form) {
+                    commentFunction(index, form)
+                });
+            });
+        </script>
+
+
+    <style>
+        #gameDescriptionBox {
+            padding: 15px;
+            margin: 5px;
+            background-color: rgba(0, 0, 0, 0.15);;
+            width: 99%;
+        }
+    </style>
+
+    <style>
+        .ql-container.ql-snow{ border: none !important;}
+    </style>
+
+
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="../../../node_modules/quill-blot-formatter/dist/quill-blot-formatter.min.js"></script>
+
+    
+    <body>
+        <%- include('../partials/_nav'); -%>
+        <%- include('../partials/_popunder'); -%>
+
+        <div>
+            <center>
+                <br>
+                <% if (game.accountId = session.accountId) { %>
+                    <a href="<%=game.gameId%>/edit"><button>Edit Game Info</button></a>
+                    <a href="<%=game.gameId%>/update"><button>Update Game Files</button></a>
+                <% } %>
+                <a><h1><%=game.gameId%> - v<%=game.version%></h1></a>
+            </center>
+                <div id="gameDescriptionBox">
+                    <% if (game.description) { %>
+                        <div id="readEditor" class="notranslate">
+                            <%-game.description%>
+                        </div>
+                    <% } else { %>
+                        <center>
+                            <h1>No description has been written for this game.</h1>
+                        </center>
+                    <% } %>
+                </div>
+
+
+                <script>
+                    Quill.register('modules/blotFormatter', QuillBlotFormatter.default);
+
+                    var quill = new Quill('#readEditor', {
+                        modules: {
+                            blotFormatter: {
+                            // see config options below
+                            },
+                            "toolbar": false              
+                        },
+                        readOnly: true,
+                        theme: 'snow'
+                    });
+                </script>
+
+                <center>
+                    <%- include('../partials/_bannerAdvert'); -%>
+                    <br>
+
+                    <style>
+                        #allDownloadsBox {
+                            padding: 15px;
+                            margin: 5px;
+                            background-color: rgba(0, 0, 0, 0.15);
+                            width: 99%;
+                        }
+                        .downloadBox {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            padding: 15px;
+                            margin: 5px;
+                            background-color: rgba(0, 0, 0, 0.15);
+                            width: fit-content;
+                            text-decoration: none;
+                        }
+                        .downloadBox:hover {
+                            background-color: rgba(247, 0, 255, 0.15);
+                        }
+                        .downloadImage {
+                            width: 100px;
+                            height: 100px;
+                        }
+                        .downloadText {
+                            display: inline-block;
+                            margin: 10px;
+                        }
+                    </style>
+                    
+                    <div id="allDownloadsBox">
+                        <% if (game.gameFiles.length > 0) { %>
+                            <h1 style="font-size: xx-large;"><%=game.gameId%> v<%=game.version%> Downloads:</h1>
+                            <% game.gameFiles.forEach(element => { %>
+                                <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" onclick="startDownload()">
+                                    <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage">
+                                    <h1 class="downloadText"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
+                                </a>
+                            <% }) %>
+                        <% } else { %>
+                            <h1>No game downloads have been provided for this game.</h1>
+                        <% } %>
+                    </div>
+                    
+                    <script>
+                        function startDownload() {
+                            setTimeout(function() {
+                                window.location.href = "/";
+                            }, 3000); // Redirect after 1 second (adjust the delay as needed)
+                        }
+                    </script>
+            </center>
+
+                <div class="art-below">
+                    <form class="likeForm" style="display:inline-flex">
+                        <input name="contentId" type="hidden" value="<%=game.gameId%>">
+                        <input name="likes" type="hidden" value=<%=game.likes.length%>>
+                        <button type="submit" style="display:inline-flex">
+                            <i class="fa fa-heart"><a style="margin-left: 6px;" id="contentLikes"><%= game.likes.length %></a></i>
+                        </button>
+                    </form>
+                    <form class="commentForm" style="display:inline-flex">
+                        <input name="contentId" type="hidden" value="<%=game.gameId%>">
+                        <input name="comment" required class="commentBox" id="commentBox" placeholder="Send Comment...">
+                        <button type="submit" style="display:inline-flex; margin-left: 6px;">
+                            <i class="fa fa-comment"><a style="margin-left: 6px;" id="contentCommentsCount"><%= game.comments.length %></a></i>
+                        </button>
+                    </form>
+                    <button class="toggle-comments-button">Hide/Show Comments</button>
+                    <div id="contentComments" class="hidden">
+                        <% game.comments.reverse() %>
+                        <% game.comments.forEach(comment => { %>
+                            <div class="comment">
+                                <% for( let index = 0; index < accounts.length;) { %>
+                                    <% account = accounts[index] %>
+                                    <% if (account.accountId == comment.accountId) { %>
+                                        <%_
+                                            let date = new Date(Number(comment.timestamp));
+                                            let day = date.getDate().toString().padStart(2, '0');
+                                            let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                            let year = date.getFullYear();
+                                            let hour = date.getHours().toString().padStart(2, '0');
+                                            let minute = date.getMinutes().toString().padStart(2, '0');
+                                            let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                        _%>
+                                        <a href="https://www.neversfw.gg/user/<%=account.username%>" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="32px" height="32px"><%=account.username%>  -  <%=formattedDate%></a>
+                                        <% index = accounts.length +1 %>
+                                        <p><%=comment.comment%></p>
+                                    <% } %>
+                                    <% index++ %>
+                                <% } %>
+                                
+                            </div>
+                        <% }) %>
+                                            
+                    </div>
+                </div>
+        </div>
+
+        <%- include('../partials/_footer'); -%>
+
+        <script>
+            function toggleButtons() {
+                console.log(`ran: toggleButtons`);
+                const toggleButtons = document.querySelectorAll('.toggle-comments-button');
+                toggleButtons.forEach(button => {
+                    if (!button.hasAttribute('data-clicked')) {
+                        button.setAttribute('data-clicked', 'true');
+
+                        const toggleComments = () => {
+                            const content = button.nextElementSibling;
+                            content.classList.toggle('hidden');
+                        };
+
+                        button.removeEventListener('click', toggleComments);
+                        button.addEventListener('click', toggleComments);
+                    }
+                });
+            }
+            toggleButtons()
+        </script>
+    </body>
+</html>

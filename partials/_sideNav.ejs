@@ -1,0 +1,131 @@
+<link rel="stylesheet" href="https://www.neversfw.gg/betasite.css"></link>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#searchform').keypress(function(e){
+          if(e.which == 13){
+
+            var formData = $(this).serialize();
+               // submit via ajax or
+               $(this).closest("form").submit();
+           }
+        });
+    });
+</script>
+
+<style>
+    .dontHover {
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 24px;
+        transform: translateY(-16px);
+    }
+    .dontHover:hover {
+        background-color: rgba(255, 255, 255, 0) !important;
+    }
+    li a {
+        text-align: center;
+        display: block;
+        width: 80%;
+        text-decoration: none;
+        color: var(--tab-inactive);
+    }
+    .underline {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 85%;
+        height: 3px;
+        background-color: var(--tab-inactive);
+    }
+</style>
+
+<div style="height: 100%;">
+    <div class="navigation-side">
+
+        <% let topnavIcon = `font-size: 26px;` %>
+    
+        <div style="display: block; margin-top: 30vh; margin-bottom: auto;">
+            <li style="list-style: none;">
+                <a href="/">
+                    <i class="fa fa-home" style="text-align: left !important;"></i> Home
+                </a>
+                <div class="underline"></div>
+                
+                <% if (session.loggedIn) { %>
+                    <a href="/user/<%=session.username%>" target="_top">
+                        <i class="fa fa-user"></i> <%=session.username%>
+                    </a>
+                    <div class="underline"></div>
+
+                    <a href="/logout" target="_top">
+                        <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                    <div class="underline"></div>
+
+                    <a href="/upload" target="_top">
+                        <i class="fa fa-upload"></i> Upload
+                    </a>
+                    <div class="underline"></div>
+
+                    <a href="/notifications" target="_top">
+                        <i class="fa fa-bell"></i> Notifications
+                    </a>
+                    <div class="underline"></div>
+
+
+                <% } else { %>
+                    <a href="/login" target="_top">
+                        Login
+                    </a>
+                    <div class="underline"></div>
+
+                    <a href="/register" target="_top">
+                        Register
+                    </a>
+                <% } %>
+
+                    <a href="https://discord.gg/2QXV66RVMG" target="_top">
+                        Discord Server
+                    </a>
+                    <div class="underline"></div>
+
+                    <a href="/ai" target="_top">
+                        AI Generator
+                    </a>
+
+
+                <form action="/search" method="get" id="searchform">
+                    <a href="#" id="searchButton">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <center>
+                        <textarea form="searchform" name="searchTerm" rows="1" width="100%"></textarea>
+                    </center>
+                </form>
+                  
+                <script>
+                    document.getElementById('searchButton').addEventListener('click', function(e) {
+                      e.preventDefault(); // Prevent the default link behavior
+                  
+                      // Perform your desired form submission or action here
+                      document.getElementById('searchform').submit();
+                    });
+                </script>
+                <br>
+                <div class="underline"></div>
+            </li>
+        </div>
+        
+        
+    </div>
+</div>

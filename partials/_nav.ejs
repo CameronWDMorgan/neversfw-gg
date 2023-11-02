@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="../../site.css"></link>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#searchform').keypress(function(e){
+          if(e.which == 13){
+
+            var formData = $(this).serialize();
+               // submit via ajax or
+               $(this).closest("form").submit();
+           }
+        });
+    });
+</script>
+
+<style>
+    .dontHover {
+        display: block;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 24px;
+        transform: translateY(-16px);
+    }
+    .dontHover:hover {
+        background-color: rgba(255, 255, 255, 0) !important;
+    }
+</style>
+
+<div class="navigation-bar" id="navigation-bar">
+
+    <% let topnavIcon = `font-size: 26px;` %>
+
+    <a href="/">
+        <i class="fa fa-home"></i>
+    </a>
+    
+    <% if (session.loggedIn) { %>
+        <a href="/user/<%=session.username%>" target="_top">
+            <%=session.username%>
+        </a>
+        <a href="/logout" target="_top">
+            Logout
+        </a>
+        <a href="/upload" target="_top">
+            <i class="fa fa-upload"></i>
+        </a>
+        <a href="/notifications" target="_top">
+            <i class="fa fa-bell"></i>
+        </a>
+        <!-- <a href="/messaging" target="_top">
+            <i class="fa fa-envelope"></i>
+        </a> -->
+    <% } else { %>
+        <a href="/login" target="_top">
+            Login
+        </a>
+        <a href="/register" target="_top">
+            Register
+        </a>
+        <a href="/upload" target="_top">
+            <i class="fa fa-upload"></i>
+        </a>
+        <a href="/notifications" target="_top">
+            <i class="fa fa-bell"></i>
+        </a>
+        <a href="/ai" target="_top">
+            AI Image Gen
+        </a>
+    <% } %>
+
+    <a class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a> 
+
+    <form action="/search" method="get" id="searchform">    
+        <!-- <select display="block" name="sort">
+            <option value="new">New</option>
+            <option value="old">Old</option>
+            <option value="likes">Likes</option>
+        </select>  -->
+        <button style="transform: translateY(-px);" type="submit">
+            <i style="<%=topnavIcon%>" class="fa fa-search"></i>
+        </button> 
+        <textarea form="searchform" name="searchTerm" rows="1" cols="100"></textarea>
+        
+    </form>
+    
+</div>
+
+<script>
+    /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+    function myFunction() {
+        var x = document.getElementById("navigation-bar");
+        if (x.className === "navigation-bar") {
+            x.className += " responsive";
+        } else {
+            x.className = "navigation-bar";
+        }   
+    }
+</script>
+
+<%- include('../partials/_bannerAdvert'); -%>

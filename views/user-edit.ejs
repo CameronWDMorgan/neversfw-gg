@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+
+    
+
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-FFEW0Y6QFQ');
+        </script>
+
+        <title>Edit Profile | NeverSFW.gg</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+        <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+        <meta name="author" content="MiningP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="../../site.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="../js/plupload.full.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+
+
+    
+    <body>
+        <%- include('../partials/_nav'); -%>
+        <%- include('../partials/_popunder'); -%>
+
+        
+        <div class="upload-all">
+
+        
+            <div class="upload">
+                <center>
+                        <label style="font-size: xx-large;">Update Profile Avatar</label>
+                        <p></p>
+                        <a>(2MB Limit)</a>
+                        <p></p>
+                        <input type="file" id="browseArt" />
+                        <ul id="filelistArt"></ul>
+                        <div id="myProgressArt">
+                            <div id="myBarArt"></div>
+                        </div>
+                        <p></p>
+                        <button id="start-Art-upload">Update Avatar</button>
+                        <p></p>
+
+                    </center>
+            </div>
+                
+            <div class="upload">
+                <center>
+                    <h1>Current User Info:</h1>
+                    <div>
+                        <p>Avatar:</p>
+                        <img class="user-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%= user.avatarUrl %>">
+                        <p>Username: <%= user.username %></p>
+                        <p>Email: <%= user.email %></p>
+                    </div>
+                    <p><br></p>
+                    <div>
+                        <form class="user-edit" method="post">
+                            <h1>Update Info</h1>
+                            <p></p>
+                            <label>Username (4-20 Characters)</label>
+                            <p></p>
+                            <div>
+                                <input type="search" autocomplete="off" name="username" placeholder="Username" autocomplete="false">
+                            </div>
+                            <p></p>
+                            <label>Password (7+ Characters)</label>
+                            <p></p>
+                            <div>
+                                <input type="password" name="password" placeholder="Password" autocomplete="new-password">
+                            </div>
+                            <p></p>
+                            <label>Bio (Max 200 Characters)</label>
+                            <p></p>
+                            <div>
+                                <textarea cols="60" rows="3" name="bio" placeholder="bio" autocomplete="false"></textarea>
+                            </div>
+                            <button type="submit">Submit Changes</button>
+                        </form>
+                    </div>
+                </center>
+            </div>
+
+        <%- include('../partials/_footer'); -%>
+    </body>
+
+    <script>
+        var avatarUploader = new plupload.Uploader({
+            browse_button: 'browseArt',
+            url: '/user-edit/avatar',
+            multi_selection: false,
+            multipart: true,
+            filters: {
+                mime_types : [
+                    { title : "Images files", extensions : "jpg,gif,png,webp,jifi" },
+                ],
+                max_file_size: "2000kb",
+            },
+            chunk_size: '150kb',
+            max_retries: 999
+        });
+
+        avatarUploader.init();
+
+        avatarUploader.bind('FilesAdded', function(up, files) {
+            var html = '';
+            plupload.each(files, function(file) {
+                html += '<li id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></li>';
+            });
+            document.getElementById('filelistArt').innerHTML += html;
+        });
+
+        avatarUploader.bind('UploadProgress', function(up, file) {
+            document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+            document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                $('#myBarArt').css('width', file.percent + '%');    
+        });
+
+        avatarUploader.bind('UploadComplete', function() {
+            window.location.href = "https://www.neversfw.gg/user-edit/avatarComplete";
+        });
+
+        document.getElementById('start-Art-upload').onclick = function() {
+            avatarUploader.start();
+        };
+    </script>
+
+
+</html>

@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-FFEW0Y6QFQ');
+        </script>
+
+        <title>About | NeverSFW.gg</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+        <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+        <meta name="author" content="MiningP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://www.neversfw.gg/site.css"></link>
+
+        <script src="../../../js/plupload.full.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+
+    <script>
+        $(document).ready(function() {
+            $('.versionForm').each(function(index, form) {
+                $(form).submit(function(event) {
+                    // Prevent the form from submitting normally
+                    event.preventDefault();
+            
+                    // Get the form data
+                    var formData = $(this).serialize();
+            
+                    // Send a POST request to the server
+                    $.ajax({
+                        type: 'POST',
+                        url: '/game/<%=game.gameId%>/updateVersion',
+                        data: formData,
+                        success: function(response) {
+                            // Handle the server's response
+                            formData = formData.split('&')
+                            console.log(formData)
+                            likes = formData[0].split('=')[1]
+                            console.log(likes)
+                            $('#versionField').html(`Current Version Number: " ${likes} "`);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    
+    <body>
+        <%- include('../partials/_nav'); -%>
+        <%- include('../partials/_popunder'); -%>
+        <center>
+
+
+            <div style="display: block;">
+                <p>(Make sure the version numnber is correct before uploading your game files!)</p>
+                <p id="versionField" >Current Version Number: " <%=game.version%> "</p>
+                <form class="versionForm" action="/game/<%=game.gameId%>/updateVersion" method="post">
+                    <input name="version" required>
+                    <button type="submit">Update Version Number</button>
+                </form>
+            </div>
+
+
+            <p></p>
+            <div>
+                <h1>Upload <%=platform%> Game Files</h1>
+                <input type="file" id="browse" />
+                <ul id="filelist"></ul>
+                <button id="start-upload">Start Upload</button>
+                <p></p>
+                <div id="myProgress">
+                    <div id="myBar"></div>
+                </div>
+            </div>
+        </center>
+        
+
+        
+    
+        <script>
+            var uploader = new plupload.Uploader({
+                browse_button: 'browse',
+                url: '/game/<%=game.gameId%>/update/<%=platform%>',
+                multi_selection: false,
+                chunk_size: '50000kb',
+                max_retries: 99
+            });
+    
+            uploader.init();
+    
+            uploader.bind('FilesAdded', function(up, files) {
+                var html = '';
+                plupload.each(files, function(file) {
+                    html += '<li id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></li>';
+                });
+                document.getElementById('filelist').innerHTML += html;
+            });
+    
+            uploader.bind('UploadProgress', function(up, file) {
+                document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                    $('#myBar').css('width', file.percent + '%');    
+            });
+    
+            uploader.bind('Error', function(up, err) {
+                console.log("Error #" + err.code + ": " + err.message);
+            });
+
+            uploader.bind('UploadComplete', function(file) {
+                $.ajax({
+                    type: "POST",
+                    url: '/gameFileUploadComplete',
+                });
+            })
+    
+            document.getElementById('start-upload').onclick = function() {
+                uploader.start();
+            };
+        </script>
+
+        <%- include('../partials/_footer'); -%>
+    </body>
+</html>

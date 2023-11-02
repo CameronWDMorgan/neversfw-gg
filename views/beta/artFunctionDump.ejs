@@ -1,0 +1,137 @@
+<% async function artFunction(aggregate, name, type) { %>
+    <% let shownList = [] %>
+    <% aggregate.forEach(artwork => { %>
+        <% shownList.push(artwork.contentId) %>
+        <div class="artPost">
+            <div class="art-details">
+                <% for( let index = 0; index < accounts.length;) { %>
+                    <% account = accounts[index] %>
+                    <% if (account.accountId == artwork.accountId) { %>
+                        
+                        <a href="https://www.neversfw.gg/user/<%=account.username%>"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="32px" height="32px"><%=account.username%>:</a>
+                        
+                        <%_
+                            let date = new Date(Number(artwork.timestamp));
+                            let day = date.getDate().toString().padStart(2, '0');
+                            let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                            let year = date.getFullYear();
+                            let hour = date.getHours().toString().padStart(2, '0');
+                            let minute = date.getMinutes().toString().padStart(2, '0');
+                            let formattedDate = `${day}/${month}/${year}`;
+                        _%>
+
+                        <a href="https://www.neversfw.gg/art/<%=artwork.contentId%>"><%=artwork.name%></a>
+                        <br>
+                        <a style="position:absolute ;font-size: small; color: rgba(255, 255, 255, 0.5); transform: translateX(38px);">[<%=formattedDate%>]</a>
+                        <br>
+                        <% index = accounts.length +1 %>
+                    <% } %>
+                    <% index++ %>
+                <% } %>
+            </div>
+
+            <% artwork.contentUrl.reverse() %>
+            
+            <div class="art-gallery">
+
+                <% if (artwork.contentUrl.length == 1) { %>
+                    <% var ext = artwork.contentUrl[0].slice(-3) %>
+                    <% if (ext == "mp4" || ext == "mov" || ext == "wmv" || ext == "avi" || ext == "mkv" || ext == "ebm" || ext == "flv" || ext == ".rm") { %>
+                        <video class="art-piece-solo" controls>
+                            <source src="<%=artwork.contentUrl[0]%>" width="auto" height="100%">
+                        </video>
+                    <% } else { %>
+                        <a class="art-piece-solo" target="_blank" href="https://www.neversfw.gg/art/<%=artwork.contentId%>">
+                            <img class="art-piece-solo" src="<%=artwork.contentUrl[0]%>" width="auto" height="100%">
+                        </a>
+                    <% } %>
+
+                <% } else { %>
+
+                    <% artwork.contentUrl.forEach(artImage => { %>
+                        <% var ext = artImage.slice(-3) %>
+                        <% if (ext == "mp4" || ext == "mov" || ext == "wmv" || ext == "avi" || ext == "mkv" || ext == "ebm" || ext == "flv" || ext == ".rm") { %>
+                            <video class="art-piece" controls>
+                                <source src="<%=artImage%>" width="auto" height="100%">
+                            </video>
+                        <% } else { %>
+                            <a class="art-piece" target="_blank" href="https://www.neversfw.gg/art/<%=artwork.contentId%>">
+                                <img  src="<%=artImage%>" width="auto" height="100%">
+                            </a>
+                        <% } %>
+                    <% }) %>
+                <% } %>
+
+            </div>
+            <div class="art-below">
+                <% if (artwork.description) { %>
+                    <p class="artworkDescription">Description: <%=artwork.description%></p>
+                <% } %>
+                <div class="artworkTags">
+                    <a>Tags: </a>
+                    <% artwork.tags.forEach(tag => { %>
+                        <% tag = tag.replace('(author)','') %>
+                        <a><a href="https://www.neversfw.gg/search?searchTerm=<%=tag%>"><%=tag%></a>, </a>
+                        
+                    <% }) %>
+                </div>
+                <center>
+                    <form class="likeForm" style="display:inline-flex">
+                        <input name="contentId" type="hidden" value=<%=artwork.contentId%>>
+                        <input name="likes" type="hidden" value=<%=artwork.likes.length%>>
+                        <button type="submit" class="postButton">
+                            <i class="fa fa-heart"><a style="margin-left: 6px;" id="contentLikes<%=artwork.contentId%>"><%= artwork.likes.length %></a></i>
+                        </button>
+                    </form>
+                    <form class="commentForm" style="display:inline-flex">
+                        <input name="contentId" type="hidden" value=<%=artwork.contentId%>>
+                        <button type="submit" class="postButton">
+                            <i class="fa fa-comment"><a style="margin-left: 6px;" id="contentCommentsCount<%=artwork.contentId%>"><%= artwork.comments.length %></a></i>
+                        </button>
+                        <input name="comment" required class="commentBox" id="commentBox<%=artwork.contentId%>" placeholder="Send Comment...">
+                    </form>
+                    <button class="toggle-comments-button" class="postButton" style="transform: translateY(-8px);">
+                        Hide/Show Comments
+                    </button>
+                    <div id="contentComments<%=artwork.contentId%>" class="hidden">
+                        <% artwork.comments.reverse() %>
+                        <% artwork.comments.forEach(comment => { %>
+                            <div class="comment" style="text-align: left !important; justify-content: left;">
+                                <% for( let index = 0; index < accounts.length;) { %>
+                                    <% account = accounts[index] %>
+                                    <% if (account.accountId == comment.accountId) { %>
+                                        <%_
+                                            let date = new Date(Number(comment.timestamp));
+                                            let day = date.getDate().toString().padStart(2, '0');
+                                            let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                            let year = date.getFullYear();
+                                            let hour = date.getHours().toString().padStart(2, '0');
+                                            let minute = date.getMinutes().toString().padStart(2, '0');
+                                            let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                        _%>
+                                        <a href="https://www.neversfw.gg/user/<%=account.username%>" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="32px" height="32px"><%=account.username%>  -  <%=formattedDate%></a>
+                                        <% index = accounts.length +1 %>
+                                    <% } %>
+                                    <% index++ %>
+                                <% } %>
+                                <p><%=comment.comment%></p>
+                            </div>
+                        <% }) %>
+                                            
+                    </div>
+                </center>
+            </div>
+            <br>
+        </div>
+    <% }) %>
+    <center>
+        <div id="showMore<%=type%><%=name%>" class="hidden">                  
+        </div>
+        <div style="display: block; width: 100%;"></div>
+        <form id="showMoreForm<%=type%><%=name%>" class="showMoreForm" style="display:inline-flex;">
+            <input name="pageType" type="hidden" value="<%=type%><%=name%>">
+            <%console.log(type+name)%>
+            <input id="contentList<%=type%><%=name%>" name="contentList" type="hidden" value=<%=shownList%>>
+        </form>
+    </center>
+<% } %>

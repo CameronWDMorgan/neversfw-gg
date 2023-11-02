@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="https://www.neversfw.gg/betasite.css"></link>
+
+<div class="mobileNavigation">
+    <a href="https://www.neversfw.gg/">Home</a>
+    <% if (session.loggedIn) { %>
+        <a href="/user/<%=session.username%>" target="_top">
+            <i class="fa fa-user"></i> <%=session.username%>
+        </a>
+
+        <a href="/logout" target="_top">
+            <i class="fa fa-sign-out"></i> Logout
+        </a>
+
+        <a href="/upload" target="_top">
+            <i class="fa fa-upload"></i> Upload
+        </a>
+
+        <a href="/notifications" target="_top">
+            <i class="fa fa-bell"></i> Notifications
+        </a>
+
+
+    <% } else { %>
+        <a href="/login" target="_top">
+            Login
+        </a>
+
+        <a href="/register" target="_top">
+            Register
+        </a>
+
+    <% } %>
+
+    <a href="https://discord.gg/2QXV66RVMG" target="_top">
+        Discord
+    </a>
+    <a href="/ai" target="_top">
+        AI
+    </a>
+    <br>
+    <br>
+</div>

@@ -1,0 +1,754 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-FFEW0Y6QFQ');
+        </script>
+
+        <title>Search | NeverSFW.gg</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+        <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+        <meta name="author" content="MiningP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://www.neversfw.gg/site.css"></link>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            toggleButtons()
+        })
+    </script>
+
+    <script>
+        function commentFunction(index,form){
+            $(form).submit(function(event) {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+        
+                // Get the form data
+                var formData = $(this).serialize();
+        
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/artworkComment',
+                    data: formData,
+                    success: async function(response) {
+                        // Handle the server's response
+                        formData = formData.split('&')
+                        contentId = formData[0].split('=')[1]
+                        var commentHtml = ''
+                        let accounts = response.accounts
+                        response.comments.reverse()
+                        await response.comments.forEach(commentDocument => {
+                            commentHtml += '<div class="comment">'
+                                for( let index = 0; index < accounts.length;) {
+                                    account = accounts[index]
+                                    if (account.accountId == commentDocument.accountId) { 
+                                        let date = new Date(Number(commentDocument.timestamp));
+                                        let day = date.getDate().toString().padStart(2, '0');
+                                        let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                        let year = date.getFullYear();
+                                        let hour = date.getHours().toString().padStart(2, '0');
+                                        let minute = date.getMinutes().toString().padStart(2, '0');
+                                        let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                        commentHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + ' - ' + formattedDate + '</a>'
+                                        commentHtml += '<p>' + commentDocument.comment + '</p>'
+                                        index = accounts.length +1 
+                                    }
+                                    index++
+                                }
+                            
+                            
+
+                            commentHtml += '</div>';
+                        })
+                        commentHtml += '</div>';
+                        
+                        
+                        // Insert the new comment into the DOM
+                        const contentDiv = document.getElementById('contentComments'+contentId)
+                        contentDiv.classList.remove('hidden');
+                        $('#contentComments'+contentId).html(`${commentHtml}`);
+                        $('#contentCommentsCount'+contentId).html(`${response.count}`);
+                        $('#commentBox'+contentId).val(``);
+                        setTimeout(() => {
+                            $('#commentBox'+contentId).attr("placeholder", "Send Comment...");
+                        }, 2000);
+                        $('#commentBox'+contentId).attr("placeholder", "Sent Comment!");
+
+                    }
+                });
+            });
+        }
+        function likeFunction(index,form){
+            $(form).submit(function(event) {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+        
+                // Get the form data
+                var formData = $(this).serialize();
+
+                console.log(formData)
+        
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/artworkLike',
+                    data: formData,
+                    success: function(response) {
+                        // Handle the server's response
+                        formData = formData.split('&')
+                        contentId = formData[0].split('=')[1]
+                        $('#contentLikes'+contentId).html(`${response.likes}`);
+                    }
+                });
+            });
+        }
+    </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.likeForm').each(function(index, form) {
+                    if (!$(form).data('submitEventBound')) {
+                        likeFunction(index, form)
+                        $(form).data('submitEventBound', true);
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.commentForm').each(function(index, form) {
+                    if (!$(form).data('submitEventBound')) {
+                        commentFunction(index, form)
+                        $(form).data('submitEventBound', true);
+                    }
+                });
+            });
+        </script>
+
+    <!-- SHOW MORE FORM SCRIPT NEW -->
+    <script>
+        $(document).ready(function() {
+            $('.showMoreForm').each(function(index, form) {
+                $(form).submit(function(event) {
+                    // Prevent the form from submitting normally
+                    event.preventDefault();
+            
+                    // Get the form data
+                    var formData = $(this).serialize();
+
+                    let searchTerm = $('input[name="searchTerm"]').val()
+                    formData = (formData + `&searchTerm=${searchTerm}`)
+
+                    let accountId = $('input[name="accountId"]').val()
+                    formData = (formData + `&accountId=${accountId}`)
+            
+                    // Send a POST request to the server
+
+                    console.log(formData)
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/showMore',
+                        data: formData,
+
+
+                        success: async function(response) {
+                            // Handle the server's response
+                            formData = formData.split('&')
+                            console.log(response)
+                            let newContentList = response.newContentList
+                            var showMoreHtml = ''
+                            let accounts = response.accounts
+                            let showMoreAggregate = response.responseAggregate
+
+                            async function artShowMoreFunction(showMoreArtAggregate, accounts, showMoreHtml, newContentList, contentListName, showMoreId) {
+                                showMoreArtAggregate.forEach(artwork => {
+                                showMoreHtml += '<div class="artPost">'
+                                showMoreHtml += '<div class="art-details">'
+                                    for( let index = 0; index < accounts.length;) {
+                                        account = accounts[index]
+                                        if (account.accountId == artwork.accountId) {
+                                            
+                                            showMoreHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + ' - </a>'
+                                            date = new Date(Number(artwork.timestamp));
+                                            day = date.getDate().toString().padStart(2, '0');
+                                            month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                            year = date.getFullYear();
+                                            hour = date.getHours().toString().padStart(2, '0');
+                                            minute = date.getMinutes().toString().padStart(2, '0');
+                                            formattedDate = `${day}/${month}/${year}`;
+
+                                            showMoreHtml += '<a href="https://www.neversfw.gg/art/' + artwork.contentId + '">' + artwork.name + '</a>'
+                                            showMoreHtml += '<a class="artworkDate">' + formattedDate + '</a>'
+                                            
+                                            index = accounts.length +1
+                                        }
+                                        index++
+                                    }
+                                showMoreHtml += '</div>'
+
+                                
+                                
+                                showMoreHtml += '<div class="art-gallery">'
+
+                                    if (artwork.contentUrl.length == 1) {
+                                        var ext = artwork.contentUrl[0].slice(-3)
+                                        if (ext == "mp4" || ext == "mov" || ext == "wmv" || ext == "avi" || ext == "mkv" || ext == "ebm" || ext == "flv" || ext == ".rm") {
+                                            showMoreHtml += '<video class="art-piece-solo" controls>'
+                                                showMoreHtml += '<source src="' + artwork.contentUrl[0] + '" width="auto" height="100%">'
+                                            showMoreHtml += '</video>'
+                                        } else {
+                                            showMoreHtml += '<a class="art-piece-solo" target="_blank" href="https://www.neversfw.gg/art/' + artwork.contentId + '">'
+                                                showMoreHtml += '<img class="art-piece-solo" src="' + artwork.contentUrl[0] + '" width="auto" height="100%">'
+                                            showMoreHtml += '</a>'
+                                        }
+
+                                    } else {
+                                        artwork.contentUrl.forEach(artImage => {
+                                            var ext = artImage.slice(-3)
+                                            if (ext == "mp4" || ext == "mov" || ext == "wmv" || ext == "avi" || ext == "mkv" || ext == "ebm" || ext == "flv" || ext == ".rm") {
+                                                showMoreHtml += '<video class="art-piece" controls>'
+                                                    showMoreHtml += '<source src="' + artImage + '" width="auto" height="100%">'
+                                                showMoreHtml += '</video>'
+                                            } else {
+                                                showMoreHtml += '<a class="art-piece" target="_blank" href="https://www.neversfw.gg/art/' + artwork.contentId + '">'
+                                                    showMoreHtml += '<img  src="' + artImage + '" width="auto" height="100%">'
+                                                showMoreHtml += '</a>'
+                                            }
+                                        })
+                                    }
+                                showMoreHtml += '</div>';
+                                showMoreHtml += '<div class="art-below">'
+                                    if (artwork.description) {
+                                        showMoreHtml += '<p class="artworkDescription">Description: ' + artwork.description + '</p>'
+                                    }
+                                    showMoreHtml += '<div class="artworkTags">'
+                                        showMoreHtml += '<a>Tags: </a>'
+                                        artwork.tags.forEach(tag => {
+                                            showMoreHtml += '<a><a href="https://www.neversfw.gg/search?searchTerm=' + tag + '">' + tag + '</a>, </a>'
+                                            
+                                        })
+                                        showMoreHtml += '</div>'
+                                    showMoreHtml += '<form class="likeForm" style="display:inline-flex">'
+                                        showMoreHtml += '<input name="contentId" type="hidden" value=' + artwork.contentId + '>'
+                                        showMoreHtml += '<input name="likes" type="hidden" value=' + artwork.likes.length + '>'
+                                        showMoreHtml += '<button type="submit" style="display:inline-flex">'
+                                            showMoreHtml += '<i class="fa fa-heart"><a style="margin-left: 6px;" id="contentLikes' + artwork.contentId + '">' + artwork.likes.length + '</a></i>'
+                                        showMoreHtml += '</button>'
+                                    showMoreHtml += '</form>'
+                                    showMoreHtml += '<form class="commentForm" style="display:inline-flex">'
+                                        showMoreHtml += '<input name="contentId" type="hidden" value=' + artwork.contentId + '>'
+                                        showMoreHtml += '<input name="comment" required class="commentBox" id="commentBox' + artwork.contentId + '" placeholder="Send Comment...">'
+                                        showMoreHtml += '<button type="submit" style="display:inline-flex; margin-left: 6px;">'
+                                            showMoreHtml += '<i class="fa fa-comment"><a style="margin-left: 6px;" id="contentCommentsCount'+artwork.contentId+'">'+artwork.comments.length+'</a></i>'
+                                        showMoreHtml += '</button>'
+                                    showMoreHtml += '</form>'
+                                    showMoreHtml += '<button class="toggle-comments-button">Hide/Show Comments</button>'
+                                    showMoreHtml += '<div id="contentComments' + artwork.contentId + '" class="hidden">'
+                                        artwork.comments.reverse()
+                                        artwork.comments.forEach(comment => {
+                                            showMoreHtml += '<div class="comment">'
+                                                for( let index = 0; index < accounts.length;) {
+                                                    let account = accounts[index]
+                                                    console.log(`accounts: ${account.accountId}`)
+                                                    console.log(`comment: ${comment.accountId}`)
+                                                    if (account.accountId == comment.accountId) {
+                                                        console.log(`MATCH`)
+                                                            let date = new Date(Number(comment.timestamp));
+                                                            let day = date.getDate().toString().padStart(2, '0');
+                                                            let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                                            let year = date.getFullYear();
+                                                            let hour = date.getHours().toString().padStart(2, '0');
+                                                            let minute = date.getMinutes().toString().padStart(2, '0');
+                                                            let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                                        showMoreHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '%>" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + '  -  ' + formattedDate + '</a>'
+                                                        index = accounts.length +1
+                                                    }
+                                                    index++
+                                                }
+                                                showMoreHtml += '<p>' + comment.comment + '</p>'
+                                            showMoreHtml += '</div>'
+                                        })
+                                                            
+                                    showMoreHtml += '</div>'
+                                showMoreHtml += '</div>'
+                                showMoreHtml += '<br>'
+                                $(`#${contentListName}`).attr("value", `${newContentList}`)
+                                showMoreHtml += '</div>'
+                            })
+                            showMoreHtml += '</div>'
+                            showMoreHtml += '<div id="showMore" class="hidden">'
+                            showMoreHtml += '</div>'
+                            
+                            
+                            // Insert the new comment into the DOM
+                            const showMoreDiv = document.getElementById(`${showMoreId}`)
+                            showMoreDiv.classList.remove('hidden');
+                            $(`#${showMoreId}`).append(`${showMoreHtml}`);
+                            }
+
+                            async function gameShowMoreFunction(gameAggregate, accounts, showMoreHtml, newContentList, contentListName, showMoreId) {
+                                gameAggregate.forEach(game => {
+                                        showMoreHtml += '<div class="game-container" style="width: 99%">'
+                                            showMoreHtml += '<div class="game-text">'
+                                                showMoreHtml += '<a href="https://www.neversfw.gg/game/' + game.gameId + '">' + game.gameId + ' - v' + game.version + '</a>'
+                                            showMoreHtml += '</div>'
+                                            showMoreHtml += '<a class="game-thumbnail" href="https://www.neversfw.gg/game/' + game.gameId + '">'
+                                                showMoreHtml += '<img class="game-thumbnail" src="' + game.thumbnailUrl + '" width="auto" height="100%">'
+                                            showMoreHtml += '</a>'
+                                            
+                                        showMoreHtml += '</div>'
+                                    $(`#${contentListName}`).attr("value", `${newContentList}`)
+                                })
+                                showMoreHtml += '</div>';
+                                showMoreHtml += '<div id="showMore" class="hidden">'
+                                showMoreHtml += '</div>'
+                                
+                                
+                                // Insert the new comment into the DOM
+                                const showMoreDiv = document.getElementById(`${showMoreId}`)
+                                showMoreDiv.classList.remove('hidden');
+                                $(`#${showMoreId}`).append(`${showMoreHtml}`);
+                            }
+
+                            if(response.pageType == "homePopular") {
+                                await artShowMoreFunction(showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomePopular', 'showMorehomePopular')
+                            }
+
+                            if(response.pageType == "homeRecent") {
+                                await artShowMoreFunction(showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomeRecent', 'showMorehomeRecent')
+                            }
+
+                            if(response.pageType == "homeFollowing") {
+                                await artShowMoreFunction(showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomeFollowing', 'showMorehomeFollowing')
+                            }
+
+                            if(response.pageType == "gameHomeRecent") {
+                                await gameShowMoreFunction(showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListgameHomeRecent', 'showMoregameHomeRecent')
+                            }
+
+                            if(response.pageType == "searchArt") {
+                                await artShowMoreFunction(showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListsearchArt', 'showMoresearchArt')
+                            }
+
+                            if(response.pageType == "searchGame") {
+                                await gameShowMoreFunction(showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListsearchGame', 'showMoresearchGame')
+                            }
+
+                            if(response.pageType == "userArt") {
+                                await artShowMoreFunction(showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListuserArt', 'showMoreuserArt')
+                            }
+
+                            if(response.pageType == "userGame") {
+                                await gameShowMoreFunction(showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListuserGame', 'showMoreuserGame')
+                            }
+                            
+
+                            $('.commentForm').each(function(index, form) {
+                                if (!$(form).data('submitEventBound')) {
+                                    commentFunction(index, form)
+                                    $(form).data('submitEventBound', true);
+                                }
+                            });
+
+                            $('.likeForm').each(function(index, form) {
+                                if (!$(form).data('submitEventBound')) {
+                                    likeFunction(index, form)
+                                    $(form).data('submitEventBound', true);
+                                }
+                            });
+
+                            toggleButtons()
+
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+
+    <% async function artFunction(aggregate, name, type) { %>
+        <% let shownList = [] %>
+        <% aggregate.forEach(artwork => { %>
+            <% shownList.push(artwork.contentId) %>
+            <div class="artPost">
+                <div class="art-details">
+                    <% for( let index = 0; index < accounts.length;) { %>
+                        <% account = accounts[index] %>
+                        <% if (account.accountId == artwork.accountId) { %>
+                            
+                            <a href="https://www.neversfw.gg/user/<%=account.username%>"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="32px" height="32px"><%=account.username%> - </a>
+                            
+                            <%_
+                                let date = new Date(Number(artwork.timestamp));
+                                let day = date.getDate().toString().padStart(2, '0');
+                                let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                let year = date.getFullYear();
+                                let hour = date.getHours().toString().padStart(2, '0');
+                                let minute = date.getMinutes().toString().padStart(2, '0');
+                                let formattedDate = `${day}/${month}/${year}`;
+                            _%>
+
+                            <a href="https://www.neversfw.gg/art/<%=artwork.contentId%>"><%=artwork.name%></a>
+                            <a class="artworkDate"><%=formattedDate%></a>
+                            <% index = accounts.length +1 %>
+                        <% } %>
+                        <% index++ %>
+                    <% } %>
+                </div>
+                
+                <div class="art-gallery">
+
+                    <% if (artwork.contentUrl.length == 1) { %>
+                        <% var ext = artwork.contentUrl[0].slice(-3) %>
+                        <% if (ext == "mp4" || ext == "mov" || ext == "wmv" || ext == "avi" || ext == "mkv" || ext == "ebm" || ext == "flv" || ext == ".rm") { %>
+                            <video class="art-piece-solo" controls>
+                                <source src="<%=artwork.contentUrl[0]%>" width="auto" height="100%">
+                            </video>
+                        <% } else { %>
+                            <a class="art-piece-solo" target="_blank" href="https://www.neversfw.gg/art/<%=artwork.contentId%>">
+                                <img class="art-piece-solo" src="<%=artwork.contentUrl[0]%>" width="auto" height="100%">
+                            </a>
+                        <% } %>
+
+                    <% } else { %>
+
+                        <% artwork.contentUrl.forEach(artImage => { %>
+                            <% var ext = artImage.slice(-3) %>
+                            <% if (ext == "mp4" || ext == "mov" || ext == "wmv" || ext == "avi" || ext == "mkv" || ext == "ebm" || ext == "flv" || ext == ".rm") { %>
+                                <video class="art-piece" controls>
+                                    <source src="<%=artImage%>" width="auto" height="100%">
+                                </video>
+                            <% } else { %>
+                                <a class="art-piece" target="_blank" href="https://www.neversfw.gg/art/<%=artwork.contentId%>">
+                                    <img  src="<%=artImage%>" width="auto" height="100%">
+                                </a>
+                            <% } %>
+                        <% }) %>
+                    <% } %>
+
+
+
+                </div>
+                <div class="art-below">
+                    <% if (artwork.description) { %>
+                        <p class="artworkDescription">Description: <%=artwork.description%></p>
+                    <% } %>
+                    <div class="artworkTags">
+                        <a>Tags: </a>
+                        <% artwork.tags.forEach(tag => { %>
+                            <a><a href="https://www.neversfw.gg/search?searchTerm=<%=tag%>"><%=tag%></a>, </a>
+                            
+                        <% }) %>
+                    </div>
+                    <form class="likeForm" style="display:inline-flex">
+                        <input name="contentId" type="hidden" value=<%=artwork.contentId%>>
+                        <input name="likes" type="hidden" value=<%=artwork.likes.length%>>
+                        <button type="submit" style="display:inline-flex">
+                            <i class="fa fa-heart"><a style="margin-left: 6px;" id="contentLikes<%=artwork.contentId%>"><%= artwork.likes.length %></a></i>
+                        </button>
+                    </form>
+                    <form class="commentForm" style="display:inline-flex">
+                        <input name="contentId" type="hidden" value=<%=artwork.contentId%>>
+                        <input name="comment" required class="commentBox" id="commentBox<%=artwork.contentId%>" placeholder="Send Comment...">
+                        <button type="submit" style="display:inline-flex; margin-left: 6px;">
+                            <i class="fa fa-comment"><a style="margin-left: 6px;" id="contentCommentsCount<%=artwork.contentId%>"><%= artwork.comments.length %></a></i>
+                        </button>
+                    </form>
+                    <button class="toggle-comments-button">Hide/Show Comments</button>
+                    <div id="contentComments<%=artwork.contentId%>" class="hidden">
+                        <% artwork.comments.reverse() %>
+                        <% artwork.comments.forEach(comment => { %>
+                            <div class="comment">
+                                <% for( let index = 0; index < accounts.length;) { %>
+                                    <% account = accounts[index] %>
+                                    <% if (account.accountId == comment.accountId) { %>
+                                        <%_
+                                            let date = new Date(Number(comment.timestamp));
+                                            let day = date.getDate().toString().padStart(2, '0');
+                                            let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                            let year = date.getFullYear();
+                                            let hour = date.getHours().toString().padStart(2, '0');
+                                            let minute = date.getMinutes().toString().padStart(2, '0');
+                                            let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                        _%>
+                                        <a href="https://www.neversfw.gg/user/<%=account.username%>" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="32px" height="32px"><%=account.username%>  -  <%=formattedDate%></a>
+                                        <% index = accounts.length +1 %>
+                                    <% } %>
+                                    <% index++ %>
+                                <% } %>
+                                <p><%=comment.comment%></p>
+                            </div>
+                        <% }) %>
+                                            
+                    </div>
+                </div>
+                <br>
+            </div>
+        <% }) %>
+        <div id="showMore<%=type%><%=name%>" class="hidden">                  
+        </div>
+        <div style="display: block; width: 100%;"></div>
+        <form class="showMoreForm" style="display:inline-flex">
+            <input name="pageType" type="hidden" value="<%=type%><%=name%>">
+            <input id="contentList<%=type%><%=name%>" name="contentList" type="hidden" value=<%=shownList%>>
+            <button type="submit" style="display:inline-flex">
+                Show More
+            </button>
+        </form>
+    <% } %>
+
+    <% async function gameFunction(aggregate, name, type) { %>
+        <% let shownList = [] %>
+        <% gameAggregate.forEach(game => { %>
+            <% shownList.push(game.gameId) %>
+                <div class="game-container">
+                    <div class="game-text">
+                        <a href="https://www.neversfw.gg/game/<%=game.gameId%>"><%=game.gameId%> - v<%=game.version%></a>
+                    </div>
+                    <a class="game-thumbnail" href="https://www.neversfw.gg/game/<%=game.gameId%>">
+                        <img class="game-thumbnail" src="<%=game.thumbnailUrl%>" width="auto" height="100%">
+                    </a>
+                </div>
+        <% }) %>
+        <div id="showMore<%=type%><%=name%>" class="hidden">                  
+        </div>
+        <div style="display: block; width: 100%;"></div>
+        <form class="showMoreForm" style="display:inline-flex;">
+            <input name="pageType" type="hidden" value="<%=type%><%=name%>">
+            <input id="contentList<%=type%><%=name%>" name="contentList" type="hidden" value=<%=shownList%>>
+            <button type="submit" style="display:inline-flex">
+                Show More
+            </button>
+        </form>
+    <% } %>
+
+        
+
+
+
+    
+    <body>
+        <%- include('../partials/_nav'); -%>
+        <%- include('../partials/_popunder'); -%>
+        <br>
+
+        <div class="page-left">
+            <%- include('../partials/_towerAdvert'); -%>
+        </div>
+
+
+        <div class="page-right">
+
+            <% let tablinksStyle = `style="font-size: xx-large; padding-left:auto; padding-right:auto` %>
+
+
+
+                <h1>Search Results for: "<%=searchTerm%>"</h1>
+                <div class="searchTab" style="width: 100%; margin: 0px !important;">
+                    <button <%-tablinksStyle%> class="tablinks" onclick="openTab(event, 'Art')" id="defaultOpen">Art</button>
+                    <button <%-tablinksStyle%> class="tablinks" onclick="openTab(event, 'Games')">Games</button>
+                    <button <%-tablinksStyle%> class="tablinks" onclick="openTab(event, 'Users')">Users</button>
+                </div>
+
+                <input name="searchTerm" value="<%=searchTerm%>" type="hidden">
+
+                <div id="Art" class="tabcontent" style="margin-bottom:80px; width:100%; margin-left:auto; margin-right:auto; ">
+                    
+                    <% if (artAggregate.length > 0) { %>
+                        <% artFunction(artAggregate,'Art','search') %>
+                    <% } else { %>
+                        <h1>No art found for: "<%=searchTerm%>"</h1>
+                    <% } %>
+                </div>
+                
+
+
+
+
+                <div id="Games" class="tabcontent" style="margin-bottom:80px; width:100%; margin-left:auto; margin-right:auto; ">
+                    <% if (gameAggregate.length > 0) { %>
+                        <% gameFunction(gameAggregate, 'Game', 'search') %>
+                    <% } else { %>
+                        <h1>No games found for: "<%=searchTerm%>"</h1>
+                    <% } %>
+                </div>
+
+
+
+
+
+
+
+
+
+            <script>
+                $(document).ready(function() {
+                    $('.followForm').each(function(index, form) {
+                        $(form).submit(function(event) {
+                            // Prevent the form from submitting normally
+                            event.preventDefault();
+                    
+                            // Get the form data
+                            var formData = $(this).serialize();
+                    
+                            // Send a POST request to the server
+                            $.ajax({
+                                type: 'POST',
+                                url: '/userFollow',
+                                data: formData,
+                                success: function(response) {
+                                    // Handle the server's response
+                                    if(response.followed == "followed") {
+                                        $(`#followButton${response.accountId}`).html(`Following`);
+                                    } else {
+                                        $(`#followButton${response.accountId}`).html(`Follow`);
+                                    }
+                                    console.log(response)
+                                    $(`#followCount${response.accountId}`).html(`${response.followCount}`);
+                                }
+                            });
+                        });
+                    });
+                });
+            </script>
+
+            <div id="Users" class="tabcontent" style="margin-bottom:80px; width:100%; margin-left:auto; margin-right:auto; ">
+                <div class="searchUserBox">
+                    <% userAggregate.forEach(user => { %>
+                        <div class="user-profile"> 
+                            <div class="user-profile-container">
+                                <a class="user-profile-avatar" href="https://www.neversfw.gg/user/<%=user.username%>">
+                                    <img src="https://www.neversfw.gg/ugc/avatar/<%=user.avatarUrl%>" style="width: auto; height: auto;">
+                                </a>
+                                
+                
+                                <style>
+                                    li{
+                                        margin: 6px;
+                                    }
+                                </style>
+
+                                <% let followButtonText = "Follow" %>
+
+                                <% for( let index = 0; index < followedAccounts.length;) { %>
+                                    <% followedAccount = followedAccounts[index] %>
+                                    <% if (followedAccount.following == user.accountId && followedAccount.followedBy == session.accountId) { %>
+                                        <% followButtonText = "Following" %>
+
+                                        <% index = followedAccounts.length +1 %>
+                                    <% } %>
+                                    <% index++ %>
+                                <% } %>
+
+                                
+                
+                                <ol style="list-style-type: none; transform: translateX(-30px);">
+                                    <li>
+                                        <a href="https://www.neversfw.gg/user/<%=user.username%>" style="text-decoration: none;">
+                                            <h1 class="user-profile-name"><%=user.username%></h1>
+                                        </a></li>
+                                    <li>
+                                        <% if (user.accountId !== session.accountId) { %>
+                                            <form class="followForm" style="display:inline-flex">
+                                                <input name="accountId" type="hidden" value=<%=user.accountId%>>
+                                                <button type="submit" style="display:inline-flex">
+                                                    <a id="followButton<%=user.accountId%>"><%=followButtonText%></a>
+                                                </button>
+                                            </form>
+                                        <% } %>
+                                    </li>
+                                    <li>
+                                        <a>Followers:<a id="followCount<%=user.accountId%>"><%=user.followedBy.length%></a></a>
+                                    </li>
+                                </ol>
+                
+                                </li>
+
+                                <a class="user-profile-bio"><%=user.bio%></a>
+
+                                <% if (session.accountId == user.accountId) { %>
+                                    <form style="margin-left: 12px;" method="get" action="/user-edit/">
+                                        <button type="submit">Edit Profile</button>
+                                    </form> 
+                                <% } %>
+                                
+                                
+
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+        <%- include('../partials/_footer'); -%>
+        
+        
+
+
+
+
+
+
+        <script>
+            function toggleButtons() {
+                console.log(`ran: toggleButtons`);
+                const toggleButtons = document.querySelectorAll('.toggle-comments-button');
+                toggleButtons.forEach(button => {
+                    if (!button.hasAttribute('data-clicked')) {
+                        button.setAttribute('data-clicked', 'true');
+
+                        const toggleComments = () => {
+                            const content = button.nextElementSibling;
+                            content.classList.toggle('hidden');
+                        };
+
+                        button.removeEventListener('click', toggleComments);
+                        button.addEventListener('click', toggleComments);
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            function openTab(evt, tabName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(tabName).style.display = "flex";
+                evt.currentTarget.className += " active";
+            }
+            
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+        </script>
+
+    </body>
+
+</html>

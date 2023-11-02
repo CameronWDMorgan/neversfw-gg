@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-FFEW0Y6QFQ');
+        </script>
+
+        <title>Update Game | NeverSFW.gg</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+        <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+        <meta name="author" content="MiningP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://www.neversfw.gg/site.css"></link>
+
+        <script src="../../js/plupload.full.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+
+
+    <style>
+        #myProgress {
+            position: relative;
+            width: 30%;
+            height: 30px;
+            background-color: grey;
+        }
+
+        #myBar {
+            position: absolute;
+            width: 1%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 1);
+        }
+    </style>
+
+    
+    <body>
+        <%- include('../partials/_nav'); -%>
+        <%- include('../partials/_popunder'); -%>
+
+
+        <style>
+            #gameDescriptionBox {
+                padding: 15px;
+                margin: 5px;
+                background-color: rgba(0, 0, 0, 0.15);;
+                width: 99%;
+            }
+            #allDownloadsBox {
+                padding: 15px;
+                margin: 5px;
+                background-color: rgba(0, 0, 0, 0.15);;
+                width: 99%;
+            }
+            #downloadBox {
+                display: flex;
+                align-items:center;
+                justify-content: center;
+                padding: 15px;
+                margin: 5px;
+                background-color: rgba(0, 0, 0, 0.15);;
+                width: fit-content;
+                text-decoration: none;
+            }
+            #downloadBox:hover {
+                background-color: rgba(247, 0, 255, 0.15);;
+            }
+            #downloadImage {
+                width: 100px;
+                height: 100px;
+            }
+            #downloadText {
+                display: inline-block;
+                margin: 10px;
+            }
+        </style>
+        
+        <center>
+            <div id="allDownloadsBox">
+                <h1 style="font-size: xx-large;">Update a Platform:</h1>
+                    <a href="update/windows" id="downloadBox">
+                        <img src="https://www.neversfw.gg/windows.png" id="downloadImage"><h1 id="downloadText">Windows Download</h1>
+                    </a>
+                        
+                    <a href="update/macos" id="downloadBox">
+                        <img src="https://www.neversfw.gg/macos.png" id="downloadImage"><h1>MacOS Download</h1>
+                    </a>
+                        
+                    <a href="update/linux" id="downloadBox">
+                        <img src="https://www.neversfw.gg/linux.png" id="downloadImage"><h1>Linux Download</h1>
+                    </a>
+                        
+                    <a href="update/android" id="downloadBox">
+                        <img src="https://www.neversfw.gg/android.png" id="downloadImage"><h1>Android Download</h1>
+                    </a>
+                        
+                    <a href="update/ios" id="downloadBox">
+                        <img src="https://www.neversfw.gg/ios.png" id="downloadImage"><h1>iOS Download</h1>
+                    </a>
+            </div>
+        </center>
+
+        <%- include('../partials/_footer'); -%>
+    </body>
+</html>

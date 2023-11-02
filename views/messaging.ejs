@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-FFEW0Y6QFQ');
+        </script>
+
+        <title>DM's | NeverSFW.gg</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+        <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+        <meta name="author" content="MiningP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://www.neversfw.gg/site.css"></link>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </head>
+
+
+    
+    <body>
+        <%- include('../partials/_nav'); -%>
+        <%- include('../partials/_popunder'); -%>
+
+
+        
+
+          
+
+
+        <div class="container">
+            <ul class="nav nav-tabs">
+                <% accounts.forEach(account => { %>
+                    <li><a data-toggle="tab" href="#dm<%=account.accountId%>">Menu 1</a></li>
+                    <div class="tab-content">
+                        <div id="dm<%=account.accountId%>" class="tab-pane fade">
+                            <h3><%=account.username%></h3>
+                        </div>
+                    </div>
+                <% }) %>
+            </ul>
+        </div>
+        
+
+        <%- include('../partials/_footer'); -%>
+    </body>
+</html>

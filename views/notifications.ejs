@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-FFEW0Y6QFQ');
+        </script>
+
+        <title>Notifications | NeverSFW.gg</title>
+
+        <meta charset="UTF-8">
+        <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+        <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+        <meta name="author" content="MiningP">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://www.neversfw.gg/site.css"></link>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+
+
+    
+    <body>
+        <%- include('../partials/_nav'); -%>
+        <%- include('../partials/_popunder'); -%>
+
+
+        <script>
+            $(document).ready(function() {
+            $('.notification').filter(function() {
+                return $.trim($(this).html()) == '';
+            }).remove();
+            });
+        </script>
+        <% if(notifications.length == 0) { %>
+            <center>
+                <h1>You have no notifications to view</h1>
+            </center>
+        <% } %>
+
+        
+        <center>
+            <% notifications.forEach(notification => { %>
+
+                <%_
+                    let date = new Date(Number(notification.timestamp));
+                    let day = date.getDate().toString().padStart(2, '0');
+                    let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                    let year = date.getFullYear();
+                    let hour = date.getHours().toString().padStart(2, '0');
+                    let minute = date.getMinutes().toString().padStart(2, '0');
+                    let formattedDate = `${hour}:${minute} - ${day}/${month}/${year}`;
+                _%>
+
+                <div class="notification">
+                    <% if(notification.type == "follow") { %>
+                        <% for( let index = 0; index < accounts.length;) { %>
+                            <% account = accounts[index] %>
+                            <% if (account.accountId == notification.fromAccountId) { %>
+
+                                <div style="transform: translateX(22px); vertical-align: middle;">
+                                    <div style="float: left; transform: translateY(-8px);">
+                                        <a style="text-decoration: none; font-size: 20px; align-content: center;" href="https://www.neversfw.gg/user/<%=account.username%>">
+                                            <img style="transform: translateY(18px) translateX(-4px)" class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="52px" height="52px"><%=account.username%>
+                                        </a>
+                                        <a> - Has followed you!</a>
+                                    </div>
+
+                                    <a style="float: right !important; text-align: center; transform: translateX(-22px); vertical-align: middle;"><%=formattedDate%></a>
+                                </div>
+    
+                                
+                                <% index = accounts.length +1 %>
+                            <% } %>
+                            <% index++ %>
+                        <% } %>
+                    <% } %>
+
+
+                    <% if(notification.type == "like") { %>
+                        <% for( let index = 0; index < accounts.length;) { %>
+                            <% account = accounts[index] %>
+                            <% if (account.accountId == notification.fromAccountId) { %>
+
+                                <div style="transform: translateX(22px); vertical-align: middle;">
+                                    <div style="float: left; transform: translateY(-8px);">
+                                        <a style="text-decoration: none; font-size: 20px; align-content: center;" href="https://www.neversfw.gg/user/<%=account.username%>">
+                                            <img style="transform: translateY(18px) translateX(-4px)" class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="52px" height="52px"><%=account.username%>
+                                        </a>
+                                        <% for( let cindex = 0; cindex < contents.length;) { %>
+                                            <% content = contents[cindex] %>
+                                            <% if (content.contentId == notification.contentId) { %>
+                                                <a> - Has liked: <%=content.name%></a>
+                                                <% cindex = contents.length +1 %>
+                                            <% } %>
+                                            <% cindex++ %>
+                                        <% } %>
+                                    </div>
+
+                                    <a style="float: right !important; text-align: center; transform: translateX(-22px); vertical-align: middle;"><%=formattedDate%></a>
+                                </div>
+    
+                                
+                                <% index = accounts.length +1 %>
+                            <% } %>
+                            <% index++ %>
+                        <% } %>
+                    <% } %>
+
+                    <% if(notification.type == "gameLike") { %>
+                        <% for( let index = 0; index < accounts.length;) { %>
+                            <% account = accounts[index] %>
+                            <% if (account.accountId == notification.fromAccountId) { %>
+
+                                <div style="transform: translateX(22px); vertical-align: middle;">
+                                    <div style="float: left; transform: translateY(-8px);">
+                                        <a style="text-decoration: none; font-size: 20px; align-content: center;" href="https://www.neversfw.gg/user/<%=account.username%>">
+                                            <img style="transform: translateY(18px) translateX(-4px)" class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="52px" height="52px"><%=account.username%>
+                                        </a>
+                                        <% for( let gindex = 0; gindex < games.length;) { %>
+                                            <% game = games[gindex] %>
+                                            <% if (game.gameId == notification.contentId) { %>
+                                                <a> - Has liked: <a href="https://www.neversfw.gg/game/<%=game.gameId%>">"<%=game.gameId%>"</a></a>
+                                                <% gindex = games.length +1 %>
+                                            <% } %>
+                                            <% gindex++ %>
+                                        <% } %>
+                                    </div>
+
+                                    <a style="float: right !important; text-align: center; transform: translateX(-22px); vertical-align: middle;"><%=formattedDate%></a>
+                                </div>
+    
+                                
+                                <% index = accounts.length +1 %>
+                            <% } %>
+                            <% index++ %>
+                        <% } %>
+                    <% } %>
+
+                    <% if(notification.type == "followArtwork") { %>
+                        <% let stillExists = false %>
+                        <% for( let cindex = 0; cindex < contents.length;) { %>
+                            <% content = contents[cindex] %>
+                            <% if(content.contentId == notification.contentId) { %>
+                                <% stillExists = true %>
+                                <% cindex = contents.length +1 %>
+                            <% } %>
+                            <% cindex++ %>
+                        <% } %>
+                        <% if (stillExists) { %>
+                            <% for( let index = 0; index < accounts.length;) { %>
+                                <% account = accounts[index] %>
+                                <% if (account.accountId == notification.fromAccountId) { %>
+    
+                                    <div style="transform: translateX(22px); vertical-align: middle;">
+                                        <div style="float: left; transform: translateY(-8px);">
+                                            <a style="text-decoration: none; font-size: 20px; align-content: center;" href="https://www.neversfw.gg/user/<%=account.username%>">
+                                                <img style="transform: translateY(18px) translateX(-4px)" class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=account.avatarUrl%>" width="52px" height="52px"><%=account.username%>
+                                            </a>
+                                            <% for( let cindex = 0; cindex < contents.length;) { %>
+                                                <% content = contents[cindex] %>
+                                                <% if (content.contentId == notification.contentId) { %>
+                                                    <a> - Has uploaded: <a href="https://www.neversfw.gg/user/<%=account.username%>">"<%=content.name%>"</a></a>
+                                                    <% cindex = contents.length +1 %>
+                                                <% } %>
+                                                <% cindex++ %>
+                                            <% } %>
+                                        </div>
+    
+                                        <a style="float: right !important; text-align: center; transform: translateX(-22px); vertical-align: middle;"><%=formattedDate%></a>
+                                    </div>
+        
+                                    
+                                    <% index = accounts.length +1 %>
+                                <% } %>
+                                <% index++ %>
+                            <% } %>
+                        <% } %>
+                    <% } %>
+
+
+
+                </div>
+            <% }) %>
+        </center>
+
+        <%- include('../partials/_footer'); -%>
+    </body>
+</html>

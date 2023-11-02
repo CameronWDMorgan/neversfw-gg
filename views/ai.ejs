@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generator | NeverSFW.gg</title>
+    <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+    <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34, ai, image, image generator, dalle-3, stable diffusion">
+    <meta name="author" content="MiningP">
+    <meta name="juicyads-site-verification" content="da00b2314e338e83450b5bf9040a1fa6">
+    
+    <link rel="stylesheet" href="../betasite.css">
+
+    <style>
+        .form-control {
+            margin-bottom: 1rem;
+        }
+        .form-control label,
+        .form-control input,
+        .form-control span {
+            display: block;
+        }
+        .form-control input[type="text"],
+        .form-control input[type="range"],
+        .form-control button {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        .form-control span {
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+        #generatorForm {
+            max-width: 600px;
+            margin: auto;
+        }
+        .range-value {
+            text-align: center;
+        }
+        #generateButton {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #generateButton.generating {
+            background-color: #ff0000; /* Red */
+        }
+        img#generatedImage {
+            max-width: 100%;
+            height: auto;
+            display: block; /* added display block to remove bottom margin of image */
+            margin-top: 2rem;
+        }
+        .instructions ul {
+            text-align: left;
+        }
+        .center-content {
+            text-align: center;
+        }
+    </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FFEW0Y6QFQ');
+    </script>
+</head>
+<body>
+    <div class="page-sidebar">
+        <!-- Side Navigation Partial -->
+        <% include('../partials/_sideNav'); %>
+    </div>
+
+    <div class="page-left" style="margin-top: 22rem;">
+        <!-- Tower Advert Partial -->
+        <% include('../partials/_towerAdvert'); %>
+    </div>
+
+    <div class="page-right">
+        <div class="center-content">
+            <img src="https://www.neversfw.gg/nsfwlogobanner.png" alt="Logo Banner" style="max-width: 100%; height: auto;">
+            <!-- Banner Advert Partial -->
+            <% include('../partials/_bannerAdvert'); %>
+        </div>
+
+        <div class="instructions">
+            <h2>Welcome to the AI Image Generator!</h2>
+            <p>Information on how to use it!</p>
+            <ul>
+                <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results.</li>
+                <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li>
+                <li>Width and Height Sliders: Adjust these sliders to set the dimensions of your generated image.</li>
+                <li>Steps Slider: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li>
+            </ul>
+        </div>
+
+        <form id="generatorForm">
+            <div class="form-control">
+                <label for="prompt">Prompt:</label>
+                <input type="text" id="prompt" name="prompt" required>
+            </div>
+            
+            <div class="form-control">
+                <label for="negativeprompt">Negative Prompt (Optional):</label>
+                <input type="text" id="negativeprompt" name="negativeprompt">
+            </div>
+            
+            <div class="form-control">
+                <label for="width">Width:</label>
+                <span id="widthValue" class="range-value">512</span>
+                <input class="resolution" type="range" id="width" name="width" min="512" max="1024" step="256" value="512" data-output="widthValue">
+            </div>
+
+            <div class="form-control">
+                <label for="height">Height:</label>
+                <span id="heightValue" class="range-value">512</span>
+                <input class="resolution" type="range" id="height" name="height" min="512" max="1024" step="256" value="512" data-output="heightValue">
+            </div>
+
+            <div class="form-control">
+                <label for="steps">Steps:</label>
+                <span id="stepsValue" class="range-value">20</span>
+                <input type="range" id="steps" name="steps" min="20" max="100" step="5" value="20" data-output="stepsValue">
+            </div>
+            
+            <div class="form-control">
+                <button type="submit" id="generateButton">Generate Image</button>
+            </div>
+        </form>
+        
+        <div id="response" class="center-content"></div>
+        <div id="queuePosition" style="display: none;" class="center-content">Your position in queue: <span id="positionNumber"></span></div>
+        <img id="generatedImage" src="" alt="Generated Image" style="display:none;">
+        <div style="height: 20rem;"></div>
+
+        <!-- Footer Partial -->
+        <% include('../partials/_footerNew'); %>
+    </div>
+    
+    <script src="../javascript/slider-adjustment.js"></script>
+    <script src="../javascript/form-processing.js"></script>
+</body>
+</html>
