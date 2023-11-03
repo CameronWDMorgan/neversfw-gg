@@ -26,6 +26,7 @@ const fs = require('fs')
 
 //cors stuffs
 const cors = require('cors')
+app.use(cors());
 
 const rateLimit = require('express-rate-limit')
 
@@ -37,10 +38,10 @@ const limiter = rateLimit({
 })
 
 const downloadLimiter = rateLimit({
-	windowMs: (1 * 60 * 1000),
-	max: 30000,
-	standardHeaders: true,
-	legacyHeaders: false,
+  windowMs: (1 * 60 * 1000),
+  max: 30000,
+  standardHeaders: true,
+  legacyHeaders: false,
 })
 
 
@@ -98,8 +99,6 @@ function requireHTTPS(req, res, next) {
   
 app.use(requireHTTPS);
 
-app.use(cors());
-
 
 //request logger
 var loggerCount = 0
@@ -140,14 +139,13 @@ const credentials = {
 	ca: ca
 };
 
-const httpServer = http.createServer(app);
+const httpServer = https.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
 httpsServer.listen(443, () => {
 	console.log(`HTTPS Server running on port: 443`);
 });
 
-
-httpServer.listen(port, () => {
-	console.log(`HTTP Server running on port: ${port}`);
+httpServer.listen(80, () => {
+	console.log(`HTTP Server running on port: 80`);
 });

@@ -14,7 +14,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     generateButton.textContent = 'Generating Image';
     generateButton.classList.add('generating'); // Add the 'generating' class when the process starts
     
-    const API_BASE = 'https://major-mangos-smash.loca.lt'; // Set the base URL to the specified IP address
+    const API_BASE = 'https://neversfw.ngrok.dev'; // Set the base URL to the specified IP address
 
     const formData = new FormData(event.target);
     const data = {
@@ -46,6 +46,15 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                     headers: getDefaultHeaders() // Set the headers for the GET request
                 });
                 const positionData = await positionResponse.json();
+
+                console.log(positionData)
+
+                if(positionData.status == "not found") {
+                    document.getElementById('response').innerText = "An error occurred: " + positionData.message;
+                    generateButton.disabled = false;
+                    generateButton.classList.remove('generating'); // Remove the class when there's an error
+                    clearInterval(checkPositionInterval);
+                }
                 
                 if (positionData.status === "waiting") {
                     document.getElementById('positionNumber').innerText = positionData.position;
@@ -82,8 +91,6 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         }
 
     } catch (error) {
-        document.getElementById('response').innerText = "An error occurred: " + error.message;
-        // Re-enable the submit button in case of an error
         document.getElementById('response').innerText = "An error occurred: " + error.message;
         generateButton.disabled = false;
         generateButton.classList.remove('generating'); // Remove the class when there's an error

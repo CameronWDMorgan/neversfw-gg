@@ -1,6 +1,6 @@
 module.exports = async function(app){
 
-    const config = require('./config.json')
+    const config = require('./ligmaballs.json')
 
     //encryption
     const bcrypt = require('bcrypt');
