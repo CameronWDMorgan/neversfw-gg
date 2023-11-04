@@ -139,7 +139,7 @@ const credentials = {
 	ca: ca
 };
 
-const httpServer = https.createServer(app);
+const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
 httpsServer.listen(443, () => {
