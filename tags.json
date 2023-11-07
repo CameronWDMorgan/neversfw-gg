@@ -1,0 +1,30 @@
+{
+    "categories": [
+        {
+            "name": "Gender",
+            "tags": ["Male", "Female"]
+        },
+        {
+            "name": "Eye Colour",
+            "tags": ["Blue", "Green", "Brown", "Gray", "Rainbow"],
+            "suffix": " Eyes"
+        },
+    
+        {
+            "name": "Hair Colour",
+            "tags": ["Blonde", "Black", "Red", "Rainbow"],
+            "suffix": " Hair"
+        },
+    
+        {
+            "name": "Body Types",
+            "tags": ["Slim", "Thicc"],
+            "suffix": " Body"
+        },
+    
+        {
+            "name": "Additional Modifiers",
+            "tags": ["Cute", "Sexy", "Gothic", "Elegant"]
+        }
+    ]
+}

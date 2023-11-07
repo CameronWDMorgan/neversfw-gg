@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="../betasite.css">
 
     <style>
+        li{
+            list-style-type:square;
+        }
         .form-control {
             margin-bottom: 1rem;
         }
@@ -64,6 +67,27 @@
         .center-content {
             text-align: center;
         }
+        /* This will ensure your custom highlight styling has precedence */
+        .ui-menu-item-wrapper{
+            border-radius: 1px;
+            border-color: rgba(0, 0, 0, 0.279);
+            border-style: solid;
+            width: fit-content;
+        }
+        .custom-highlight {
+            background-color: rgba(229, 255, 0, 0.25) !important; /* Example color, use !important to ensure override */
+            text-decoration: solid !important;
+            border-color: gold !important;
+            width: fit-content;
+        }
+        .autocomplete-space {
+            margin-top: 0px !important; /* Adjust this value based on your needs */
+        }
+        .autocomplete-open {
+            margin-top: 105px !important; /* Adjust this value based on your needs */
+        }
+
+
     </style>
 
     <!-- Google tag (gtag.js) -->
@@ -107,14 +131,14 @@
             <h2>Welcome to the AI Image Generator!</h2>
             <p>Information on how to use it!</p>
             <ul>
-                <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results.</li>
-                <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li>
-                <li>Width and Height Sliders: Adjust these sliders to set the dimensions of your generated image.</li>
-                <li>Steps Slider: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li>
+                <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
+                <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li><br>
+                <li>Width and Height Sliders: Adjust these sliders to set the dimensions of your generated image.</li><br>
+                <li>Steps Slider: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li><br>
             </ul>
         </div>
 
-        <form id="generatorForm">
+        <form id="generatorForm" class="autocomplete-space">
             <div class="form-control">
                 <label for="prompt">Prompt:</label>
                 <input type="text" id="prompt" name="prompt" required>
@@ -159,5 +183,101 @@
     
     <script src="../javascript/ai/slider-adjustment.js"></script>
     <script src="../javascript/ai/form-processing.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function split(val) {
+                return val.split(/,\s*/);
+            }
+            function extractLast(term) {
+                return split(term).pop();
+            }
+
+            $('#prompt').on("keydown", function(event) {
+                if (event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
+                    event.preventDefault();
+                }
+            }).autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: 'http://localhost/autocomplete',
+                        dataType: 'json',
+                        data: {
+                            term: extractLast(request.term)
+                        },
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                },
+                open: function( event, ui ) {
+                    console.log($(this).closest('form'))
+                    $(this).closest('form').addClass('autocomplete-open');
+                },
+                close: function( event, ui ) {
+                    $(this).closest('form').removeClass('autocomplete-open');
+                },
+                search: function() {
+                    var term = extractLast(this.value);
+                    if (term.length < 2) {
+                        return false;
+                    }
+                },
+                focus: function (event, ui) {
+                    // prevent value inserted on focus
+                    event.preventDefault();
+                    
+                    // Get the autocomplete widget menu element
+                    var menu = $(this).data('ui-autocomplete').menu.element;
+
+                    // Remove highlight from any previously focused item
+                    menu.find('li').removeClass('custom-highlight');
+                    
+                    // Find the index of the currently focused item
+                    var index = ui.item ? menu.find('li:contains("' + ui.item.value + '")').index() : -1;
+
+                    // Add highlight to the currently focused item if it exists
+                    if(index !== -1){
+                        menu.find('li').eq(index).addClass('custom-highlight');
+                    }
+                },
+                select: function(event, ui) {
+                    var terms = split(this.value);
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    actual_tag = ui.item.value.replace(/ \(\d+\)/g, '');
+                    terms.push(actual_tag);
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push("");
+                    this.value = terms.join(", ");
+                    return false;
+                },
+                position: { my: "left+50 bottom", at: "left top-15", collision: "true" },
+            }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                console.log('Rendering item', item);
+                // Highlight the matching part
+                var term = extractLast(this.term);
+                var re = new RegExp("(" + $.ui.autocomplete.escapeRegex(term) + ")", "gi");
+                var highlightedValue = item.label.replace(re, "<strong>$1</strong>");
+                return $("<li>")
+                    .addClass('ui-menu-item') // Ensure this is consistent with jQuery UI's default classing
+                    .append("<div class='ui-menu-item-wrapper'>" + highlightedValue + "</div>")
+                    .appendTo(ul);
+            };
+            // Reset styles when the menu is closed
+            $('#prompt').on('autocompleteclose', function () {
+                $(this).data('ui-autocomplete').menu.element.find('li').css({
+                    'background-color': '',
+                    'color': '',
+                    'font-weight': ''
+                });
+            });
+        });
+        console.log($('#prompt').autocomplete("instance")); // This should return the Autocomplete instance if initialized.
+    </script>
+
+
 </body>
 </html>

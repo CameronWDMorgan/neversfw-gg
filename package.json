@@ -19,6 +19,7 @@
     "console-stamp": "^3.1.1",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
+    "csv-parse": "^5.5.2",
     "discord-webhook-node": "^1.1.8",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
@@ -52,5 +53,10 @@
     "svgo": "^3.0.2",
     "ws": "^8.13.0"
   },
-  "description": ""
+  "description": "",
+  "nodemonConfig": {
+    "ignore": [
+      "tags.json"
+    ]
+  }
 }

@@ -92,6 +92,82 @@ module.exports = async function(app){
         return false
     }
 
+
+
+
+    const { parse } = require('csv-parse/sync');
+
+    async function loadTags() {
+    const csvContent = fs.readFileSync(path.resolve(__dirname, 'danbooru.csv'), { encoding: 'utf-8' });
+    const records = parse(csvContent, {
+        columns: false,
+        skip_empty_lines: true,
+        trim: true
+    });
+
+    // Sort the records by the usage count (which is at index 2) in descending order.
+    records.sort((a, b) => b[2] - a[2]);
+
+    const tagsLookup = {};
+
+    records.forEach(record => {
+        const tag = record[0];
+        const score = parseInt(record[2]); // Get the usage count and parse it as an integer.
+        tagsLookup[tag] = { tag, score, aliases: [] }; // Initialize tag with score and empty aliases array.
+
+        const aliases = record[3] ? record[3].split(',') : [];
+        aliases.forEach(alias => {
+        const trimmedAlias = alias.trim();
+        tagsLookup[trimmedAlias] = { tag, score }; // Map each alias to the tag and its score.
+        tagsLookup[tag].aliases.push(trimmedAlias); // Add alias to the tag's alias list.
+        });
+    });
+
+    return tagsLookup;
+    }
+
+    // Middleware to set up tags in the request
+    app.use(async (req, res, next) => {
+    req.tagsLookup = await loadTags();
+    next();
+    });
+
+    // Endpoint for autocomplete suggestions
+    app.get('/autocomplete', (req, res) => {
+    let searchTerm = req.query.term.toLowerCase();
+    let seenTags = new Set(); // To keep track of tags already added to suggestions.
+    let suggestions = [];
+
+    Object.entries(req.tagsLookup).forEach(([key, value]) => {
+        // Check if the key is a tag or an alias and construct the suggestion accordingly.
+        const suggestion = key === value.tag ? key : `${key} (${value.tag})`;
+
+        if (key.toLowerCase().includes(searchTerm) && !seenTags.has(value.tag)) {
+        suggestions.push(suggestion + ' (' + value.score + ')');
+        seenTags.add(value.tag); // Add the actual tag to the set to prevent duplicates.
+        }
+    });
+
+    // Sorting by the score before sending.
+    suggestions.sort((a, b) => {
+        let scoreA = parseInt(a.match(/\((\d+)\)$/)[1], 10);
+        let scoreB = parseInt(b.match(/\((\d+)\)$/)[1], 10);
+        return scoreB - scoreA;
+    });
+
+    suggestions = suggestions.slice(0,5);
+
+    console.log(suggestions)
+
+    res.json(suggestions);
+    });
+
+
+
+
+
+
+
     app.get('/contact', async function (req,res) {
         res.render('contact',{session: req.session})
     })
@@ -2476,7 +2552,16 @@ module.exports = async function(app){
     })
 
     app.get('/ai', async function(req,res){
-        res.render('ai', {session: req.session})
+        try {
+            // Read the tags.json file every time the route is accessed
+            let data = await fs.readFileSync('./tags.json', 'utf8'); // 'utf8' is correctly placed here
+            let tags = JSON.parse(data);
+            res.render('ai', { session: req.session, tagsjson: tags });
+        } catch (error) {
+            console.error("Failed to read tags.json:", error);
+            // Handle error, perhaps send a server error status or a custom error page
+            res.status(500).send('Error loading tags data');
+        }
     })
 
 }
