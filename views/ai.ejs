@@ -166,14 +166,21 @@
                 <span id="stepsValue" class="range-value">20</span>
                 <input type="range" id="steps" name="steps" min="20" max="100" step="5" value="20" data-output="stepsValue">
             </div>
+
+            <center>
+                <h2>Be sure to send your best Images to the</h2>
+                <a href="https://discord.gg/2QXV66RVMG" style="font-size: xx-large; color: gold; text-decoration: underline;">Discord Server</a>
+                <br><br>
+            </center>
             
             <div class="form-control">
                 <button type="submit" id="generateButton">Generate Image</button>
             </div>
         </form>
         
+        
         <div id="response" class="center-content"></div>
-        <div id="queuePosition" style="display: none;" class="center-content">Your position in queue: <span id="positionNumber"></span></div>
+        <div id="queuePosition" style="display: none;" class="center-content">Your position in queue: <span style="color: gold;" id="positionNumber"></span></div>
         <img id="generatedImage" src="" alt="Generated Image" style="display:none;">
         <div style="height: 20rem;"></div>
 
@@ -254,9 +261,8 @@
                     this.value = terms.join(", ");
                     return false;
                 },
-                position: { my: "left+50 bottom", at: "left top-15", collision: "true" },
+                position: { my: "left+50 bottom", at: "left top-20", collision: "none" },
             }).data('ui-autocomplete')._renderItem = function (ul, item) {
-                console.log('Rendering item', item);
                 // Highlight the matching part
                 var term = extractLast(this.term);
                 var re = new RegExp("(" + $.ui.autocomplete.escapeRegex(term) + ")", "gi");
@@ -275,7 +281,6 @@
                 });
             });
         });
-        console.log($('#prompt').autocomplete("instance")); // This should return the Autocomplete instance if initialized.
     </script>
 
 
