@@ -41,7 +41,7 @@
             text-align: center;
         }
         #generateButton {
-            background-color: #4CAF50; /* Green */
+            background-color: #4caf4f95; /* Green */
             border: none;
             color: white;
             padding: 15px 32px;
@@ -51,9 +51,25 @@
             font-size: 16px;
             margin: 4px 2px;
             cursor: pointer;
+            transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+            transform: scale(1) rotate(0deg); /* Default state */
+            transform-origin: center; /* Ensures the scaling happens from the center */
+        }
+
+        #generateButton:hover {
+            transform: scale(1.08) rotate(1deg); 
+            background-color: #4CAF50; /* Green */
+        }
+        #generateButton:active {
+            transform: scale(1.1);
+            background-color: #ffe600; /* Red */
         }
         #generateButton.generating {
             background-color: #ff0000; /* Red */
+            cursor:not-allowed;
+        }
+        #generateButton.generating:hover {
+            transform: scale(0.7) rotate(-1deg); 
         }
         img#generatedImage {
             max-width: 100%;
@@ -124,68 +140,74 @@
             <br><br>
             <%- include('../partials/_mobileNavigation'); -%>
             <!-- Banner Advert Partial -->
-
         </div>
 
-        <div class="instructions">
-            <h2>Welcome to the AI Image Generator!</h2>
-            <p>Information on how to use it!</p>
-            <ul>
-                <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
-                <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li><br>
-                <li>Width and Height Sliders: Adjust these sliders to set the dimensions of your generated image.</li><br>
-                <li>Steps Slider: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li><br>
-            </ul>
-        </div>
+        <div class="round-frosted">
 
-        <form id="generatorForm" class="autocomplete-space">
-            <div class="form-control">
-                <label for="prompt">Prompt:</label>
-                <input type="text" id="prompt" name="prompt" required>
+            <div class="instructions">
+                <h2>Welcome to the AI Image Generator!</h2>
+                <p>Information on how to use it!</p>
+                <ul>
+                    <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
+                    <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li><br>
+                    <li>Width and Height Sliders: Adjust these sliders to set the dimensions of your generated image.</li><br>
+                    <li>Steps Slider: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li><br>
+                </ul>
             </div>
+
+            <form id="generatorForm" class="autocomplete-space">
+                <div class="form-control">
+                    <label for="prompt">Prompt:</label>
+                    <input type="text" id="prompt" name="prompt" required>
+                </div>
+                
+                <div class="form-control">
+                    <label for="negativeprompt">Negative Prompt (Optional):</label>
+                    <input type="text" id="negativeprompt" name="negativeprompt">
+                </div>
+                
+                <div class="form-control">
+                    <label for="width">Width:</label>
+                    <span id="widthValue" class="range-value">512</span>
+                    <input class="resolution" type="range" id="width" name="width" min="512" max="1024" step="256" value="512" data-output="widthValue">
+                </div>
+
+                <div class="form-control">
+                    <label for="height">Height:</label>
+                    <span id="heightValue" class="range-value">512</span>
+                    <input class="resolution" type="range" id="height" name="height" min="512" max="1024" step="256" value="512" data-output="heightValue">
+                </div>
+
+                <div class="form-control">
+                    <label for="steps">Steps:</label>
+                    <span id="stepsValue" class="range-value">20</span>
+                    <input type="range" id="steps" name="steps" min="20" max="100" step="5" value="20" data-output="stepsValue">
+                </div>
+
+                <center>
+                    <h2>Be sure to send your best Images to the</h2>
+                    <a href="https://discord.gg/2QXV66RVMG" style="font-size: xx-large; color: gold; text-decoration: underline;">Discord Server</a>
+                    <br><br>
+                </center>
+                
+                <div class="form-control">
+                    <button type="submit" id="generateButton">Generate Image</button>
+                </div>
+            </form>
             
-            <div class="form-control">
-                <label for="negativeprompt">Negative Prompt (Optional):</label>
-                <input type="text" id="negativeprompt" name="negativeprompt">
-            </div>
-            
-            <div class="form-control">
-                <label for="width">Width:</label>
-                <span id="widthValue" class="range-value">512</span>
-                <input class="resolution" type="range" id="width" name="width" min="512" max="1024" step="256" value="512" data-output="widthValue">
-            </div>
-
-            <div class="form-control">
-                <label for="height">Height:</label>
-                <span id="heightValue" class="range-value">512</span>
-                <input class="resolution" type="range" id="height" name="height" min="512" max="1024" step="256" value="512" data-output="heightValue">
-            </div>
-
-            <div class="form-control">
-                <label for="steps">Steps:</label>
-                <span id="stepsValue" class="range-value">20</span>
-                <input type="range" id="steps" name="steps" min="20" max="100" step="5" value="20" data-output="stepsValue">
-            </div>
-
             <center>
-                <h2>Be sure to send your best Images to the</h2>
-                <a href="https://discord.gg/2QXV66RVMG" style="font-size: xx-large; color: gold; text-decoration: underline;">Discord Server</a>
-                <br><br>
+                <div id="response"></div>
+                <div id="queuePosition" style="display: none;">Your position in queue: <span style="color: gold;" id="positionNumber"></span></div>
+                <img id="generatedImage" src="" alt="Generated Image" style="display:none;">
             </center>
-            
-            <div class="form-control">
-                <button type="submit" id="generateButton">Generate Image</button>
-            </div>
-        </form>
-        
-        
-        <div id="response" class="center-content"></div>
-        <div id="queuePosition" style="display: none;" class="center-content">Your position in queue: <span style="color: gold;" id="positionNumber"></span></div>
-        <img id="generatedImage" src="" alt="Generated Image" style="display:none;">
+        </div>
+
+
         <div style="height: 20rem;"></div>
 
         <!-- Footer Partial -->
         <%- include('../partials/_footerNew'); -%>
+        
     </div>
     
     <script src="../javascript/ai/slider-adjustment.js"></script>

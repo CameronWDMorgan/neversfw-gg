@@ -18,6 +18,8 @@ rgb (27,27,27)
     --tab-inactive-bg: rgb(15, 13, 18);
     --tab-inactive: rgb(184, 146, 249);
     --tab-active: rgb(255, 255, 255);
+    --frosted-background: rgba(0, 0, 0, 0.5);
+    --frosted-blur: blur(5px);
 }
                 
 @font-face {
@@ -97,6 +99,12 @@ h1 {
 
 body {
     background-color: var(--main-bg-color);
+    /* Create a linear gradient at 45 degrees from pink to blue */
+    background-image: linear-gradient(45deg, rgba(255, 192, 203, 0.3), rgb(0, 0, 255, 0.3));
+    /* Repeat the gradient */
+    background-repeat: repeat;
+    /* Ensure the background covers the entire page */
+    background-attachment: fixed;
     margin: 0px !important;
 }
 
@@ -162,11 +170,18 @@ button:hover {
 
 
 
-
+.round-frosted {
+    background-color: var(--frosted-background);
+    backdrop-filter: var(--frosted-blur);
+    border-radius: 10px;
+    padding: 20px;
+    padding-right: 26px
+}
 
 .navigation-side {
+    background-color: var(--frosted-background);
+    backdrop-filter: var(--frosted-blur);
     display: block;
-    background-color: var(--main-bg-color-darker);
     overflow: hidden;
     min-height: 100vh;
     position: fixed;
@@ -264,7 +279,7 @@ button:hover {
 }
 
 .artworkTags {
-    background-color: var(--black-01);
+    background-color: inherit;
     font-size: x-small;
     width: fit-content;
     text-decoration: none;
@@ -274,14 +289,14 @@ button:hover {
 }
 
 .tag {
-    background-color: var(--black-01);
+    background-color: inherit;
     font-size: x-small;
     width: fit-content;
     padding-right: 3px;
 }
 
 .artworkDescription {
-    background-color: var(--black-01);
+    background-color: inherit;
     font-size: small;
     width: fit-content;
     padding: 4px;
@@ -294,13 +309,13 @@ button:hover {
     grid-template-columns: repeat(2, 1fr);
     overflow: hidden;
     width: 200px;
-    background-color: var(--tab-inactive-bg);
+    background-color: var(--frosted-background);
+    backdrop-filter: var(--frosted-blur);
 }
   
 .tabs button {
     text-decoration: solid;
     color: var(--tab-inactive);
-    background-color: inherit;
     border: none;
     outline: none;
     cursor: pointer;
@@ -316,20 +331,17 @@ button:hover {
 
 .tabs button:hover {
     color:rgb(255, 255, 255);
-    background-color: rgba(0, 0, 0, 0);
 }
 
 .subtabs {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     overflow: hidden;
-    background-color: var(--tab-inactive-bg);
     width: 200px;
 }
   
 .subtabs button {
     color: var(--tab-inactive);
-    background-color: inherit;
     border: none;
     outline: none;
     cursor: pointer;
@@ -349,7 +361,8 @@ button:hover {
 }
 
 .tabcontent {
-    background-color: var(--tab-inactive-bg);
+    background-color: var(--frosted-background);
+    backdrop-filter: var(--frosted-blur);
     border-radius: 10px;
 }
 
@@ -450,7 +463,7 @@ button:hover {
     padding: 5px;
     margin: 5px;
     padding-left: 10px;
-    background-color: var(--black-01)
+    background-color: inherit;
 }
 
 .comment-details {
@@ -478,7 +491,7 @@ button:hover {
     height: 360px;
     flex-wrap: wrap;
     margin: 5px;
-    background-color: var(--black-01);
+    background-color: inherit;
     justify-content: center;
 }
 
@@ -497,7 +510,7 @@ button:hover {
     font-size: 20px;
     margin-top: 340px;
     margin-bottom: 5px;
-    background-color: var(--black-05);
+    background-color: inherit;
     position: absolute;
 }
 
@@ -509,7 +522,7 @@ button:hover {
     padding: 20px;
     margin: 5px;
     padding-left: 10px;
-    background-color: var(--black-05);
+    background-color: inherit;
 }
 
 
@@ -584,18 +597,19 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
-
-
-
-
-
 .footer-bar {
-    margin-top: auto;
-    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 87%;
+    margin-left:13%;
     display:block;
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: var(--frosted-background);
+    backdrop-filter: var(--frosted-blur);
     overflow: hidden;
     margin-bottom: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .footer-bar a {
@@ -611,5 +625,5 @@ button:hover {
 }
 
 .footer-bar a:hover {
-    background-color: rgba(166, 0, 255, 0.25);
+    background-color: rgba(210, 125, 255, 0.274);
 }
