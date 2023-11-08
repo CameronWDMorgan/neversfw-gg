@@ -208,7 +208,7 @@
             }).autocomplete({
                 source: function(request, response) {
                     $.ajax({
-                        url: 'http://localhost/autocomplete',
+                        url: '/autocomplete',
                         dataType: 'json',
                         data: {
                             term: extractLast(request.term)
