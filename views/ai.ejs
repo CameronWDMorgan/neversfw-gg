@@ -36,6 +36,25 @@
             margin-top: 0.5rem;
             font-weight: bold;
         }
+        .form-control.inline-slider {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .form-control.inline-slider label {
+            margin-right: 1rem; /* Adjust as needed */
+        }
+
+        .form-control.inline-slider input[type="range"] {
+            flex-grow: 1; /* Allows the slider to grow and fill the space */
+            margin: 0 1rem; /* Adjust as needed */
+        }
+
+        .range-value {
+            min-width: 3rem; /* Ensures that the value doesn't collapse */
+            text-align: center;
+        }
         #generatorForm {
             max-width: 600px;
             margin: auto;
@@ -169,23 +188,23 @@
                     <input type="text" id="negativeprompt" name="negativeprompt">
                 </div>
                 
-                <div class="form-control">
+                <div class="form-control inline-slider">
                     <label for="width">Width:</label>
+                    <input type="range" id="width" name="width" min="512" max="1024" step="128" value="512">
                     <span id="widthValue" class="range-value">512</span>
-                    <input class="resolution" type="range" id="width" name="width" min="512" max="1024" step="256" value="512" data-output="widthValue">
                 </div>
-
-                <div class="form-control">
+                
+                <div class="form-control inline-slider">
                     <label for="height">Height:</label>
+                    <input type="range" id="height" name="height" min="512" max="1024" step="128" value="512">
                     <span id="heightValue" class="range-value">512</span>
-                    <input class="resolution" type="range" id="height" name="height" min="512" max="1024" step="256" value="512" data-output="heightValue">
                 </div>
-
-                <div class="form-control">
+                
+                <div class="form-control inline-slider">
                     <label for="steps">Steps:</label>
+                    <input type="range" id="steps" name="steps" min="20" max="100" step="5" value="20">
                     <span id="stepsValue" class="range-value">20</span>
-                    <input type="range" id="steps" name="steps" min="20" max="100" step="5" value="20" data-output="stepsValue">
-                </div>
+                </div>                
 
                 <center>
                     <h2>Be sure to send your best Images to the</h2>
@@ -212,178 +231,14 @@
         <%- include('../partials/_footerNew'); -%>
         
     </div>
-    
-    <script src="../javascript/ai/slider-adjustment.js"></script>
-    <script src="../javascript/ai/form-processing.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            function split(val) {
-                return val.split(/,\s*/);
-            }
-            function extractLast(term) {
-                return split(term).pop();
-            }
-
-            $('#prompt').on("keydown", function(event) {
-                if (event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
-                    event.preventDefault();
-                }
-            }).autocomplete({
-                source: function(request, response) {
-                    $.ajax({
-                        url: '/autocomplete',
-                        dataType: 'json',
-                        data: {
-                            term: extractLast(request.term)
-                        },
-                        success: function(data) {
-                            response(data);
-                        }
-                    });
-                },
-                open: function( event, ui ) {
-                    console.log($(this).closest('form'))
-                    $(this).closest('form').addClass('autocomplete-open');
-                },
-                close: function( event, ui ) {
-                    $(this).closest('form').removeClass('autocomplete-open');
-                },
-                search: function() {
-                    var term = extractLast(this.value);
-                    if (term.length < 2) {
-                        return false;
-                    }
-                },
-                focus: function (event, ui) {
-                    // prevent value inserted on focus
-                    event.preventDefault();
-                    
-                    // Get the autocomplete widget menu element
-                    var menu = $(this).data('ui-autocomplete').menu.element;
-
-                    // Remove highlight from any previously focused item
-                    menu.find('li').removeClass('custom-highlight');
-                    
-                    // Find the index of the currently focused item
-                    var index = ui.item ? menu.find('li:contains("' + ui.item.value + '")').index() : -1;
-
-                    // Add highlight to the currently focused item if it exists
-                    if(index !== -1){
-                        menu.find('li').eq(index).addClass('custom-highlight');
-                    }
-                },
-                select: function(event, ui) {
-                    var terms = split(this.value);
-                    // remove the current input
-                    terms.pop();
-                    // add the selected item
-                    actual_tag = ui.item.value.replace(/ \(\d+\)/g, '');
-                    actual_tag = actual_tag.replace(/_/g, " ");
-                    actual_tag = actual_tag.trim()
-                    terms.push(actual_tag);
-                    // add placeholder to get the comma-and-space at the end
-                    terms.push("");
-                    this.value = terms.join(", ");
-                    return false;
-                },
-                position: { my: "left+50 bottom", at: "left top-20", collision: "none" },
-            }).data('ui-autocomplete')._renderItem = function (ul, item) {
-                // Highlight the matching part
-                var term = extractLast(this.term);
-                var re = new RegExp("(" + $.ui.autocomplete.escapeRegex(term) + ")", "gi");
-                var highlightedValue = item.label.replace(re, "<strong>$1</strong>");
-                return $("<li>")
-                    .addClass('ui-menu-item') // Ensure this is consistent with jQuery UI's default classing
-                    .append("<div class='ui-menu-item-wrapper'>" + highlightedValue + "</div>")
-                    .appendTo(ul);
-            };
-            // Reset styles when the menu is closed
-            $('#prompt').on('autocompleteclose', function () {
-                $(this).data('ui-autocomplete').menu.element.find('li').css({
-                    'background-color': '',
-                    'color': '',
-                    'font-weight': ''
-                });
-            });
-
-
-
-            // Function to wrap or modify the word around the cursor with the example tag
-    function wrapOrModifyWordAroundCursor(increment) {
-        var textarea = $('#prompt');
-        var text = textarea.val();
-        var cursorPos = textarea.get(0).selectionStart;
-        
-        // Regular expression to match the word at the cursor with optional wrapping
-        var wordAtCursorRegex = /(?:\((\w+):(\d+\.\d+)\))|(\b\w+\b)/g;
-        
-        // Function to find the word at the cursor position
-        var findWordAtCursor = function(text, cursorPos) {
-            var result = { word: '', number: 1.1, isWrapped: false, startIndex: -1, endIndex: -1 };
-            var match;
-            
-            // Reset the lastIndex of the regex to ensure proper search
-            wordAtCursorRegex.lastIndex = 0;
-            
-            while ((match = wordAtCursorRegex.exec(text)) !== null) {
-                var matchStart = match.index;
-                var matchEnd = wordAtCursorRegex.lastIndex;
-                
-                // Check if the cursor is within the current match
-                if (cursorPos >= matchStart && cursorPos < matchEnd) {
-                    result.word = match[1] || match[3];
-                    result.number = match[2] ? parseFloat(match[2]) : 1.1;
-                    result.isWrapped = !!match[1];
-                    result.startIndex = matchStart;
-                    result.endIndex = matchEnd;
-                    break;
-                }
-            }
-            
-            return result;
-        };
-
-        var wordDetails = findWordAtCursor(text, cursorPos);
-        
-        if (wordDetails.word) {
-            var newWord;
-            var newCursorPos;
-            
-            if (wordDetails.isWrapped) {
-                // Increment or decrement the number in the tag
-                var newNumber = wordDetails.number + (increment ? 0.1 : -0.1);
-                newNumber = Math.max(newNumber, 0); // Ensure the number is not negative
-                newWord = '(' + wordDetails.word + ':' + newNumber.toFixed(1) + ')';
-            } else {
-                // Wrap the word with the tag
-                newWord = '(' + wordDetails.word + ':1.1)';
-            }
-
-            // Replace the word in the text
-            textarea.val(text.substring(0, wordDetails.startIndex) + newWord + text.substring(wordDetails.endIndex));
-            
-            // Set the cursor position just before the closing parenthesis
-            newCursorPos = wordDetails.startIndex + newWord.length - 1;
-            textarea.get(0).selectionStart = textarea.get(0).selectionEnd = newCursorPos;
-        }
-    }
-
-    // Event handler for keydown event
-    $('#prompt').on("keydown", function(event) {
-        // Check if CTRL is pressed along with Up or Down arrow
-        if (event.ctrlKey && (event.keyCode === 38 || event.keyCode === 40)) {
-            event.preventDefault(); // Prevent the default action
-            wrapOrModifyWordAroundCursor(event.keyCode === 38); // Pass true for Up arrow, false for Down arrow
-        }
-    });
-
-
-
-        });
-    </script>
-
+    
+    <script src="../scripts/ai-sliders.js"></script>
+    <script src="../scripts/ai-form.js"></script>
+    <script src="../scripts/ai-autocomplete.js"></script>
+    <script src="../scripts/ai-strength.js"></script>
 
 </body>
 </html>
