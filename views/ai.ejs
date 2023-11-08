@@ -20,14 +20,17 @@
         }
         .form-control label,
         .form-control input,
+        .form-control textarea,
         .form-control span {
             display: block;
         }
         .form-control input[type="text"],
         .form-control input[type="range"],
+        .form-control textarea,
         .form-control button {
             width: 100%;
             margin-top: 0.5rem;
+            resize: none;
         }
         .form-control span {
             margin-top: 0.5rem;
@@ -158,7 +161,7 @@
             <form id="generatorForm" class="autocomplete-space">
                 <div class="form-control">
                     <label for="prompt">Prompt:</label>
-                    <input type="text" id="prompt" name="prompt" required>
+                    <textarea id="prompt" name="prompt" rows="3" required></textarea>
                 </div>
                 
                 <div class="form-control">
