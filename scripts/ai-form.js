@@ -27,6 +27,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     };
 
     try {
+        document.getElementById('response').innerText = "Requesting Image, please wait...";
         const response = await fetch(`${API_BASE}/generate`, {
             method: 'POST',
             headers: getDefaultHeaders(), // Set the headers for the POST request
@@ -35,65 +36,78 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
         const jsonResponse = await response.json();
 
+
         if (jsonResponse.status === "queued") {
             // Display initial queue position to the user
             document.getElementById('queuePosition').style.display = 'block';
             document.getElementById('positionNumber').innerText = jsonResponse.position;
+            document.getElementById('response').innerText = "Your image is being generated, please wait...";
+            
 
-            let checkPositionInterval = setInterval(async () => {
-                const positionResponse = await fetch(`${API_BASE}/queue_position/${jsonResponse.request_id}`, {
-                    method: 'GET',
-                    headers: getDefaultHeaders() // Set the headers for the GET request
-                });
-                const positionData = await positionResponse.json();
-
-                console.log(positionData)
-
-                if(positionData.status == "not found") {
-                    document.getElementById('response').innerText = "An error occurred: " + positionData.message;
-                    generateButton.disabled = false;
-                    generateButton.classList.remove('generating'); // Remove the class when there's an error
-                    clearInterval(checkPositionInterval);
-                }
-                
-                if (positionData.status === "waiting") {
-                    document.getElementById('positionNumber').innerText = positionData.position;
-                } else if (positionData.status === "completed") {
-                    clearInterval(checkPositionInterval);
-                    document.getElementById('queuePosition').style.display = 'none';
-                    const resultResponse = await fetch(`${API_BASE}/result/${positionData.request_id}`, {
+            // Replace setInterval with a while loop
+            let isCompleted = false;
+            while (!isCompleted) {
+                try {
+                    const positionResponse = await fetch(`${API_BASE}/queue_position/${jsonResponse.request_id}`, {
                         method: 'GET',
                         headers: getDefaultHeaders() // Set the headers for the GET request
                     });
-                    // Assuming the server responds with an image directly and not a JSON object
-                    if (resultResponse.ok && resultResponse.headers.get('Content-Type').includes('image')) {
+                    const positionData = await positionResponse.json();
+        
+                    console.log(positionData)
+        
+                    if(positionData.status == "not found") {
+                        document.getElementById('response').innerText = "An error occurred: " + positionData.message;
                         generateButton.disabled = false;
-                        generateButton.textContent = 'Generate Image';
-                        generateButton.classList.remove('generating'); // Also remove the 'generating' class here
-                        // The response is an image
-                        const imageUrl = URL.createObjectURL(await resultResponse.blob());
-                        document.getElementById('generatedImage').src = imageUrl;
-                        document.getElementById('generatedImage').style.display = 'inline';
-                    } else {
-                        // Handle any other type of response
-                        const textResponse = await resultResponse.text(); // Fallback to text to see the response
-                        console.error('Failed to get image:', textResponse);
-                        // You might want to display an error to the user or retry the request
+                        generateButton.classList.remove('generating'); // Remove the class when there's an error
+                        break; // Exit the loop if there's an error
                     }
-                    // Re-enable the submit button
+                    
+                    if (positionData.status === "waiting") {
+                        document.getElementById('positionNumber').innerText = positionData.position;
+                        await new Promise(resolve => setTimeout(resolve, 500)); // Wait for 1 second before the next check
+                    } else if (positionData.status === "completed") {
+                        document.getElementById('response').innerText = "Your image is ready and will be displayed shortly...";
+                        isCompleted = true; // Set the flag to exit the loop
+                        document.getElementById('queuePosition').style.display = 'none';
+                        const resultResponse = await fetch(`${API_BASE}/result/${positionData.request_id}`, {
+                            method: 'GET',
+                            headers: getDefaultHeaders() // Set the headers for the GET request
+                        });
+                        // Assuming the server responds with an image directly and not a JSON object
+                        if (resultResponse.ok && resultResponse.headers.get('Content-Type').includes('image')) {                            // The response is an image
+                            const imageUrl = URL.createObjectURL(await resultResponse.blob());
+                            document.getElementById('generatedImage').src = imageUrl;
+                            document.getElementById('generatedImage').style.display = 'inline';
+                            document.getElementById('response').innerText = ""; // Clear the 'ready' message
+                        } else {
+                            // Handle any other type of response
+                            const textResponse = await resultResponse.text(); // Fallback to text to see the response
+                            console.error('Failed to get image:', textResponse);
+                            // You might want to display an error to the user or retry the request
+                        }
+                        // Re-enable the submit button
+                        generateButton.disabled = false;
+                    }
+                } catch (error) {
+                    console.error('An error occurred during position check:', error);
+                    document.getElementById('response').innerText = "An error occurred: " + error.message;
                     generateButton.disabled = false;
+                    generateButton.textContent = 'Generate Image';
+                    generateButton.classList.remove('generating');
+                    break; // Exit the loop if there's a fetch error
                 }
-            }, 1000);
-        } else {
-            document.getElementById('response').innerText = "Failed to generate image. Please try again.";
-            // Re-enable the submit button
+            }
+            // After the loop, you can re-enable the button if needed
             generateButton.disabled = false;
+            generateButton.textContent = 'Generate Image';
+            generateButton.classList.remove('generating');
         }
-
     } catch (error) {
+        console.error('An error occurred:', error);
         document.getElementById('response').innerText = "An error occurred: " + error.message;
         generateButton.disabled = false;
-        generateButton.classList.remove('generating'); // Remove the class when there's an error
+        generateButton.textContent = 'Generate Image';
+        generateButton.classList.remove('generating');
     }
-
-});
+})
