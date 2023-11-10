@@ -130,6 +130,25 @@
             grid-column-gap: 20px;
             grid-row-gap: 20px;
         }
+        #imageOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7); /* Dim background */
+            display: flex;
+            justify-content: center; /* Centers horizontally */
+            align-items: center;     /* Centers vertically */
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+
+        #overlayImage {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain; /* Adds support for maintaining aspect ratio */
+        }
+
 
 
     </style>
@@ -228,6 +247,7 @@
                 <div id="queuePosition" style="display: none;">Your position in queue: <span style="color: gold;" id="positionNumber"></span></div>
                 <br>
                 <div id="imagesContainer"></div>
+                
             </center>
         </div>
 
@@ -239,6 +259,73 @@
         
     </div>
 
+    <div id="imageOverlay" style="display:none;">
+        <img id="overlayImage" src="" alt="Enlarged view" />
+    </div>    
+
+    <script>
+        document.getElementById('imagesContainer').addEventListener('click', function(event) {
+            if (event.target.tagName === 'IMG') {
+                showOverlay(event.target.src);
+            }
+        });
+
+        let currentImageIndex = 0;
+        let imagesSrcList = [];
+
+        function showOverlay(src) {
+            const overlay = document.getElementById('imageOverlay');
+            overlay.style.display = 'flex'; // Change to 'flex' to activate flexbox
+            document.getElementById('overlayImage').src = src;
+    
+            // Disable scrolling on the body
+            document.body.style.overflow = 'hidden';
+            const overlayImage = document.getElementById('overlayImage');
+
+            overlay.style.display = 'block';
+            overlayImage.src = src;
+            currentImageIndex = imagesSrcList.indexOf(src);
+
+            // Add event listener for keydown
+            document.addEventListener('keydown', handleArrowKeyPress);
+        }
+
+        function hideOverlay() {
+            const overlay = document.getElementById('imageOverlay');
+            overlay.style.display = 'none';
+            
+            // Enable scrolling
+            document.body.style.overflow = '';
+
+            // Remove event listener to prevent interference when overlay is not active
+            document.removeEventListener('keydown', handleArrowKeyPress);
+        }
+
+        function handleArrowKeyPress(event) {
+            console.log(imagesSrcList)
+            console.log(currentImageIndex)
+            if (!imagesSrcList.length) return; // Exit if no images are available
+
+            if (event.key === 'ArrowRight') {
+                currentImageIndex = (currentImageIndex + 1) % imagesSrcList.length;
+            } else if (event.key === 'ArrowLeft') {
+                currentImageIndex = (currentImageIndex - 1 + imagesSrcList.length) % imagesSrcList.length;
+            } else {
+                return; // Exit if not a left/right arrow key
+            }
+            document.getElementById('overlayImage').src = imagesSrcList[currentImageIndex];
+        }
+
+        // Function to populate imagesSrcList when images are loaded
+        function populateImagesSrcList() {
+            imagesSrcList = Array.from(document.querySelectorAll('#imagesContainer img')).map(img => img.src);
+            console.log("Images list populated:", imagesSrcList); // Debugging line
+        }
+
+        // Add click event listener to the overlay to hide it when clicked
+        document.getElementById('imageOverlay').addEventListener('click', hideOverlay);
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
     
@@ -246,6 +333,5 @@
     <script src="../scripts/ai-form.js"></script>
     <script src="../scripts/ai-autocomplete.js"></script>
     <script src="../scripts/ai-strength.js"></script>
-
 </body>
 </html>

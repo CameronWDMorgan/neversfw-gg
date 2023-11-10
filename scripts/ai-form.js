@@ -111,6 +111,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
             generateButton.textContent = 'Generate Image';
             generateButton.classList.remove('generating');
             document.getElementById('response').innerText = ''
+            populateImagesSrcList();
         }
     } catch (error) {
         console.error('An error occurred:', error);
