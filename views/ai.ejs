@@ -122,7 +122,7 @@
         .autocomplete-open {
             margin-top: 105px !important; /* Adjust this value based on your needs */
         }
-        #imagesContainer {
+        .imagesContainer {
             display: grid;
             grid-template-columns: 1fr 1fr; /* This creates two columns of equal width */
             grid-template-rows: auto auto;
@@ -130,7 +130,7 @@
             grid-row-gap: 20px;
         }
 
-        #imagesContainer img {
+        .imagesContainer img {
             width: auto;
             height: auto; /* Maintains aspect ratio */
             object-fit: contain; /* Maintains aspect ratio without stretching the image */
@@ -252,7 +252,7 @@
                 <div id="response"></div>
                 <div id="queuePosition" style="display: none;">Your position in queue: <span style="color: gold;" id="positionNumber"></span></div>
                 <br>
-                <div id="imagesContainer"></div>
+                <div id="imagesContainer" class="imagesContainer"></div>
                 
             </center>
         </div>
