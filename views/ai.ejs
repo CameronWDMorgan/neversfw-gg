@@ -94,8 +94,6 @@
             transform: scale(0.7) rotate(-1deg); 
         }
         img#generatedImage {
-            max-width: 100%;
-            height: auto;
             display: block; /* added display block to remove bottom margin of image */
             margin-top: 2rem;
         }
@@ -124,16 +122,16 @@
         .autocomplete-open {
             margin-top: 105px !important; /* Adjust this value based on your needs */
         }
-        #imageContainer {
+        #imagesContainer {
             display: grid;
             grid-template-columns: 1fr 1fr; /* This creates two columns of equal width */
-            grid-template-rows: auto;
+            grid-template-rows: auto auto;
             grid-column-gap: 20px;
             grid-row-gap: 20px;
         }
 
-        #imageContainer img {
-            width: 100%; /* Ensures images take up full column width */
+        #imagesContainer img {
+            max-width: auto;
             height: auto; /* Maintains aspect ratio */
             object-fit: contain; /* Maintains aspect ratio without stretching the image */
         }
