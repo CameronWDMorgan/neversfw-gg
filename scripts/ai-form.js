@@ -87,8 +87,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                                 const imageElement = document.createElement('img');
                                 imageElement.src = 'data:image/png;base64,' + image.base64
                                 imageElement.style.display = 'inline'
-                                imageElement.style.width = '256px'
-                                imageElement.style.height = '256px'
+                                imageElement.style.width = 'auto'
+                                imageElement.style.height = 'auto'
                                 document.getElementById('imagesContainer').appendChild(imageElement);
                             });
                         } else {

@@ -125,11 +125,19 @@
             margin-top: 105px !important; /* Adjust this value based on your needs */
         }
         #imageContainer {
-            grid-template-columns: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* This creates two columns of equal width */
             grid-template-rows: auto;
             grid-column-gap: 20px;
             grid-row-gap: 20px;
         }
+
+        #imageContainer img {
+            width: 100%; /* Ensures images take up full column width */
+            height: auto; /* Maintains aspect ratio */
+            object-fit: contain; /* Maintains aspect ratio without stretching the image */
+        }
+
         #imageOverlay {
             position: fixed;
             top: 0;
