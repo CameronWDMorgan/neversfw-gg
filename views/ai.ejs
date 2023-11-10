@@ -124,6 +124,12 @@
         .autocomplete-open {
             margin-top: 105px !important; /* Adjust this value based on your needs */
         }
+        #imageContainer {
+            grid-template-columns: auto;
+            grid-template-rows: auto;
+            grid-column-gap: 20px;
+            grid-row-gap: 20px;
+        }
 
 
     </style>
@@ -220,7 +226,8 @@
             <center>
                 <div id="response"></div>
                 <div id="queuePosition" style="display: none;">Your position in queue: <span style="color: gold;" id="positionNumber"></span></div>
-                <img id="generatedImage" src="" alt="Generated Image" style="display:none;">
+                <br>
+                <div id="imagesContainer"></div>
             </center>
         </div>
 

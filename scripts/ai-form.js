@@ -23,7 +23,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         width: formData.get('width'),
         height: formData.get('height'),
         steps: formData.get('steps'),
-        model: "furry"
+        model: "furry",
+        quantity: 4
     };
 
     try {
@@ -72,21 +73,28 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                         document.getElementById('queuePosition').style.display = 'none';
                         const resultResponse = await fetch(`${API_BASE}/result/${positionData.request_id}`, {
                             method: 'GET',
-                            headers: getDefaultHeaders() // Set the headers for the GET request
+                            headers: getDefaultHeaders()
                         });
-                        // Assuming the server responds with an image directly and not a JSON object
-                        if (resultResponse.ok && resultResponse.headers.get('Content-Type').includes('image')) {                            // The response is an image
-                            const imageUrl = URL.createObjectURL(await resultResponse.blob());
-                            document.getElementById('generatedImage').src = imageUrl;
-                            document.getElementById('generatedImage').style.display = 'inline';
-                            document.getElementById('response').innerText = ""; // Clear the 'ready' message
+                
+                        if (resultResponse.ok) {
+                            const base64Images = await resultResponse.json();
+
+                            document.getElementById('imagesContainer').innerHTML = ''
+                
+                            // Assuming the server responds with an array of Base64 encoded images
+                            base64Images.forEach(image => {
+                                console.log(image)
+                                const imageElement = document.createElement('img');
+                                imageElement.src = 'data:image/png;base64,' + image.base64
+                                imageElement.style.display = 'inline'
+                                imageElement.style.width = '256px'
+                                imageElement.style.height = '256px'
+                                document.getElementById('imagesContainer').appendChild(imageElement);
+                            });
                         } else {
-                            // Handle any other type of response
-                            const textResponse = await resultResponse.text(); // Fallback to text to see the response
-                            console.error('Failed to get image:', textResponse);
-                            // You might want to display an error to the user or retry the request
+                            // Handle errors or different response types
+                            console.error('Failed to get images:', await resultResponse.text());
                         }
-                        // Re-enable the submit button
                         generateButton.disabled = false;
                     }
                 } catch (error) {
@@ -102,6 +110,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
             generateButton.disabled = false;
             generateButton.textContent = 'Generate Image';
             generateButton.classList.remove('generating');
+            document.getElementById('response').innerText = ''
         }
     } catch (error) {
         console.error('An error occurred:', error);
