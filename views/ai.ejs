@@ -51,6 +51,30 @@
             margin: 0 1rem; /* Adjust as needed */
         }
 
+        .form-control select {
+            width: 100%;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border: transparent;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: white;
+            background-color: #ffffff15;
+            font-size: 16px;
+        }
+
+        /* Additional styling for dropdown arrow */
+        .form-control select::after {
+            content: '\25BC';  /* Unicode character for down arrow */
+            position: absolute;
+            top: 0.8rem;
+            right: 1rem;
+            font-size: 14px;
+            pointer-events: none;
+            color: white;
+            background-color: #ffffff15;
+        }
+
         .range-value {
             min-width: 3rem; /* Ensures that the value doesn't collapse */
             text-align: center;
@@ -219,23 +243,31 @@
                     <input type="text" id="negativeprompt" name="negativeprompt">
                 </div>
                 
-                <div class="form-control inline-slider">
-                    <label for="width">Width:</label>
-                    <input type="range" id="width" name="width" min="512" max="1024" step="128" value="512">
-                    <span id="widthValue" class="range-value">512</span>
+                <div class="form-control">
+                    <label for="aspectRatio">Aspect Ratio:</label>
+                    <select id="aspectRatio" name="aspectRatio" value="Square">
+                        <option value="Square">Square</option>
+                        <option value="Portrait">Portrait</option>
+                        <option value="Landscape">Landscape</option>
+                    </select>
                 </div>
-                
-                <div class="form-control inline-slider">
-                    <label for="height">Height:</label>
-                    <input type="range" id="height" name="height" min="512" max="1024" step="128" value="512">
-                    <span id="heightValue" class="range-value">512</span>
+
+
+                <div class="form-control">
+                    <label for="model">Model:</label>
+                    <select id="model" name="model" value="furry">
+                        <option value="furry">Default - Furry Vixens (Anime, Human & Furry)</option>
+                        <option value="sonic">MobiansAI (Sonic Characters)</option>
+                        <option value="cyberreal">Cyberreal (Realistic)</option>
+                    </select>
                 </div>
-                
+
+
                 <div class="form-control inline-slider">
                     <label for="steps">Steps:</label>
-                    <input type="range" id="steps" name="steps" min="20" max="100" step="5" value="20">
+                    <input type="range" id="steps" name="steps" min="20" max="150" step="5" value="20">
                     <span id="stepsValue" class="range-value">20</span>
-                </div>                
+                </div>        
 
                 <center>
                     <h2>Be sure to send your best Images to the</h2>
@@ -308,8 +340,6 @@
         }
 
         function handleArrowKeyPress(event) {
-            console.log(imagesSrcList)
-            console.log(currentImageIndex)
             if (!imagesSrcList.length) return; // Exit if no images are available
 
             if (event.key === 'ArrowRight') {
@@ -324,9 +354,7 @@
 
         // Function to populate imagesSrcList when images are loaded
         function populateImagesSrcList() {
-            imagesSrcList = Array.from(document.querySelectorAll('#imagesContainer img')).map(img => img.src);
-            console.log("Images list populated:", imagesSrcList); // Debugging line
-        }
+            imagesSrcList = Array.from(document.querySelectorAll('#imagesContainer img')).map(img => img.src);        }
 
         // Add click event listener to the overlay to hide it when clicked
         document.getElementById('imageOverlay').addEventListener('click', hideOverlay);

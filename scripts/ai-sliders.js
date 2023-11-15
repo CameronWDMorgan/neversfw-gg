@@ -11,7 +11,5 @@ function updateSliderDisplay(slider, outputElementId) {
 
 // Initialize the slider displays on page load
 window.onload = function() {
-    updateSliderDisplay(document.getElementById('width'), 'widthValue');
-    updateSliderDisplay(document.getElementById('height'), 'heightValue');
     updateSliderDisplay(document.getElementById('steps'), 'stepsValue');
 };

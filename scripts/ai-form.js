@@ -17,14 +17,48 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     const API_BASE = 'https://neversfw.ngrok.dev'; // Set the base URL to the specified IP address
 
     const formData = new FormData(event.target);
+
+    console.log(formData)
+
+    let targetSteps = formData.get('steps')
+    let targetModel = formData.get('model')
+
+    let targetWidth = 512
+    let targetHeight = 512
+    let targetQuantity = 6
+
+    if(formData.get('aspectRatio') == "Portrait") {
+        console.log("Portrait")
+        targetWidth = 512
+        targetHeight = 768
+    } else if (formData.get('aspectRatio') == "Landscape") {
+        console.log("Landscape")
+        targetWidth = 768
+        targetHeight = 512
+    }
+
+
+    if(targetSteps > 50) {
+        targetQuantity = 4
+    }
+
+    if(targetSteps > 100) {
+        targetQuantity = 2
+    }
+
+
+    console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
+
+
+    
     const data = {
         prompt: formData.get('prompt'),
         negativeprompt: formData.get('negativeprompt'),
-        width: formData.get('width'),
-        height: formData.get('height'),
-        steps: formData.get('steps'),
-        model: "furry",
-        quantity: 4
+        width: targetWidth,
+        height: targetHeight,
+        steps: targetSteps,
+        model: targetModel,
+        quantity: targetQuantity
     };
 
     try {
@@ -54,9 +88,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                         headers: getDefaultHeaders() // Set the headers for the GET request
                     });
                     const positionData = await positionResponse.json();
-        
-                    console.log(positionData)
-        
+                
                     if(positionData.status == "not found") {
                         document.getElementById('response').innerText = "An error occurred: " + positionData.message;
                         generateButton.disabled = false;
@@ -83,7 +115,6 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                 
                             // Assuming the server responds with an array of Base64 encoded images
                             base64Images.forEach(image => {
-                                console.log(image)
                                 const imageElement = document.createElement('img');
                                 imageElement.src = 'data:image/png;base64,' + image.base64
                                 imageElement.style.display = 'inline'
