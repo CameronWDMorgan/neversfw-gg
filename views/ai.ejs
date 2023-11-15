@@ -238,6 +238,7 @@
                 <div class="form-control">
                     <label for="prompt">Prompt:</label>
                     <textarea id="prompt" name="prompt" rows="3" required></textarea>
+                    <span id="wordCount" class="range-value">Words remaining: 75</span>
                 </div>
                 
                 <div class="form-control">
@@ -303,6 +304,37 @@
     <div id="imageOverlay" style="display:none;">
         <img id="overlayImage" src="" alt="Enlarged view" />
     </div>    
+
+
+
+
+
+    <script>
+        // Function to update word count and enforce limit
+        function updateWordCount() {
+            const promptTextarea = document.getElementById('prompt');
+            const wordCount = promptTextarea.value.trim().split(/\s+/).filter(word => word !== '').length;
+            const remainingWords = 75 - wordCount;
+    
+            // Display the word count
+            document.getElementById('wordCount').innerText = `Words remaining: ${remainingWords}`;
+    
+            // Disable the generate button if the word count exceeds the limit
+            const generateButton = document.getElementById('generateButton');
+            generateButton.disabled = remainingWords < 0;
+        }
+    
+        // Add event listener for input on the prompt textarea
+        document.getElementById('prompt').addEventListener('input', updateWordCount);
+    
+        // Initial update
+        updateWordCount();
+    </script>
+
+
+
+
+
 
     <script>
         document.getElementById('imagesContainer').addEventListener('click', function(event) {
