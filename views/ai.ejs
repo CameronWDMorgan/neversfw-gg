@@ -146,19 +146,21 @@
         .autocomplete-open {
             margin-top: 105px !important; /* Adjust this value based on your needs */
         }
+
         .imagesContainer {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* This creates two columns of equal width */
+            grid-template-columns: repeat(auto-fill, minmax(40%, 1fr)); /* Adjust the minimum width (200px in this example) */
             grid-template-rows: auto auto;
             grid-column-gap: 20px;
             grid-row-gap: 20px;
         }
 
         .imagesContainer img {
-            width: auto;
+            width: 100%;
             height: auto; /* Maintains aspect ratio */
             object-fit: contain; /* Maintains aspect ratio without stretching the image */
         }
+
 
         #imageOverlay {
             position: fixed;
@@ -259,6 +261,7 @@
                         <option value="furry">Default - Furry Vixens (Anime, Human & Furry)</option>
                         <option value="sonic">MobiansAI (Sonic Characters)</option>
                         <option value="cyberreal">Cyberreal (Realistic)</option>
+                        <option value="aing">AingDiffusion (Anime)</option>
                     </select>
                 </div>
 
