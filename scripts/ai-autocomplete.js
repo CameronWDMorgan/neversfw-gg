@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    var autocompleteEnabled = true; // Flag to enable or disable autocomplete
+
     // Function to fetch tags data
     function fetchTagsData() {
         return $.ajax({
@@ -16,12 +18,25 @@ $(document).ready(function() {
     }
 
     function setupAutocomplete(selector, tagsData) {
-        $(selector).on("keydown", function(event) {
-            if (event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
-                event.preventDefault();
-            }
-        }).autocomplete({
+        $(selector)
+            .on("keydown", function(event) {
+                if (event.ctrlKey && (event.keyCode === 38 || event.keyCode === 40)) {
+                    autocompleteEnabled = false; // Disable autocomplete when adjusting AI strength
+                }
+                if (event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active) {
+                    event.preventDefault();
+                }
+            })
+            .on("keyup", function(event) {
+                if (event.keyCode === 17) { // CTRL key
+                    autocompleteEnabled = true; // Re-enable autocomplete after CTRL key is released
+                }
+            }).autocomplete({
             source: function(request, response) {
+                if (!autocompleteEnabled) {
+                    response([]); // Return empty if autocomplete is disabled
+                    return;
+                }
                 var textarea = $(selector);
                 var cursorPos = textarea.get(0).selectionStart;
                 var text = textarea.val();
