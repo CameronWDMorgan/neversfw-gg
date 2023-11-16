@@ -313,23 +313,28 @@
 
 
     <script>
-        // Function to update word count and enforce limit
         function updateWordCount() {
             const promptTextarea = document.getElementById('prompt');
-            const wordCount = promptTextarea.value.trim().split(/\s+/).filter(word => word !== '').length;
-            const remainingWords = 75 - wordCount;
-    
-            // Display the word count
+            const negativePromptInput = document.getElementById('negativeprompt');
+
+            const promptWordCount = promptTextarea.value.trim().split(/\s+/).filter(word => word !== '').length;
+            const negativePromptWordCount = negativePromptInput.value.trim().split(/\s+/).filter(word => word !== '').length;
+
+            const totalWordCount = promptWordCount + negativePromptWordCount;
+            const remainingWords = 75 - totalWordCount;
+
+            // Display the total word count
             document.getElementById('wordCount').innerText = `Words remaining: ${remainingWords}`;
-    
-            // Disable the generate button if the word count exceeds the limit
-            const generateButton = document.getElementById('generateButton');
-            generateButton.disabled = remainingWords < 0;
+
+            // // Disable the generate button if the total word count exceeds the limit
+            // const generateButton = document.getElementById('generateButton');
+            // generateButton.disabled = remainingWords < 0;
         }
-    
-        // Add event listener for input on the prompt textarea
+
+        // Add event listener for input on both the prompt textarea and the negative prompt input
         document.getElementById('prompt').addEventListener('input', updateWordCount);
-    
+        document.getElementById('negativeprompt').addEventListener('input', updateWordCount);
+
         // Initial update
         updateWordCount();
     </script>
