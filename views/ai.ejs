@@ -32,6 +32,9 @@
             margin-top: 0.5rem;
             resize: none;
         }
+        .form-control textarea{
+            font-size: 20;
+        }
         .form-control span {
             margin-top: 0.5rem;
             font-weight: bold;
@@ -239,13 +242,13 @@
             <form id="generatorForm" class="autocomplete-space">
                 <div class="form-control">
                     <label for="prompt">Prompt:</label>
-                    <textarea id="prompt" name="prompt" rows="3" required></textarea>
+                    <textarea id="prompt" name="prompt" rows="4" required></textarea>
                     <span id="wordCount" class="range-value">Words remaining: 75</span>
                 </div>
                 
                 <div class="form-control">
-                    <label for="negativeprompt">Negative Prompt (Optional):</label>
-                    <input type="text" id="negativeprompt" name="negativeprompt">
+                    <label for="negativeprompt">Negative Prompt:</label>
+                    <textarea id="negativeprompt" name="negativeprompt" rows="4" required></textarea>
                 </div>
                 
                 <div class="form-control">

@@ -1,7 +1,7 @@
 $(document).ready(function() {
     // Function to wrap or modify the word around the cursor with the example tag
-    function wrapOrModifyWordAroundCursor(increment) {
-        var textarea = $('#prompt');
+    function wrapOrModifyWordAroundCursor(selector, increment) {
+        var textarea = $(selector);
         var text = textarea.val();
         var cursorPos = textarea.get(0).selectionStart;
         
@@ -60,11 +60,10 @@ $(document).ready(function() {
     }
 
     // Event handler for keydown event
-    $('#prompt').on("keydown", function(event) {
-        // Check if CTRL is pressed along with Up or Down arrow
+    $('#prompt, #negativeprompt').on("keydown", function(event) {
         if (event.ctrlKey && (event.keyCode === 38 || event.keyCode === 40)) {
-            event.preventDefault(); // Prevent the default action
-            wrapOrModifyWordAroundCursor(event.keyCode === 38); // Pass true for Up arrow, false for Down arrow
+            event.preventDefault();
+            wrapOrModifyWordAroundCursor('#' + this.id, event.keyCode === 38);
         }
     });
 })

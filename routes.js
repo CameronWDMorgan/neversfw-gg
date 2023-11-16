@@ -98,11 +98,11 @@ module.exports = async function(app){
     const { parse } = require('csv-parse/sync');
 
     async function loadTags() {
-    const csvContent = fs.readFileSync(path.resolve(__dirname, 'danbooru.csv'), { encoding: 'utf-8' });
-    const records = parse(csvContent, {
-        columns: false,
-        skip_empty_lines: true,
-        trim: true
+        const csvContent = fs.readFileSync(path.resolve(__dirname, 'danbooru.csv'), { encoding: 'utf-8' });
+        const records = parse(csvContent, {
+            columns: false,
+            skip_empty_lines: true,
+            trim: true
     });
 
     // Sort the records by the usage count (which is at index 2) in descending order.
@@ -132,34 +132,11 @@ module.exports = async function(app){
     next();
     });
 
-    // Endpoint for autocomplete suggestions
-    app.get('/autocomplete', (req, res) => {
-    let searchTerm = req.query.term.toLowerCase();
-    let seenTags = new Set(); // To keep track of tags already added to suggestions.
-    let suggestions = [];
 
-    Object.entries(req.tagsLookup).forEach(([key, value]) => {
-        // Check if the key is a tag or an alias and construct the suggestion accordingly.
-        const suggestion = key === value.tag ? key : `${key} (${value.tag})`;
-
-        if (key.toLowerCase().includes(searchTerm) && !seenTags.has(value.tag)) {
-        suggestions.push(suggestion + ' (' + value.score + ')');
-        seenTags.add(value.tag); // Add the actual tag to the set to prevent duplicates.
-        }
-    });
-
-    // Sorting by the score before sending.
-    suggestions.sort((a, b) => {
-        let scoreA = parseInt(a.match(/\((\d+)\)$/)[1], 10);
-        let scoreB = parseInt(b.match(/\((\d+)\)$/)[1], 10);
-        return scoreB - scoreA;
-    });
-
-    suggestions = suggestions.slice(0,5);
-
-    console.log(suggestions)
-
-    res.json(suggestions);
+    // Example endpoint to send CSV data
+    app.get('/get-tags', async (req, res) => {
+        const tagsLookup = await loadTags(); // Load or process your tags here
+        res.json(tagsLookup);
     });
 
 
@@ -2551,17 +2528,14 @@ module.exports = async function(app){
         res.redirect(`https://www.neversfw.gg/user/${req.session.username}`)
     })
 
-    app.get('/ai', async function(req,res){
+    app.get('/ai', async function(req, res){
         try {
-            // Read the tags.json file every time the route is accessed
-            let data = await fs.readFileSync('./tags.json', 'utf8'); // 'utf8' is correctly placed here
-            let tags = JSON.parse(data);
-            res.render('ai', { session: req.session, tagsjson: tags });
+            let csvContent = await loadTags()
+            res.render('ai', { session: req.session, tagsCsv: JSON.stringify(csvContent) });
         } catch (error) {
-            console.error("Failed to read tags.json:", error);
-            // Handle error, perhaps send a server error status or a custom error page
+            console.error(error);
             res.status(500).send('Error loading tags data');
         }
-    })
+    });
 
 }
