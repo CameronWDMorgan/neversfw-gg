@@ -60,7 +60,7 @@ $(document).ready(function() {
             terms.pop();
             // add the selected item
             actual_tag = ui.item.value.replace(/ \(\d+\)/g, '');
-            actual_tag = actual_tag.replace(/_/g, " ");
+            // actual_tag = actual_tag.replace(/_/g, " ");
             actual_tag = actual_tag.trim()
             terms.push(actual_tag);
             // add placeholder to get the comma-and-space at the end
