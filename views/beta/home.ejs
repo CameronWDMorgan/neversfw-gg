@@ -151,96 +151,21 @@
     <script type="text/javascript" src="https://www.neversfw.gg/scripts/showMore.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('.showMoreForm').each(function(index, form) {
-                $(form).submit(function(event) {
-                    // Prevent the form from submitting normally
-                    event.preventDefault();
-            
-                    // Get the form data
-                    var formData = $(this).serialize();
-
-                    let searchTerm = $('input[name="searchTerm"]').val()
-                    formData = (formData + `&searchTerm=${searchTerm}`)
-
-                    let accountId = $('input[name="accountId"]').val()
-                    formData = (formData + `&accountId=${accountId}`)
-            
-                    // Send a POST request to the server
-
-                    console.log(formData)
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/showMore',
-                        data: formData,
-
-
-                        success: async function(response) {
-                            // Handle the server's response
-                            formData = formData.split('&')
-                            console.log(response)
-                            let newContentList = response.newContentList
-                            var showMoreHtml = ''
-                            let accounts = response.accounts
-                            let showMoreAggregate = response.responseAggregate
-                            let session = response.session
-
-                            if(response.pageType == "homePopular") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomePopular', 'showMorehomePopular')
-                            }
-
-                            if(response.pageType == "homeRecent") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomeRecent', 'showMorehomeRecent')
-                            }
-
-                            if(response.pageType == "homeFollowing") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomeFollowing', 'showMorehomeFollowing')
-                            }
-
-                            if(response.pageType == "gameHomeRecent") {
-                                await gameShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListgameHomeRecent', 'showMoregameHomeRecent')
-                            }
-
-                            if(response.pageType == "searchArt") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListsearchArt', 'showMoresearchArt')
-                            }
-
-                            if(response.pageType == "searchGame") {
-                                await gameShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListsearchGame', 'showMoresearchGame')
-                            }
-
-                            if(response.pageType == "userArt") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListuserArt', 'showMoreuserArt')
-                            }
-
-                            if(response.pageType == "userGame") {
-                                await gameShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListuserGame', 'showMoreuserGame')
-                            }
-                            
-
-                            $('.commentForm').each(function(index, form) {
-                                if (!$(form).data('submitEventBound')) {
-                                    commentFunction(index, form)
-                                    $(form).data('submitEventBound', true);
-                                }
-                            });
-
-                            $('.likeForm').each(function(index, form) {
-                                if (!$(form).data('submitEventBound')) {
-                                    likeFunction(index, form)
-                                    $(form).data('submitEventBound', true);
-                                }
-                            });
-
-                            toggleButtons()
-
-                        }
-                    });
-                });
-            });
-        });
+        var isLoadingContent = false;
+        var pageTypes = [
+            { name: 'homeRecent', valid: true },
+            { name: 'homePopular', valid: true },
+            { name: 'homeFollowing', valid: true },
+            { name: 'gameHomeRecent', valid: true },
+            { name: 'searchArt', valid: true },
+            { name: 'searchGame', valid: true },
+            { name: 'userArt', valid: true },
+            { name: 'userGame', valid: true },
+        ];
     </script>
+
+    <script type="text/javascript" src="https://www.neversfw.gg/scripts/showMoreRequest.js"></script>
+
 
     <% async function artFunction(name, type) { %>
         <% let shownList = [] %>
@@ -342,48 +267,43 @@
                 }
 
                 var formSubmitted = false; // Variable to track if the form has been submitted
-                var cooldownDuration = 3000; // Cooldown duration in milliseconds (adjust as needed)
+                var cooldownDuration = 1000; // Cooldown duration in milliseconds (adjust as needed)
                 var cooldownTimeout = null; // Variable to store the cooldown timeout ID
-                var intervalDuration = 300; // Interval duration in milliseconds (adjust as needed)
+                var intervalDuration = 100; // Interval duration in milliseconds (adjust as needed)
                 var intervalID = null; // Variable to store the interval ID
+
+                if(showMoreCount >= 1){
+                    cooldownDuration = 1
+                    intervalDuration = 1
+                }
 
                 intervalID = setInterval(function() {
 
-                    if(showMoreCount >= 1) {
-                        cooldownDuration = 1000
-                    }
-
-                    var offset = 2000; // Adjust the offset value as needed
+                    var offset = 3500; // Adjust the offset value as needed
 
                     // Check if the user has scrolled close to the bottom of the page
                     if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
                     // Trigger form submission if not in cooldown period
-                    if (!formSubmitted) {
-                        switch(activeTab) {
+                    var tabToPageType = {
+                        recent: 'homeRecent',
+                        hottest: 'homePopular',
+                        games: 'gameHomeRecent',
+                    };
+                    if (!formSubmitted && !isLoadingContent) {
+                        var pageTypeObject = pageTypes.find(pt => pt.name === tabToPageType[activeTab]);
 
-                    case 'recent':
-                        $('#showMoreFormhomeRecent').submit();
-                        formSubmitted = true
-                        showMoreCount++
-                    break;
-
-                    case 'hottest':
-                        $('#showMoreFormhomePopular').submit();
-                        formSubmitted = true
-                        showMoreCount++
-                    break;
-
-                    case 'games':
-                        $('#showMoreFormgameHomeRecent').submit();
-                        formSubmitted = true
-                        showMoreCount++
-                    break;
-
+                        if (pageTypeObject && pageTypeObject.valid) {
+                            $('#showMoreForm' + pageTypeObject.name).submit();
+                            formSubmitted = true;
+                            isLoadingContent = true;
+                            showMoreCount++;
+                        } else {
+                            formSubmitted = false;
+                        }
                     }
-                    cooldownTimeout = setTimeout(function() {
-                    formSubmitted = false
-                    }, cooldownDuration)
-                    }
+                        cooldownTimeout = setTimeout(function() {
+                            formSubmitted = false;
+                        }, cooldownDuration);
                     }
                 }, intervalDuration);
 

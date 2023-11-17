@@ -1007,6 +1007,12 @@ module.exports = async function(app){
 
         newContentList.push(req.body.contentList)
 
+        // Check if there is no more content to send back
+        if (responseAggregate.length === 0) {
+            return res.send({ message: "No more content", endOfContent: true });
+        }
+        console.log(responseAggregate.length)
+
         return res.send({accounts:accounts,responseAggregate: responseAggregate,newContentList: newContentList, pageType:req.body.pageType, session:req.session})
     })
 
