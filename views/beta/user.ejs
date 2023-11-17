@@ -182,99 +182,20 @@
     <script type="text/javascript" src="https://www.neversfw.gg/scripts/showMore.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('.showMoreForm').each(function(index, form) {
-                $(form).submit(function(event) {
-                    // Prevent the form from submitting normally
-                    event.preventDefault();
-            
-                    // Get the form data
-                    var formData = $(this).serialize();
-
-                    let searchTerm = $('input[name="searchTerm"]').val()
-                    formData = (formData + `&searchTerm=${searchTerm}`)
-
-                    let accountId = $('input[name="accountId"]').val()
-                    formData = (formData + `&accountId=${accountId}`)
-            
-                    // Send a POST request to the server
-
-                    console.log(formData)
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/showMore',
-                        data: formData,
-
-
-                        success: async function(response) {
-                            // Handle the server's response
-                            formData = formData.split('&')
-                            console.log(response)
-
-
-
-                            let newContentList = response.newContentList
-                            var showMoreHtml = ''
-                            let accounts = response.accounts
-                            let showMoreAggregate = response.responseAggregate
-                            let session = response.session
-
-                            if(response.pageType == "homePopular") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomePopular', 'showMorehomePopular')
-                            }
-
-                            if(response.pageType == "homeRecent") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomeRecent', 'showMorehomeRecent')
-                            }
-
-                            if(response.pageType == "homeFollowing") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListhomeFollowing', 'showMorehomeFollowing')
-                            }
-
-                            if(response.pageType == "gameHomeRecent") {
-                                await gameShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListgameHomeRecent', 'showMoregameHomeRecent')
-                            }
-
-                            if(response.pageType == "searchArt") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListsearchArt', 'showMoresearchArt')
-                            }
-
-                            if(response.pageType == "searchGame") {
-                                await gameShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListsearchGame', 'showMoresearchGame')
-                            }
-
-                            if(response.pageType == "userArt") {
-                                await artShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListuserArt', 'showMoreuserArt')
-                            }
-
-                            if(response.pageType == "userGame") {
-                                await gameShowMoreFunction(session, showMoreAggregate, accounts, showMoreHtml, newContentList, 'contentListuserGame', 'showMoreuserGame')
-                            }
-                            
-
-                            $('.commentForm').each(function(index, form) {
-                                if (!$(form).data('submitEventBound')) {
-                                    commentFunction(index, form)
-                                    $(form).data('submitEventBound', true);
-                                }
-                            });
-
-                            $('.likeForm').each(function(index, form) {
-                                if (!$(form).data('submitEventBound')) {
-                                    likeFunction(index, form)
-                                    $(form).data('submitEventBound', true);
-                                }
-                            });
-
-                            toggleButtons()
-
-                        }
-                    });
-                });
-            });
-        });
+        var isLoadingContent = false;
+        var pageTypes = [
+            { name: 'homeRecent', valid: true },
+            { name: 'homePopular', valid: true },
+            { name: 'homeFollowing', valid: true },
+            { name: 'gameHomeRecent', valid: true },
+            { name: 'searchArt', valid: true },
+            { name: 'searchGame', valid: true },
+            { name: 'userArt', valid: true },
+            { name: 'userGame', valid: true },
+        ];
     </script>
+
+    <script src="../../scripts/showMoreRequest.js"></script>
 
     <% async function artFunction(name, type) { %>
         <% let shownList = [] %>
@@ -374,44 +295,6 @@
             </div>
         </div>
 
-        <!-- <div class="user-profile"> 
-            <div class="user-profile-container">
-                <img class="user-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%=user.avatarUrl%>" width="228px" height=auto>
-
-                <style>
-                    li{
-                        margin: 6px;
-                    }
-                </style>
-
-                <div style="float: left; text-align: left; margin-left: 12px ; top: 0px;">
-                    <h1><%=user.username%></h1>
-                    <a><%=user.bio%></a>
-                </div>
-
-                <div style="width: 20%; display: block; float: right; text-align: right; margin-right: 22px ; top: 0px; margin-left: auto; margin-right: 0%;">
-                    <% if (user.accountId !== session.accountId) { %>
-                        <form class="followForm"></form>
-                            <input name="accountId" type="hidden" value=<%=user.accountId%>>
-                            <button type="submit" style="font-family: Dimbo !important; font-size: 80px; border: none; outline: none; background-color: none;">
-                                <a style="font-family: Dimbo;" id="followButton<%=user.accountId%>"><%=followButtonText%></a>
-                            </button>
-                        </form>
-                    <% } %>
-                    <br>
-                    <a style="text-align:center !important; float: none !important; max-width: inherit;">Followers:<a id="followCount<%=user.accountId%>"><%=user.followedBy.length%></a></a>
-                </div>
-
-                
-
-                <% if (session.accountId == user.accountId) { %>
-                    <form style="margin-left: 12px;" method="get" action="/user-edit/">
-                        <button type="submit">Edit Profile</button>
-                    </form> 
-                <% } %>
-            </div>
-        </div> -->
-
         <div class="page-right" style="min-height: 100vh; max-height: 100%;">
 
             <input name="accountId" value="<%=user.accountId%>" type="hidden">
@@ -436,95 +319,18 @@
             </div>
             
             <script>
-
-                showMoreCount = 0
-
-                // Global variable to store the active tab
-                var activeTab = '';
-
-                // Function to update the active tab
-                function updateActiveTab(tabName) {
-                activeTab = tabName;
-                }
-
-                var formSubmitted = false; // Variable to track if the form has been submitted
-                var cooldownDuration = 3000; // Cooldown duration in milliseconds (adjust as needed)
-                var cooldownTimeout = null; // Variable to store the cooldown timeout ID
-                var intervalDuration = 300; // Interval duration in milliseconds (adjust as needed)
-                var intervalID = null; // Variable to store the interval ID
-
-                intervalID = setInterval(function() {
-
-                    if(showMoreCount >= 1) {
-                        cooldownDuration = 1000
-                    }
-
-                    var offset = 2000; // Adjust the offset value as needed
-
-                    // Check if the user has scrolled close to the bottom of the page
-                    if ($(window).scrollTop() + $(window).height() >= $(document).height() - offset) {
-                    // Trigger form submission if not in cooldown period
-                    if (!formSubmitted) {
-                        switch(activeTab) {
-
-                    case 'recent':
-                        $('#showMoreFormuserArt').submit();
-                        formSubmitted = true
-                        showMoreCount++
-                    break;
-
-
-                    case 'games':
-                        $('#showMoreFormuserGame').submit();
-                        formSubmitted = true
-                        showMoreCount++
-                    break;
-
-                    }
-                    cooldownTimeout = setTimeout(function() {
-                    formSubmitted = false
-                    }, cooldownDuration)
-                    }
-                    }
-                }, intervalDuration);
-
-
-                // Rest of your existing code for tab switching...
-
-                function openTab(evt, tabName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-                document.getElementById(tabName).style.display = "block";
-                evt.currentTarget.className += " active";
-
-                // Update the active tab
-                updateActiveTab(tabName);
-                }
-
-                if(activeTab == '') {
-                    activeTab = 'recent'
-                }
-
+                var tabToPageType = {
+                    recent: 'userArt',
+                    games: 'userGame',
+                };
+                var activeTabToSet = 'recent'
             </script>
+
+            <script src="../../scripts/tabsShowMore.js"></script>
     
         </div>
 
         <%- include('../../partials/_footerNew'); -%>
-        
-        
-        
-
-
-
-
-
 
         <script>
             function toggleButtons() {

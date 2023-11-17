@@ -31,23 +31,16 @@ $(document).ready(function() {
 
                     isLoadingContent = false; // Reset flag to false when content is loaded
 
+                    console.log()
+
                     if (response.endOfContent) {
                         var pageTypeObject = pageTypes.find(pt => pt.name === pageTypeAlways);
                         if (pageTypeObject) {
                             pageTypeObject.valid = false;
+                            return
                         }
                     }
 
-                    if (pageTypeAlways == "homeRecent" && response.endOfContent) {
-                        homeRecent_Valid = false
-                        return
-                    } else if (pageTypeAlways == "homePopular" && response.endOfContent) {
-                        homePopular_Valid = false
-                        return
-                    } else if (pageTypeAlways == "gameHomeRecent" && response.endOfContent) {
-                        gameHomeRecent_Valid = false
-                        return
-                    } 
                     let newContentList = response.newContentList
                     var showMoreHtml = ''
                     let accounts = response.accounts
