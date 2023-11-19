@@ -176,6 +176,8 @@ module.exports = async function(app){
 
     app.get('/', async function(req,res){
 
+        console.log(req.session)
+
         let artAggregatePopular = await userContentSchema.aggregate([
             { $project: {
                 contentId: 1,
@@ -1434,10 +1436,9 @@ module.exports = async function(app){
     })
 
     app.get('/logout', function(req, res){
-        res.status(200).clearCookie('connect.sid', {
-            path: '/'
-        });
-        req.session = null
+        req.session.loggedIn = false;
+        req.session.username = undefined;
+        req.session.accountId = undefined;
         res.redirect('/')
     });
 
@@ -2251,6 +2252,7 @@ module.exports = async function(app){
         req.session.loggedIn = true;
         req.session.username = username;
         req.session.accountId = userAccountWanted.accountId;
+        console.log(req.session)
         res.redirect(`/user/${username}`)
     })
 
@@ -2431,10 +2433,9 @@ module.exports = async function(app){
     
         if(editLoggedOut){
             //logging out
-            res.status(200).clearCookie('connect.sid', {
-                path: '/'
-            });
-            req.session = null
+            req.session.loggedIn = false;
+            req.session.username = undefined;
+            req.session.accountId = undefined;
             res.redirect('/')
         }else{
             res.redirect(`/user/${req.session.username}`)
