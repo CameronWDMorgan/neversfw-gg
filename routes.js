@@ -2542,12 +2542,43 @@ module.exports = async function(app){
 
     app.get('/ai', async function(req, res){
         try {
-            let csvContent = await loadTags()
-            res.render('ai', { session: req.session, tagsCsv: JSON.stringify(csvContent) });
+            let promptValue;
+
+            // Check if req.session exists and if req.session.ai exists
+            if (req.session.ai) {
+                // Now it's safe to check req.session.ai.prompt
+                if (typeof req.session.ai.prompt === "undefined" || req.session.ai.prompt.length < 2) {
+                    promptValue = "1girl, cute";
+                } else {
+                    promptValue = req.session.ai.prompt;
+                }
+            } else {
+                // Handle the case where req.session.ai is undefined
+                req.session.ai = {prompt: "1girl, cute"}
+                promptValue = req.session.ai.prompt;
+                console.log(promptValue)
+            }
+
+            console.log(promptValue)
+            console.log(req.session.ai)
+                     
+            res.render('ai', { session: req.session, promptValue });
         } catch (error) {
             console.error(error);
             res.status(500).send('Error loading tags data');
         }
     });
+
+    app.post('/ai-generate', async function(req, res) {
+        console.log(req.body)
+        console.log(req.body.prompt)
+        console.log(req.session)
+        if(req.session.ai){
+            req.session.ai.prompt = req.body.prompt
+        } else {
+            req.session.ai = {prompt: req.body.prompt}
+        }
+        req.session.ai.prompt = req.body.prompt
+    })
 
 }

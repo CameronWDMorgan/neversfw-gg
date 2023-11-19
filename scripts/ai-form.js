@@ -63,6 +63,13 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     try {
         document.getElementById('response').innerText = "Requesting Image, please wait...";
+
+        fetch(`/ai-generate`, {
+            method: 'POST',
+            headers: getDefaultHeaders(), // Set the headers for the POST request
+            body: JSON.stringify(data)
+        });
+
         const response = await fetch(`${API_BASE}/generate`, {
             method: 'POST',
             headers: getDefaultHeaders(), // Set the headers for the POST request
