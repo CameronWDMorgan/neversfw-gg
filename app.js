@@ -26,7 +26,7 @@ const fs = require('fs')
 
 //cors stuffs
 const cors = require('cors')
-app.use(cors('*'));
+app.use(cors());
 
 const rateLimit = require('express-rate-limit')
 

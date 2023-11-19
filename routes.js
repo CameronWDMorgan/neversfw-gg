@@ -2582,6 +2582,7 @@ module.exports = async function(app){
         } else {
             req.session.ai = {prompt: req.body.prompt}
         }
+        console.log(req.session)
 
     })
 
