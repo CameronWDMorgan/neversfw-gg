@@ -2574,6 +2574,9 @@ module.exports = async function(app){
         console.log(req.body)
         console.log(req.body.prompt)
         console.log(req.session)
+        if(req.session.ai) {
+            console.log(typeof(req.session.ai))
+        }
         if(req.session.ai){
             req.session.ai.prompt = req.body.prompt
         } else {
