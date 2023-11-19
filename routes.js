@@ -2548,12 +2548,8 @@ module.exports = async function(app){
             if (req.session.ai) {
                 console.log(req.session.ai)
                 console.log(req.session.ai.prompt.length)
-                // Now it's safe to check req.session.ai.prompt
-                if (req.session.ai.prompt.length < 2) {
-                    promptValue = "1girl, cute";
-                } else {
-                    promptValue = req.session.ai.prompt;
-                }
+                promptValue = req.session.ai.prompt;
+                
             } else {
                 // Handle the case where req.session.ai is undefined
                 console.log("req.session.ai - Undefined")
