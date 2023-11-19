@@ -2556,6 +2556,7 @@ module.exports = async function(app){
                 }
             } else {
                 // Handle the case where req.session.ai is undefined
+                console.log("req.session.ai - Undefined")
                 req.session.ai = {prompt: "1girl, cute"}
                 promptValue = req.session.ai.prompt;
                 console.log(promptValue)
