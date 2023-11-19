@@ -2582,7 +2582,7 @@ module.exports = async function(app){
         } else {
             req.session.ai = {prompt: req.body.prompt}
         }
-        req.session.ai.prompt = req.body.prompt
+
     })
 
 }
