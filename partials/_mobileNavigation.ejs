@@ -2,6 +2,9 @@
 
 <div class="mobileNavigation">
     <a href="https://www.neversfw.gg/">Home</a>
+    <a href="/upload" target="_top">
+        <i class="fa fa-upload"></i> Upload
+    </a>
     <% if (session.loggedIn) { %>
         <a href="/user/<%=session.username%>" target="_top">
             <i class="fa fa-user"></i> <%=session.username%>
@@ -9,10 +12,6 @@
 
         <a href="/logout" target="_top">
             <i class="fa fa-sign-out"></i> Logout
-        </a>
-
-        <a href="/upload" target="_top">
-            <i class="fa fa-upload"></i> Upload
         </a>
 
         <a href="/notifications" target="_top">

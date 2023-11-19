@@ -2124,7 +2124,12 @@ module.exports = async function(app){
     })
 
     app.get('/upload', async function(req, res){
-        res.render("upload", {session: req.session} )
+        if(req.session.loggedIn) {
+            res.render("upload", {session: req.session} )
+        } else {
+            res.render('sysmessage', {session: req.session, message: 'You need to be logged in to upload Art or Games!', messageType: 'error', buttonText: 'Go to Login', buttonLink:'location.href="/login"' })
+            return true
+        }
     })
 
     // app.get('/test', async function(req,res) {
