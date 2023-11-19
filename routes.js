@@ -2546,6 +2546,7 @@ module.exports = async function(app){
 
             // Check if req.session exists and if req.session.ai exists
             if (req.session.ai) {
+                console.log(req.session.ai)
                 // Now it's safe to check req.session.ai.prompt
                 if (typeof req.session.ai.prompt === "undefined" || req.session.ai.prompt.length < 2) {
                     promptValue = "1girl, cute";
