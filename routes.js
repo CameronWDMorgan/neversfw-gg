@@ -2542,24 +2542,10 @@ module.exports = async function(app){
 
     app.get('/ai', async function(req, res){
         try {
-            let promptValue;
-
-            console.log(`Before ${req.session.values()}`)
-
-            // Check if req.session exists and if req.session.ai exists
-            if (req.session.ai) {
-                promptValue = req.session.ai.prompt
-            } else {
-                // Handle the case where req.session.ai is undefined
-                console.log("req.session.ai - Undefined")
-                req.session.ai = {prompt: "1girl, cute"}
-                promptValue = req.session.ai.prompt;
-                console.log(promptValue)
+            if (!req.session.ai) {
+                req.session.ai = {prompt:""};
             }
-
-            console.log(`After ${req.session.values()}`)
-                     
-            res.render('ai', { session: req.session, promptValue: promptValue });
+            res.render('ai', { session: req.session, promptValue: req.session.ai.prompt });
         } catch (error) {
             console.error(error);
             res.status(500).send('Error loading tags data');
