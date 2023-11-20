@@ -2542,10 +2542,13 @@ module.exports = async function(app){
 
     app.get('/ai', async function(req, res){
         try {
-            if (!req.session.ai) {
-                req.session.ai = {prompt:""};
+
+            if(req.session.loggedIn){
+                foundAccount = await userProfileSchema.findOne("accountId:" `${req.session.accountId}`)
+            } else {
+                foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
             }
-            res.render('ai', { session: req.session, promptValue: req.session.ai.prompt });
+            res.render('ai', { session: req.session, promptValue: foundAccount.ai.prompt, negativePromptValue: foundAccount.ai.negativeprompt, modelValue: foundAccount.ai.model });
         } catch (error) {
             console.error(error);
             res.status(500).send('Error loading tags data');
@@ -2553,11 +2556,10 @@ module.exports = async function(app){
     });
 
     app.post('/ai-generate', async function(req, res) {
-        if (!req.session.ai) {
-            req.session.ai = {};
+        if(req.session.loggedIn){
+            reqIdString = `${req.session.accountId}`
+            let foundAccount = await userProfileSchema.findOneAndUpdate({accountId: reqIdString },{ai: {prompt: `${req.body.prompt}`, negativeprompt: `${req.body.negativeprompt}`, model: `${req.body.model}`}})
         }
-        req.session.ai.prompt = req.body.prompt;
-
     })
 
 }

@@ -248,7 +248,7 @@
                 
                 <div class="form-control">
                     <label for="negativeprompt">Negative Prompt:</label>
-                    <textarea id="negativeprompt" name="negativeprompt" rows="4"></textarea>
+                    <textarea id="negativeprompt" name="negativeprompt" rows="4"><%=negativePromptValue%></textarea>
                 </div>
                 
                 <div class="form-control">
@@ -263,7 +263,7 @@
 
                 <div class="form-control">
                     <label for="model">Model:</label>
-                    <select id="model" name="model" value="furry">
+                    <select id="model" name="model" value="<%=modelValue%>">
                         <option value="furry">Default - Furry Vixens (Anime, Human & Furry)</option>
                         <option value="sonic">SonicDiffusion (Sonic Characters)</option>
                         <option value="cyberreal">Cyberreal (Realistic)</option>
