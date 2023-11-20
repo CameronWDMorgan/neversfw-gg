@@ -42,7 +42,7 @@ const userProfileSchema = new Schema({
     timestamp: { type: String, required: false },
     followedBy: [followedBy],
     notifications: [notificationSchema],
-    ai: [aiSchema]
+    ai: aiSchema
 })
 
 const name = 'userAccount'
