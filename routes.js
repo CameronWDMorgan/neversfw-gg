@@ -2544,12 +2544,11 @@ module.exports = async function(app){
         try {
             let promptValue;
 
+            console.log(`Before ${req.session}`)
+
             // Check if req.session exists and if req.session.ai exists
             if (req.session.ai) {
-                console.log(req.session.ai)
-                console.log(req.session.ai.prompt.length)
-                promptValue = req.session.ai.prompt;
-                
+                promptValue = req.session.ai.prompt
             } else {
                 // Handle the case where req.session.ai is undefined
                 console.log("req.session.ai - Undefined")
@@ -2558,10 +2557,9 @@ module.exports = async function(app){
                 console.log(promptValue)
             }
 
-            console.log(promptValue)
-            console.log(req.session.ai)
+            console.log(`After ${req.session}`)
                      
-            res.render('ai', { session: req.session, promptValue });
+            res.render('ai', { session: req.session, promptValue: promptValue });
         } catch (error) {
             console.error(error);
             res.status(500).send('Error loading tags data');
@@ -2569,7 +2567,6 @@ module.exports = async function(app){
     });
 
     app.post('/ai-generate', async function(req, res) {
-        console.log(req.body)
         console.log(req.body.prompt)
         console.log(req.session)
         if(req.session.ai) {
