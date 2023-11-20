@@ -2544,7 +2544,7 @@ module.exports = async function(app){
         try {
             let promptValue;
 
-            console.log(`Before ${req.session}`)
+            console.log(`Before ${req.session.values()}`)
 
             // Check if req.session exists and if req.session.ai exists
             if (req.session.ai) {
@@ -2557,7 +2557,7 @@ module.exports = async function(app){
                 console.log(promptValue)
             }
 
-            console.log(`After ${req.session}`)
+            console.log(`After ${req.session.values()}`)
                      
             res.render('ai', { session: req.session, promptValue: promptValue });
         } catch (error) {
@@ -2569,9 +2569,6 @@ module.exports = async function(app){
     app.post('/ai-generate', async function(req, res) {
         console.log(req.body.prompt)
         console.log(req.session)
-        if(req.session.ai) {
-            console.log(typeof(req.session.ai))
-        }
         if(req.session.ai){
             req.session.ai.prompt = req.body.prompt
         } else {
