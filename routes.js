@@ -2562,7 +2562,7 @@ module.exports = async function(app){
     app.post('/ai-generate', async function(req, res) {
         if(req.session.loggedIn){
             reqIdString = `${req.session.accountId}`
-            let foundAccount = await userProfileSchema.findOneAndUpdate({accountId: reqIdString },{ai: {prompt: `${req.body.prompt}`, negativeprompt: `${req.body.negativeprompt}`, model: `${req.body.model}`}})
+            await userProfileSchema.findOneAndUpdate({accountId: reqIdString},{ai: {prompt: `${req.body.prompt}`, negativeprompt: `${req.body.negativeprompt}`, model: `${req.body.model}`}})
         }
     })
 

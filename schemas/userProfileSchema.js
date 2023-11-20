@@ -15,6 +15,14 @@ const followedBy = new Schema({
     timestamp: {type: String, required: true },
 })
 
+let aiNegativePrompt = "worst quality, low quality, watermark, signature, bad anatomy, bad hands, deformed limbs, blurry, cropped, cross-eyed, extra arms, speech bubble, extra legs, extra limbs, bad proportions, poorly drawn hands, text,"
+
+const aiSchema = new Schema({
+    prompt: { type: String, default: "1girl, cute" },
+    negativeprompt: { type: String, default: aiNegativePrompt },
+    model: { type: String, default: "furry" }
+})
+
 const userProfileSchema = new Schema({
     badges: {
         admin: { type: Boolean, default: false },
@@ -33,7 +41,8 @@ const userProfileSchema = new Schema({
     tempEmailHash: { type: String, required: true },
     timestamp: { type: String, required: false },
     followedBy: [followedBy],
-    notifications: [notificationSchema]
+    notifications: [notificationSchema],
+    ai: [aiSchema]
 })
 
 const name = 'userAccount'
