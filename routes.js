@@ -2567,14 +2567,10 @@ module.exports = async function(app){
     });
 
     app.post('/ai-generate', async function(req, res) {
-        console.log(req.body.prompt)
-        console.log(req.session)
-        if(req.session.ai){
-            req.session.ai.prompt = req.body.prompt
-        } else {
-            req.session.ai = {prompt: req.body.prompt}
+        if (!req.session.ai) {
+            req.session.ai = {};
         }
-        console.log(req.session)
+        req.session.ai.prompt = req.body.prompt;
 
     })
 
