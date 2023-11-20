@@ -2546,6 +2546,9 @@ module.exports = async function(app){
             if(req.session.loggedIn){
                 reqIdString = `${req.session.accountId}`
                 foundAccount = await userProfileSchema.findOne({accountId: reqIdString})
+                if(!foundAccount.ai) {
+                    foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
+                }
             } else {
                 foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
             }
