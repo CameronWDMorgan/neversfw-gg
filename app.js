@@ -59,7 +59,6 @@ mongoose.set('strictQuery', false)
 app.use(cookieSession({
     name: 'session',
     keys: ['key1', 'key2'],
-    domain: '.neversfw.gg'
 }))
 
 app.use(express.static(__dirname));
