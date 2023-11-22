@@ -1437,7 +1437,7 @@ module.exports = async function(app){
 
     app.get('/logout', async function(req, res){
         console.log(req.session)
-        await res.clearCookie('session');
+        req.session = null
         console.log(req.session)
         req.session.loggedIn = false;
         req.session.username = undefined;
