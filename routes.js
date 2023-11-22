@@ -1436,9 +1436,11 @@ module.exports = async function(app){
     })
 
     app.get('/logout', function(req, res){
+        console.log(req.session)
         req.session.loggedIn = false;
         req.session.username = undefined;
         req.session.accountId = undefined;
+        console.log(req.session)
         res.redirect('/')
     });
 
