@@ -52,7 +52,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         
     }
 
-    
+    targetQuantity = Number(targetQuantity)
+    targetSteps = Number(targetSteps)
 
 
     console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
