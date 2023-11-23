@@ -25,7 +25,6 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     let targetWidth = 512
     let targetHeight = 512
-    let targetQuantity = 4
 
     if(formData.get('aspectRatio') == "Portrait") {
         console.log("Portrait")
@@ -38,13 +37,22 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     }
 
 
-    if(targetSteps > 40) {
-        targetQuantity = 3
+    targetQuantity = formData.get('quantity')
+
+    if(targetQuantity > 6 || targetQuantity < 0) {
+        if(targetSteps > 100) {
+            targetQuantity = 1
+        }
     }
 
-    if(targetSteps > 99) {
-        targetQuantity = 1
+    if(targetSteps > 150 || targetSteps < 0) {
+        if(targetQuantity > 3) {
+            targetSteps = 20
+        }
+        
     }
+
+    
 
 
     console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
