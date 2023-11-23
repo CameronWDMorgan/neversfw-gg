@@ -1317,6 +1317,8 @@ module.exports = async function(app){
 
     app.post('/gameCreate/',  upload.single('file'), async function(req,res){
 
+        console.log(req.body)
+
         const endDestination = `./ugc/game/${req.body.gameName}/`
 
         const chunkNumber = req.body.chunk;

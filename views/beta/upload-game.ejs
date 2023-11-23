@@ -100,13 +100,37 @@
                     ],
                     max_file_size: "8mb",
                 },
-                multipart_params : {
-                    "gameTags" : $('input[name="gameTags"]').val(),
-                    "gameName" : $('input[name="version"]').val(),
-                    "version" : $('input[name="version"]').val(),
-                },
                 chunk_size: '1000kb',
-                max_retries: 99
+                max_retries: 99,
+
+                preinit : {
+                        BeforeUpload: function(up, file) {
+                            console.log("BEFORE UPLOAD");
+                            up.setOption('multipart_params',
+                            {
+                                gameTags : $('input[name="gameTags"]').val(),
+                                gameName : $('input[name="gameName"]').val(),
+                                version : $('input[name="version"]').val(),
+                            });
+
+                            console.log(up.settings)
+                        },
+                    },
+
+                    init : {
+                        UploadComplete: function(up, file, info) {
+                            console.log(" COMPLETE ");
+                            if (up.files.length === (up.total.uploaded + up.total.failed)) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/gameUploadComplete',
+                                    success: function(response) {
+                                        window.location.href = `/game/${response.gameName}`;
+                                    }
+                                });
+                            }
+                        },
+                    }
             });
     
             uploader.init();
@@ -132,16 +156,6 @@
             uploader.bind("BeforeUpload", function(up,file) {
                 uploader.settings.multipart_params = {gameName: $('input[name="gameName"]').val(), version: $('input[name="version"]').val(), gameTags: $('input[name="gameTags"]').val()};
             });
-    
-            uploader.bind('UploadComplete', function(file) {
-                $.ajax({
-                    type: "POST",
-                    url: '/gameUploadComplete',
-                    success: function(response) {
-                        window.location.href = `https://www.neversfw.gg/game/${response.gameName}`;
-                    }
-                });
-            })
     
             document.getElementById('start-game-upload').onclick = function() {
                 uploader.start();
