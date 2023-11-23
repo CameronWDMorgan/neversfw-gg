@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template | NeverSFW.gg</title>
+    <title>Submit Games | NeverSFW.gg</title>
     <meta name="description" content="A hub for NSFW Images, Videos & Games!">
     <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
     <meta name="author" content="MiningP">
@@ -47,12 +47,100 @@
             <!-- Banner Advert Partial -->
         </div>
 
-        <div class="round-frosted">
+        <input name="accountId" value="<%=session.accountId%>" hidden>
 
+        <div class="round-frosted">
+            <h1 style="font-size: xxx-large;">Create Game Page</h1>
+            <p></p>
+            <label>Game Name: </label>
+            <input name="gameName" required>
+
+            <p></p>
+            <label>Version Number: </label>
+            <input name="version" required>
+
+            <p></p>
+            <label>Tags (separate with commas)</label>
+            <p></p>
+            <div>
+                <input name="gameTags" rows="3" cols="50" placeholder="minecraft, 2d, steve" required></textarea>
+            </div>
+
+            <p></p>
+            <label>Thumbnail: </label>
+            <input type="file" id="browse" />
+            <ul id="filelist"></ul>
+            <div id="myProgress">
+                <div id="myBar"></div>
+            </div>
+            <button id="start-game-upload">Create Game</button>
         </div>
 
 
         <div style="height: 20rem;"></div>
+
+
+
+        <script>
+            var uploader = new plupload.Uploader({
+                browse_button: 'browse',
+                url: '/gameCreate/',
+                multi_selection: false,
+                multipart: true,
+                filters: {
+                    mime_types : [
+                        { title : "Image files", extensions : "jpg,gif,png" },
+                    ],
+                    max_file_size: "8mb",
+                },
+                multipart_params : {
+                    "gameTags" : $('input[name="gameTags"]').val(),
+                    "gameName" : $('input[name="version"]').val(),
+                    "version" : $('input[name="version"]').val(),
+                },
+                chunk_size: '1000kb',
+                max_retries: 99
+            });
+    
+            uploader.init();
+    
+            uploader.bind('FilesAdded', function(up, files) {
+                var html = '';
+                plupload.each(files, function(file) {
+                    html += '<li id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></li>';
+                });
+                document.getElementById('filelist').innerHTML += html;
+            });
+    
+            uploader.bind('UploadProgress', function(up, file) {
+                document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+                    $('#myBar').css('width', file.percent + '%');    
+            });
+    
+            uploader.bind('Error', function(up, err) {
+                console.log("Error #" + err.code + ": " + err.message);
+            });
+    
+            uploader.bind("BeforeUpload", function(up,file) {
+                uploader.settings.multipart_params = {gameName: $('input[name="gameName"]').val(), version: $('input[name="version"]').val(), gameTags: $('input[name="gameTags"]').val()};
+            });
+    
+            uploader.bind('UploadComplete', function(file) {
+                $.ajax({
+                    type: "POST",
+                    url: '/gameUploadComplete',
+                    success: function(response) {
+                        window.location.href = `https://www.neversfw.gg/game/${response.gameName}`;
+                    }
+                });
+            })
+    
+            document.getElementById('start-game-upload').onclick = function() {
+                uploader.start();
+            };
+        </script>
+
 
         <!-- Footer Partial -->
         <%- include('../../partials/_footerNew'); -%>
