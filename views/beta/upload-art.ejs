@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Art | NeverSFW.gg</title>
+    <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+    <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+    <meta name="author" content="MiningP">
+    <meta name="juicyads-site-verification" content="da00b2314e338e83450b5bf9040a1fa6">
+    
+    <link rel="stylesheet" href="../../betasite.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FFEW0Y6QFQ');
+    </script>
+</head>
+<body>
+
+    <%- include('../../partials/_popunder'); -%>
+
+    <div class="page-sidebar">
+        <!-- Side Navigation Partial -->
+        <%- include('../../partials/_sideNav'); -%>
+    </div>
+
+    <div class="page-left" style="margin-top: 22rem;">
+        <!-- Tower Advert Partial -->
+        <%- include('../../partials/_towerAdvert'); -%>
+    </div>
+
+    <div class="page-right">
+        <div class="center-content">
+                    
+            <img src="https://www.neversfw.gg/nsfwlogobanner.png" class="neversfw-banner">
+            <br>
+            <br>
+                <%- include('../../partials/_bannerAdvert'); -%>
+            
+            <br><br>
+            <%- include('../../partials/_mobileNavigation'); -%>
+            <!-- Banner Advert Partial -->
+        </div>
+
+        <div class="round-frosted">                
+            <h1 style="font-size: xxx-large;">Upload Artwork</h1>
+                <br>
+                <label style="font-size: x-large;">Name:</label>
+                <div>
+                    <textarea name="artName" rows="2" cols="30"  placeholder="Artwork Name" required></textarea>
+                </div>
+                <br><br>
+                <label style="font-size: x-large;">Tags (separate with: ,)</label>
+                <br>
+                <label style="color: rgb(255, 174, 174);">(if its created by an AI please disclose this with the: "ai-generated" tag!<br> otherwise your image may be removed!)</label>
+                <div>
+                    <textarea name="tags" rows="3" cols="50" placeholder="scenery, character_name, character_pose, character_hair_colour" required></textarea>
+                </div>
+                <br><br>
+                <label style="font-size: x-large;">Description (Max 250 Characters)</label>
+                <br>
+                <label>(Not Required)</label>
+                <div>
+                    <textarea name="description" rows="3" cols="50" placeholder="(Not required)"></textarea>
+                </div>
+                <br><br>
+                <label style="font-size: x-large;">Art (Image/Video/Gif)</label>
+                <input type="file" id="browseArt" />
+                <ul id="filelistArt"></ul>
+                <div id="myProgressArt">
+                    <div id="myBarArt"></div>
+                </div>
+                <br><br>
+                <button id="start-Art-upload">Upload Art</button>
+                <br><br>
+
+
+                <div id="uploader">
+                    <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+                </div>
+
+
+            </div>
+
+
+            <script src="../../plupload-3.1.5/js/plupload.full.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+            <link rel="stylesheet" href="../../plupload-3.1.5/js/jquery.ui.plupload/css/jquery.ui.plupload.css"></link>
+            <script src="../../plupload-3.1.5/js/jquery.ui.plupload/jquery.ui.plupload.js"></script>
+        
+            
+
+
+
+
+
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#uploader").plupload({
+                    // General settings
+                    runtimes : 'html5,flash,silverlight,html4',
+                    url: '/upload/',
+                    multi_selection: true,
+                    multipart: true,
+                    filters: {
+                        mime_types : [
+                            { title : "Image/Video files", extensions : "webm,mp4,mov,jpg,gif,png,webp,jifi" },
+                        ],
+                        max_file_size: "5000mb",
+                    },
+                    chunk_size: '1024kb',
+                    max_retries: 999,
+
+                    // User interface
+                    dragdrop: true, // Enable drag and drop functionality
+                    views: {
+                        list: true,
+                        thumbs: true, // Show thumbs
+                        active: 'thumbs'
+                    },
+
+                    // Flash and Silverlight settings
+                    flash_swf_url : 'path_to_plupload/Moxie.swf',
+                    silverlight_xap_url : 'path_to_plupload/Moxie.xap',
+
+                    preinit : {
+                        BeforeUpload: function(up, file) {
+                            console.log("BEFORE UPLOAD");
+                            up.setOption('multipart_params',
+                            {
+                                artName: $('textarea[name="artName"]').val(),
+                                tags: $('textarea[name="tags"]').val(),
+                                description: $('textarea[name="description"]').val()
+                            });
+
+                            console.log(up.settings)
+                        },
+                    },
+
+                    init : {
+                        UploadComplete: function(up, file, info) {
+                            console.log(" COMPLETE ");
+                            if (up.files.length === (up.total.uploaded + up.total.failed)) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/artUploadComplete',
+                                    success: function(response) {
+                                        window.location.href = `/user/${response.username}`;
+                                    }
+                                });
+                            }
+                        },
+                    }
+
+                });
+            });
+
+        </script>
+
+
+
+
+        <div style="height: 20rem;"></div>
+
+        <!-- Footer Partial -->
+        <%- include('../../partials/_footerNew'); -%>
+        
+    </div>
+
+</body>
+</html>

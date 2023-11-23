@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template | NeverSFW.gg</title>
+    <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+    <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+    <meta name="author" content="MiningP">
+    <meta name="juicyads-site-verification" content="da00b2314e338e83450b5bf9040a1fa6">
+    
+    <link rel="stylesheet" href="../../betasite.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FFEW0Y6QFQ');
+    </script>
+</head>
+<body>
+
+    <%- include('../../partials/_popunder'); -%>
+
+    <div class="page-sidebar">
+        <!-- Side Navigation Partial -->
+        <%- include('../../partials/_sideNav'); -%>
+    </div>
+
+    <div class="page-left" style="margin-top: 22rem;">
+        <!-- Tower Advert Partial -->
+        <%- include('../../partials/_towerAdvert'); -%>
+    </div>
+
+    <div class="page-right">
+        <div class="center-content">
+                    
+            <img src="https://www.neversfw.gg/nsfwlogobanner.png" class="neversfw-banner">
+            <br>
+            <br>
+                <%- include('../../partials/_bannerAdvert'); -%>
+            
+            <br><br>
+            <%- include('../../partials/_mobileNavigation'); -%>
+            <!-- Banner Advert Partial -->
+        </div>
+
+        <div class="round-frosted">
+
+        </div>
+
+
+        <div style="height: 20rem;"></div>
+
+        <!-- Footer Partial -->
+        <%- include('../../partials/_footerNew'); -%>
+        
+    </div>
+
+</body>
+</html>

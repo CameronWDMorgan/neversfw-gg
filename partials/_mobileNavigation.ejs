@@ -2,8 +2,11 @@
 
 <div class="mobileNavigation">
     <a href="https://www.neversfw.gg/">Home</a>
-    <a href="/upload" target="_top">
-        <i class="fa fa-upload"></i> Upload
+    <a href="/uploadArt" target="_top">
+        <i class="fa fa-upload"></i> Upload Art
+    </a>
+    <a href="/uploadGame" target="_top">
+        <i class="fa fa-upload"></i> Upload Games
     </a>
     <% if (session.loggedIn) { %>
         <a href="/user/<%=session.username%>" target="_top">

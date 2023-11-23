@@ -1950,6 +1950,8 @@ module.exports = async function(app){
 
     app.post('/upload', upload.single('file'), async function(req, res) {
 
+        console.log(req.body)
+
         if(req.body.artName == undefined) {
             res.render('sysmessage', {session: req.session, message: `You need to provide a name for your artwork.`, messageType: 'error', buttonText: 'Go Back', buttonLink: 'history.back()' })
             return
@@ -2082,7 +2084,7 @@ module.exports = async function(app){
                 await userContentSchema.findOneAndUpdate(
                     { contentId: contentIdSearch.contentId },
                     {
-                        $push: { contentUrl: `https://www.neversfw.gg/ugc/art/${req.session.accountId}/${nextContentId}-${fileNameNumber}.${after}` }
+                        $push: { contentUrl: `/ugc/art/${req.session.accountId}/${nextContentId}-${fileNameNumber}.${after}` }
                     }
                 )
             } else {
@@ -2100,7 +2102,7 @@ module.exports = async function(app){
                     await userContentSchema.create({
                         contentId: nextContentId,
                         accountId: req.session.accountId,
-                        contentUrl: [`https://www.neversfw.gg/ugc/art/${req.session.accountId}/${nextContentId}-${fileNameNumber}.${after}`],
+                        contentUrl: [`/ugc/art/${req.session.accountId}/${nextContentId}-${fileNameNumber}.${after}`],
                         name: artName,
                         timestamp: Date.now(),
                         description: req.body.description,
@@ -2110,7 +2112,7 @@ module.exports = async function(app){
                     await userContentSchema.create({
                         contentId: nextContentId,
                         accountId: req.session.accountId,
-                        contentUrl: [`https://www.neversfw.gg/ugc/art/${req.session.accountId}/${nextContentId}-${fileNameNumber}.${after}`],
+                        contentUrl: [`/ugc/art/${req.session.accountId}/${nextContentId}-${fileNameNumber}.${after}`],
                         name: artName,
                         timestamp: Date.now(),
                         tags: contentTags
@@ -2126,11 +2128,20 @@ module.exports = async function(app){
         res.send()
     })
 
-    app.get('/upload', async function(req, res){
+    app.get('/uploadArt', async function(req, res){
         if(req.session.loggedIn) {
-            res.render("upload", {session: req.session} )
+            res.render("beta/upload-art", {session: req.session} )
         } else {
-            res.render('sysmessage', {session: req.session, message: 'You need to be logged in to upload Art or Games!', messageType: 'error', buttonText: 'Go to Login', buttonLink:'location.href="/login"' })
+            res.render('sysmessage', {session: req.session, message: 'You need to be logged in to upload Art!', messageType: 'error', buttonText: 'Go to Login', buttonLink:'location.href="/login"' })
+            return true
+        }
+    })
+
+    app.get('/uploadGame', async function(req, res){
+        if(req.session.loggedIn) {
+            res.render("beta/upload-game", {session: req.session} )
+        } else {
+            res.render('sysmessage', {session: req.session, message: 'You need to be logged in to upload Games!', messageType: 'error', buttonText: 'Go to Login', buttonLink:'location.href="/login"' })
             return true
         }
     })
