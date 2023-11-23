@@ -597,6 +597,12 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.15);
 }
 
+.neversfw-banner {
+    width: 50%;
+    height: auto;
+    margin-top: 112px;
+}
+
 .footer-bar {
     position: fixed;
     left: 0;
