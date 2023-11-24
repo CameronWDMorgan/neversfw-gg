@@ -70,7 +70,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         .filter(option => option.selected)
         .map(option => option.value);
 
-    let combinedLora = ""
+    let combinedLora = []
 
     combinedLora = combinedLora.concat(selectedStyleLoraOptions);
     combinedLora = combinedLora.concat(selectedEffectLoraOptions);
