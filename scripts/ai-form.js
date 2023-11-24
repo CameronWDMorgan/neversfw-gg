@@ -75,7 +75,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         .filter(option => option.selected)
         .map(option => option.value);
 
-    const clothingLoraSelect = document.getElementById('concept-lora');
+    const clothingLoraSelect = document.getElementById('clothing-lora');
     const selectedClothingLoraOptions = Array.from(clothingLoraSelect.options)
         .filter(option => option.selected)
         .map(option => option.value);
