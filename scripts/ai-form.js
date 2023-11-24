@@ -58,11 +58,22 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
 
+    
 
-    const loraSelect = document.getElementById('lora');
-    const selectedLoraOptions = Array.from(loraSelect.options)
+    const styleLoraSelect = document.getElementById('style-lora');
+    const selectedStyleLoraOptions = Array.from(styleLoraSelect.options)
         .filter(option => option.selected)
         .map(option => option.value);
+
+    const effectLoraSelect = document.getElementById('effect-lora');
+    const selectedEffectLoraOptions = Array.from(effectLoraSelect.options)
+        .filter(option => option.selected)
+        .map(option => option.value);
+
+    let combinedLora = ""
+
+    combinedLora = combinedLora.concat(selectedStyleLoraOptions);
+    combinedLora = combinedLora.concat(selectedEffectLoraOptions);
 
     
     const data = {
@@ -73,7 +84,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         steps: targetSteps,
         model: targetModel,
         quantity: targetQuantity,
-        lora: selectedLoraOptions
+        lora: combinedLora
     };
 
     try {
