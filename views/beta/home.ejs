@@ -169,7 +169,6 @@
 
     <% async function artFunction(name, type) { %>
         <% let shownList = [] %>
-        <center>
             <div id="showMore<%=type%><%=name%>" class="hidden">                  
             </div>
             <div style="display: block; width: 100%;"></div>
@@ -178,7 +177,6 @@
                 <%console.log(type+name)%>
                 <input id="contentList<%=type%><%=name%>" name="contentList" type="hidden" value=<%=shownList%>>
             </form>
-        </center>
     <% } %>
     
 
