@@ -59,6 +59,11 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
 
 
+    const loraSelect = document.getElementById('lora');
+    const selectedLoraOptions = Array.from(loraSelect.options)
+        .filter(option => option.selected)
+        .map(option => option.value);
+
     
     const data = {
         prompt: formData.get('prompt'),
@@ -67,7 +72,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         height: targetHeight,
         steps: targetSteps,
         model: targetModel,
-        quantity: targetQuantity
+        quantity: targetQuantity,
+        lora: selectedLoraOptions
     };
 
     try {
