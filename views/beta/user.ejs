@@ -262,36 +262,37 @@
         </div>
 
         
-        <div style="background-color: rgba(255, 255, 255, 0.05); padding: 10px; margin: 5rem; display: flex; align-items: center; justify-content: space-between;">
-
-            <!-- Left Side - Profile Pic and Bio -->
-            <div style="display: flex; align-items: center;">
-                <img src="https://www.neversfw.gg/ugc/avatar/<%=user.avatarUrl%>" style="width: 100px; height: 100px; border: 8px outset rgb(175, 26, 255); border-radius: 20%;">
-                <div style="text-align: left; margin-left: 12px;">
-                    <h1><%=user.username%></h1>
-                    <a><%=user.bio%></a>
-                </div>
-            </div>       
-        
-            <!-- Right Side - Follow Button, Followers Count, and Edit Profile -->
-            <div style="text-align: center;">
-                <% if (user.accountId !== session.accountId) { %>
-                    <form class="followForm">
-                        <input name="accountId" type="hidden" value="<%=user.accountId%>">
-                        <button type="submit" id="followButton<%=user.accountId%>" style="font-family: Dimbo; font-size: 400%; border: none; outline: none; background-color: transparent;">
-                            <%=followButtonText%>
-                        </button>
-                    </form>                                       
-                    <div>
-                        <a style="text-align: center;">Followers:<span id="followCount<%=user.accountId%>"><%=user.followedBy.length%></span></a>
+        <div style="display: flex; align-items: center; justify-content: center; height: 12rem;">
+            <div class="frosted" style="padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 2rem; display: flex; align-items: center; justify-content: space-between; width: 60%; font-family: 'Arial', sans-serif;">
+                <!-- Left Side - Profile Pic and Bio -->
+                <div style="display: flex; align-items: center;">
+                    <img src="https://www.neversfw.gg/ugc/avatar/<%=user.avatarUrl%>" style="width: 100px; height: 100px; border: 8px outset rgb(175, 26, 255); border-radius: 20%;">
+                    <div style="text-align: left; margin-left: 12px;">
+                        <h1><%=user.username%></h1>
+                        <a><%=user.bio%></a>
                     </div>
-                <% } %>
-        
-                <% if (session.accountId == user.accountId) { %>
-                    <form method="get" action="/user-edit/" style="margin-top: 10px;">
-                        <button type="submit">Edit Profile</button>
-                    </form> 
-                <% } %>
+                </div>       
+            
+                <!-- Right Side - Follow Button, Followers Count, and Edit Profile -->
+                <div style="text-align: center;">
+                    <% if (user.accountId !== session.accountId) { %>
+                        <form class="followForm">
+                            <input name="accountId" type="hidden" value="<%=user.accountId%>">
+                            <button type="submit" id="followButton<%=user.accountId%>" style="font-family: Dimbo; font-size: 400%; border: none; outline: none; background-color: transparent;">
+                                <%=followButtonText%>
+                            </button>
+                        </form>                                       
+                        <div>
+                            <a style="text-align: center;">Followers:<span id="followCount<%=user.accountId%>"><%=user.followedBy.length%></span></a>
+                        </div>
+                    <% } %>
+            
+                    <% if (session.accountId == user.accountId) { %>
+                        <form method="get" action="/user-edit/" style="margin-top: 10px;">
+                            <button type="submit">Edit Profile</button>
+                        </form> 
+                    <% } %>
+                </div>
             </div>
         </div>
 
