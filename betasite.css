@@ -18,7 +18,7 @@ rgb (27,27,27)
     --tab-inactive-bg: rgb(15, 13, 18);
     --tab-inactive: rgb(184, 146, 249);
     --tab-active: rgb(255, 255, 255);
-    --frosted-background: rgba(0, 0, 0, 0.5);
+    --frosted-background: rgba(0, 0, 0, 0.246);
     --frosted-blur: blur(5px);
 }
                 
@@ -169,6 +169,10 @@ button:hover {
 }
 
 
+.frosted {
+    background-color: var(--frosted-background);
+    backdrop-filter: var(--frosted-blur);
+}
 
 .round-frosted {
     background-color: var(--frosted-background);
