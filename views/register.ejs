@@ -50,7 +50,15 @@
                         <p></p>
                         <div>
                             
-                            <input autocomplete="off" type="password" name="password" placeholder="Password" required>
+                            <input autocomplete="off" type="password" name="password" id="password" placeholder="Password" required>
+                            <button onclick="togglePassword()">Show Password</button>
+                            <script>
+                                function togglePassword() {
+                                    var passwordInput = document.getElementById("password");
+                                    var type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                                    passwordInput.setAttribute("type", type);
+                                }
+                            </script>
                         </div>
                         <p></p>
                         <label>Email</label>
