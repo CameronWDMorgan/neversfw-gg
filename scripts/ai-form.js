@@ -70,10 +70,22 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         .filter(option => option.selected)
         .map(option => option.value);
 
+    const conceptLoraSelect = document.getElementById('concept-lora');
+    const selectedConceptLoraOptions = Array.from(conceptLoraSelect.options)
+        .filter(option => option.selected)
+        .map(option => option.value);
+
+    const clothingLoraSelect = document.getElementById('concept-lora');
+    const selectedClothingLoraOptions = Array.from(clothingLoraSelect.options)
+        .filter(option => option.selected)
+        .map(option => option.value);
+
     let combinedLora = []
 
-    combinedLora = combinedLora.concat(selectedStyleLoraOptions);
-    combinedLora = combinedLora.concat(selectedEffectLoraOptions);
+    combinedLora = combinedLora.concat(selectedStyleLoraOptions)
+    combinedLora = combinedLora.concat(selectedEffectLoraOptions)
+    combinedLora = combinedLora.concat(selectedConceptLoraOptions)
+    combinedLora = combinedLora.concat(selectedClothingLoraOptions)
 
     
     const data = {
