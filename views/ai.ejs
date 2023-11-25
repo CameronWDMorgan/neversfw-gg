@@ -75,7 +75,12 @@
             font-size: 14px;
             pointer-events: none;
             color: white;
-            background-color: #ffffff15;
+            background-color: #00000015;
+        }
+
+        .form-control select[multiple] option:checked {
+            color: white;
+            background-color: rgb(165, 68, 255);
         }
 
         .range-value {
@@ -274,59 +279,64 @@
                     </select>
                 </div>
 
-                <div class="form-control">
-                    <label for="style-lora">Styles Lora:</label>
-                    <select id="style-lora" name="style-lora" value="none" multiple>
-                        <option value="none">None</option>
-                        <option value="style-afrobull">Afrobull</option>
-                        <option value="style-minecraft">Minecraft</option>
-                        <option value="style-cutesexyrobutts">Cute Sexyrobutts</option>
-                        <option value="style-flatcolor">Flat Color</option>
-                        <option value="style-animeminimalist">Anime Minimalist</option>
-                        <option value="style-cartoonportrait">Cartoon Portrait</option>
-                        <option value="style-genshinimpact">Genshin Impact</option>
-                        <option value="style-horikoshikouhei">Horikoshi Kouhei</option>
-                        <option value="style-manga">Manga</option>
-                        <option value="style-oilpainting">Oil Painting</option>
-                        <option value="style-pixel">Pixel Art</option>
-                        <option value="style-rhythm">Rhythm Doctor</option>
-                        <option value="style-illumination">Illumination Studios</option>
-                        <option value="style-tekuho">Tekuho</option>
-                        <option value="style-TER">TER</option>
-                        <option value="style-ToonWorld">ToonWorld</option>
-                        <option value="style-thickline">Thick Outlines</option>
-                        <option value="style-tohdraws">TOHdraws</option>
-                        <option value="style-futavieny">Futa</option>
-                    </select>
+
+
+                <div class="imagesContainer">
+                    <div class="form-control">
+                        <label for="style-lora">Styles Lora:</label>
+                        <select style="height: 12rem" id="style-lora" name="style-lora" value="none" multiple>
+                            <option value="none">None</option>
+                            <option value="style-afrobull">Afrobull</option>
+                            <option value="style-minecraft">Minecraft</option>
+                            <option value="style-cutesexyrobutts">Cute Sexyrobutts</option>
+                            <option value="style-flatcolor">Flat Color</option>
+                            <option value="style-animeminimalist">Anime Minimalist</option>
+                            <option value="style-cartoonportrait">Cartoon Portrait</option>
+                            <option value="style-genshinimpact">Genshin Impact</option>
+                            <option value="style-horikoshikouhei">Horikoshi Kouhei</option>
+                            <option value="style-manga">Manga</option>
+                            <option value="style-oilpainting">Oil Painting</option>
+                            <option value="style-pixel">Pixel Art</option>
+                            <option value="style-rhythm">Rhythm Doctor</option>
+                            <option value="style-illumination">Illumination Studios</option>
+                            <option value="style-tekuho">Tekuho</option>
+                            <option value="style-TER">TER</option>
+                            <option value="style-ToonWorld">ToonWorld</option>
+                            <option value="style-thickline">Thick Outlines</option>
+                            <option value="style-tohdraws">TOHdraws</option>
+                            <option value="style-futavieny">Futa</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-control">
+                        <label for="effect-lora">Effects Lora:</label>
+                        <select style="height: 12rem" class="form-select" id="effect-lora" name="effect-lora" value="none" multiple>
+                            <option value="none">None</option>
+                            <option value="effect-easysticker">Easy Sticker</option>
+                            <option value="effect-glitching">Glitching</option>
+                            <option value="effect-vhs">VHS</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-control">
+                        <label for="concept-lora">Concepts Lora:</label>
+                        <select style="height: 12rem" class="form-select" id="concept-lora" name="concept-lora" value="none" multiple>
+                            <option value="none">None</option>
+                            <option value="concept-cumflation">Cumflation</option>
+                            <option value="concept-horosuketentacle">Horosuke Tentacles</option>
+                            <option value="concept-slimegirl">Slime Girls</option>
+                        </select>
+                    </div>
+    
+                    <div class="form-control">
+                        <label for="clothing-lora">Clothing Lora:</label>
+                        <select style="height: 12rem" class="form-select" id="clothing-lora" name="clothing-lora" value="none" multiple>
+                            <option value="none">None</option>
+                            <option value="clothing-roundglasses">Round Glasses</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-control">
-                    <label for="effect-lora">Effects Lora:</label>
-                    <select id="effect-lora" name="effect-lora" value="none" multiple>
-                        <option value="none">None</option>
-                        <option value="effect-easysticker">Easy Sticker</option>
-                        <option value="effect-glitching">Glitching</option>
-                        <option value="effect-vhs">VHS</option>
-                    </select>
-                </div>
-
-                <div class="form-control">
-                    <label for="concept-lora">Concepts Lora:</label>
-                    <select id="concept-lora" name="concept-lora" value="none" multiple>
-                        <option value="none">None</option>
-                        <option value="concept-cumflation">Cumflation</option>
-                        <option value="concept-horosuketentacle">Horosuke Tentacles</option>
-                        <option value="concept-slimegirl">Slime Girls</option>
-                    </select>
-                </div>
-
-                <div class="form-control">
-                    <label for="clothing-lora">Clothing Lora:</label>
-                    <select id="clothing-lora" name="clothing-lora" value="none" multiple>
-                        <option value="none">None</option>
-                        <option value="clothing-roundglasses">Round Glasses</option>
-                    </select>
-                </div>
 
 
                 <div class="form-control inline-slider">
