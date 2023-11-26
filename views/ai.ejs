@@ -189,6 +189,10 @@
             object-fit: contain; /* Adds support for maintaining aspect ratio */
         }
 
+        .loraSelection {
+            height: 12rem
+        }
+
 
 
     </style>
@@ -284,66 +288,49 @@
                 <div class="imagesContainer">
                     <div class="form-control">
                         <label for="style-lora">Styles Lora:</label>
-                        <select style="height: 12rem" id="style-lora" name="style-lora" value="none" multiple>
-                            <option value="none">None</option>
-                            <option value="style-afrobull">Afrobull</option>
-                            <option value="style-minecraft">Minecraft</option>
-                            <option value="style-cutesexyrobutts">Cute Sexyrobutts</option>
-                            <option value="style-flatcolor">Flat Color</option>
-                            <option value="style-animeminimalist">Anime Minimalist</option>
-                            <option value="style-cartoonportrait">Cartoon Portrait</option>
-                            <option value="style-genshinimpact">Genshin Impact</option>
-                            <option value="style-manga">Manga</option>
-                            <option value="style-oilpainting">Oil Painting</option>
-                            <option value="style-TER">TER</option>
-                            <option value="style-thickline">Thick Outlines</option>
-                            <option value="style-tohdraws">TOHdraws</option>
-                        </select>
+                        <% if (data.style) { %>
+                            <select class="loraSelection" id="style-lora" name="style-lora" multiple>
+                                <% Object.entries(data.style).forEach(([key, value]) => { %>
+                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                <% }); %>
+                            </select>
+                        <% } %>
                     </div>
+                    
     
                     <div class="form-control">
                         <label for="effect-lora">Effects Lora:</label>
-                        <select style="height: 12rem" class="form-select" id="effect-lora" name="effect-lora" value="none" multiple>
-                            <option value="none">None</option>
-                            <option value="effect-easysticker">Easy Sticker</option>
-                            <option value="effect-glitching">Glitching</option>
-                        </select>
+                        <% if (data.effect) { %>
+                            <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
+                                <% Object.entries(data.effect).forEach(([key, value]) => { %>
+                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                <% }); %>
+                            </select>
+                        <% } %>
                     </div>
     
                     <div class="form-control">
                         <label for="concept-lora">Concepts Lora:</label>
-                        <select style="height: 12rem" class="form-select" id="concept-lora" name="concept-lora" value="none" multiple>
-                            <option value="none">None</option>
-                            <option value="concept-cumflation">Cumflation</option>
-                            <option value="concept-horosuketentacle">Horosuke Tentacles</option>
-                            <option value="concept-slimegirl">Slime Girls</option>
-                            <option value="concept-futavieny">Futa</option>
-                        </select>
+                        <% if (data.concept) { %>
+                            <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
+                                <% Object.entries(data.concept).forEach(([key, value]) => { %>
+                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                <% }); %>
+                            </select>
+                        <% } %>
                     </div>
     
                     <div class="form-control">
                         <label for="clothing-lora">Clothing Lora:</label>
-                        <select style="height: 12rem" class="form-select" id="clothing-lora" name="clothing-lora" value="none" multiple>
-                            <option value="none">None</option>
-                            <option value="clothing-roundglasses">Round Glasses</option>
-                            <option value="clothing-blackerunderwear">Blacked Underwear</option>
-                            <option value="clothing-bunnysuit">Bunnysuit</option>
-                            <option value="clothing-catpawthighhighs">Cat Paw Thighhighs </option>
-                            <option value="clothing-croptop">Croptop</option>
-                            <option value="clothing-lingerie">Detailed Lingerie</option>
-                            <option value="clothing-catlingerie">Cat Lingerie</option>
-                            <option value="clothing-highjeans">High Jeans</option>
-                            <option value="clothing-gembuttplug">Gem Buttplug</option>
-                            <option value="clothing-maryjanes">Mary Janes</option>
-                            <option value="clothing-overalls">Overalls</option>
-                            <option value="clothing-oversizedsweater">Oversized Sweater/Hoodie</option>
-                            <option value="clothing-sexysantaoutfit">Sexy Santa Outfit</option>
-                            <option value="clothing-strapondildo">Strapon Dildo</option>
-                            <option value="clothing-bridaldress">Bridal Dress</option>
-                            <option value="clothing-yogapants">Yoga Pants</option>
-                            <option value="clothing-blackspidermanoutfit">Black Spider-Man Outfit</option>
-                        </select>
+                        <% if (data.clothing) { %>
+                            <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
+                                <% Object.entries(data.clothing).forEach(([key, value]) => { %>
+                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                <% }); %>
+                            </select>
+                        <% } %>
                     </div>
+
                 </div>
                 <br><br>
                 <a>Use CTRL / Shift Left Click to select multiple Lora's! Please report any broken loras on the </a><a href="https://discord.gg/2QXV66RVMG">Discord!</a>

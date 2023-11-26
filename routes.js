@@ -14,8 +14,8 @@ module.exports = async function(app){
     const multer = require('multer');
     const fs = require('fs');
     const path = require('path');
-
-    const { Transform } = require('stream');
+    
+    const fetch = require('node-fetch')
 
     const upload = multer({ dest: 'temp/' });
 
@@ -2555,6 +2555,37 @@ module.exports = async function(app){
         res.redirect(`https://www.neversfw.gg/user/${req.session.username}`)
     })
 
+    let cachedYAMLData = null
+    const flaskServerURL = "https://neversfw.ngrok.dev/get-lora-yaml"
+
+    // Function to sort an object by its keys
+    function sortObjectByKey(obj) {
+        return Object.keys(obj).sort().reduce((acc, key) => {
+            acc[key] = obj[key];
+            return acc;
+        }, {});
+    }
+
+    // Function to fetch, sort, and cache YAML data
+    function updateYAMLCache() {
+        fetch(flaskServerURL)
+            .then(response => response.json())
+            .then(data => {
+                // Sort the data
+                Object.keys(data).forEach(category => {
+                    data[category] = sortObjectByKey(data[category]);
+                });
+
+                cachedYAMLData = sortObjectByKey(data);
+                // console.log('YAML data updated and sorted.');
+            })
+            .catch(err => console.error('Error fetching YAML data:', err));
+    }
+
+    
+    updateYAMLCache();
+    setInterval(updateYAMLCache, 5 * 1000);
+
     app.get('/ai', async function(req, res){
         try {
 
@@ -2567,7 +2598,7 @@ module.exports = async function(app){
             } else {
                 foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
             }
-            res.render('ai', { session: req.session, promptValue: foundAccount.ai.prompt, negativePromptValue: foundAccount.ai.negativeprompt, modelValue: foundAccount.ai.model });
+            res.render('ai', { session: req.session, data: cachedYAMLData, promptValue: foundAccount.ai.prompt, negativePromptValue: foundAccount.ai.negativeprompt, modelValue: foundAccount.ai.model });
         } catch (error) {
             console.error(error);
             res.status(500).send('Error loading tags data');
