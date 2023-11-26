@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=artwork.name%> | NeverSFW.gg</title>
+    <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+    <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+    <meta name="author" content="MiningP">
+    <meta name="juicyads-site-verification" content="da00b2314e338e83450b5bf9040a1fa6">
+
+    <% let artworkTagsCleaned = '' %>
+        <% artwork.tags.forEach(tag => { %>
+            <% artworkTagsCleaned = `${artworkTagsCleaned}, ${tag}` %>
+        <% }) %>
+
+        <% let contentCountText = '[1] Image' %>
+        <% if (artwork.contentUrl[1]) { %>
+            <% contentCountText = `[${artwork.contentUrl.length}] Images` %>
+        <% } %>
+
+        <meta content="<%=contentCountText%> | <%=artwork.name%> | NeverSFW.gg" property="og:title">
+
+        <meta content="<%=contentCountText%> | Description: <%=artwork.description%> | Tags: <%=artworkTagsCleaned%>" property="og:description">
+        <meta content="https://www.neversfw.gg/art/<%=artwork.contentId%>" property="og:url">
+
+        <meta content="<%=artwork.contentUrl[0]%>" property="og:image" />
+        <meta name="twitter:card" content="summary_large_image">
+    
+    <link rel="stylesheet" href="../betasite.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FFEW0Y6QFQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FFEW0Y6QFQ');
+    </script>
+</head>
+<body>
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            toggleButtons()
+        })
+    </script>
+    <script>
+        function commentFunction(index,form){
+            $(form).submit(function(event) {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+        
+                // Get the form data
+                var formData = $(this).serialize();
+        
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/artworkComment',
+                    data: formData,
+                    success: async function(response) {
+                        // Handle the server's response
+                        formData = formData.split('&')
+                        contentId = formData[0].split('=')[1]
+                        var commentHtml = ''
+                        let accounts = response.accounts
+                        response.comments.reverse()
+                        await response.comments.forEach(commentDocument => {
+                            commentHtml += '<div class="comment">'
+                                for( let index = 0; index < accounts.length;) {
+                                    account = accounts[index]
+                                    if (account.accountId == commentDocument.accountId) { 
+                                        let date = new Date(Number(commentDocument.timestamp));
+                                        let day = date.getDate().toString().padStart(2, '0');
+                                        let month = (date.getMonth() + 1).toString().padStart(2, '0'); // add 1 to adjust for zero-based month index
+                                        let year = date.getFullYear();
+                                        let hour = date.getHours().toString().padStart(2, '0');
+                                        let minute = date.getMinutes().toString().padStart(2, '0');
+                                        let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
+                                        commentHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + ' - ' + formattedDate + '</a>'
+                                        commentHtml += '<p>' + commentDocument.comment + '</p>'
+                                        index = accounts.length +1 
+                                    }
+                                    index++
+                                }
+                            
+                            
+
+                            commentHtml += '</div>';
+                        })
+                        commentHtml += '</div>';
+                        
+                        
+                        // Insert the new comment into the DOM
+                        const contentDiv = document.getElementById('contentComments'+contentId)
+                        contentDiv.classList.remove('hidden');
+                        $('#contentComments'+contentId).html(`${commentHtml}`);
+                        $('#contentCommentsCount'+contentId).html(`${response.count}`);
+                        $('#commentBox'+contentId).val(``);
+                        setTimeout(() => {
+                            $('#commentBox'+contentId).attr("placeholder", "Send Comment...");
+                        }, 2000);
+                        $('#commentBox'+contentId).attr("placeholder", "Sent Comment!");
+
+                    }
+                });
+            });
+        }
+        function likeFunction(index,form){
+            $(form).submit(function(event) {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+        
+                // Get the form data
+                var formData = $(this).serialize();
+
+                console.log(formData)
+        
+                // Send a POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/artworkLike',
+                    data: formData,
+                    success: function(response) {
+                        // Handle the server's response
+                        formData = formData.split('&')
+                        contentId = formData[0].split('=')[1]
+                        $('#contentLikes'+contentId).html(`${response.likes}`);
+                    }
+                });
+            });
+        }
+    </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.likeForm').each(function(index, form) {
+                    if (!$(form).data('submitEventBound')) {
+                        likeFunction(index, form)
+                        $(form).data('submitEventBound', true);
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.commentForm').each(function(index, form) {
+                    if (!$(form).data('submitEventBound')) {
+                        commentFunction(index, form)
+                        $(form).data('submitEventBound', true);
+                    }
+                });
+            });
+        </script>
+
+
+
+
+
+
+
+    <%- include('../../partials/_popunder'); -%>
+
+    <div class="page-sidebar">
+        <!-- Side Navigation Partial -->
+        <%- include('../../partials/_sideNav'); -%>
+    </div>
+
+    <div class="page-left" style="margin-top: 22rem;">
+        <!-- Tower Advert Partial -->
+        <%- include('../../partials/_towerAdvert'); -%>
+    </div>
+
+    <div class="page-right">
+        <div class="center-content">
+                    
+            <img src="https://www.neversfw.gg/nsfwlogobanner.png" class="neversfw-banner">
+            <br>
+            <br>
+                <%- include('../../partials/_bannerAdvert'); -%>
+            
+            <br><br>
+            <%- include('../../partials/_mobileNavigation'); -%>
+            <!-- Banner Advert Partial -->
+        </div>
+
+        <div class="round-frosted">
+            <div class="artPost">
+                <div class="art-details" style="text-align: left !important; justify-content: left;">
+                    <% accounts.forEach(account => { %>
+                        <% if (account.accountId == artwork.accountId) { %>
+                            <a href="https://www.neversfw.gg/user/<%= account.username %>">
+                                <img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%= account.avatarUrl %>" width="32px" height="32px">
+                                <%= account.username %>:
+                            </a>
+                            <% 
+                                let date = new Date(Number(artwork.timestamp));
+                                let formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+                            %>
+                            <a href="https://www.neversfw.gg/art/<%= artwork.contentId %>"><%= artwork.name %></a>
+                            <br>
+                            <a style="position:absolute; font-size: small; color: rgba(255, 255, 255, 0.5); transform: translateX(38px);">[<%= formattedDate %>]</a>
+                            <br>
+                        <% } %>
+                    <% }); %>
+                </div>
+            
+                <div class="art-gallery">
+                    <% 
+                        artwork.contentUrl.forEach(artImage => {
+                            let ext = artImage.slice(-3);
+                            if (["mp4", "mov", "wmv", "avi", "mkv", "ebm", "flv", ".rm"].includes(ext)) {
+                    %>
+                        <video class="art-piece" controls>
+                            <source src="<%= artImage %>" width="auto" height="100%">
+                        </video>
+                    <% 
+                            } else {
+                    %>
+                        <a class="art-piece" target="_blank" href="https://www.neversfw.gg/art/<%= artwork.contentId %>">
+                            <img src="<%= artImage %>" width="auto" height="100%">
+                        </a>
+                    <% 
+                            }
+                        }); 
+                    %>
+                </div>
+                <div class="art-below">
+                    <% if (artwork.description) { %>
+                        <p class="artworkDescription">Description: <%= artwork.description %></p>
+                    <% } %>
+
+                    <div class="artworkTags" style="float: left; width: 100%; text-align: left !important; justify-content: left;">
+                        <a>Tags: </a>
+                        <% artwork.tags.forEach(tag => { %>
+                            <a href="https://www.neversfw.gg/search?searchTerm=<%= tag.replace('(author)','') %>"><%= tag %></a>,
+                        <% }); %>
+                    </div>
+
+                    <center>
+                        <form class="likeForm" style="display:inline-flex">
+                            <input name="contentId" type="hidden" value="<%= artwork.contentId %>">
+                            <input name="likes" type="hidden" value="<%= artwork.likes.length %>">
+                            <button type="submit" class="postButton">
+                                <% 
+                                    let artworkIsLiked = artwork.likes.some(like => like.accountId == session.accountId);
+                                    if(artworkIsLiked) {
+                                %>
+                                    <i class="fa fa-heart" style="color: rgb(0,255,255)">
+                                        <a style="margin-left: 6px;" id="contentLikes<%= artwork.contentId %>"><%= artwork.likes.length %></a>
+                                    </i>
+                                <% } else { %>
+                                    <i class="fa fa-heart">
+                                        <a style="margin-left: 6px;" id="contentLikes<%= artwork.contentId %>"><%= artwork.likes.length %></a>
+                                    </i>
+                                <% } %>
+                            </button>
+                        </form>
+
+                        <form class="commentForm" style="display:inline-flex">
+                            <input name="contentId" type="hidden" value="<%= artwork.contentId %>">
+                            <button type="submit" class="postButton">
+                                <i class="fa fa-comment">
+                                    <a style="margin-left: 6px;" id="contentCommentsCount<%= artwork.contentId %>"><%= artwork.comments.length %></a>
+                                </i>
+                            </button>
+                            <input name="comment" required class="commentBox" id="commentBox<%= artwork.contentId %>" placeholder="Send Comment...">
+                        </form>
+
+                        <button class="toggle-comments-button" class="postButton" style="transform: translateY(-8px);">
+                            Hide/Show Comments
+                        </button>
+                        <div id="contentComments<%= artwork.contentId %>" class="hidden">
+                            <% 
+                                artwork.comments.reverse().forEach(comment => {
+                                    let account = accounts.find(a => a.accountId == comment.accountId);
+                                    let commentDate = new Date(Number(comment.timestamp));
+                                    let formattedCommentDate = `${commentDate.getDate().toString().padStart(2, '0')}/${(commentDate.getMonth() + 1).toString().padStart(2, '0')}/${commentDate.getFullYear()} ${commentDate.getHours().toString().padStart(2, '0')}:${commentDate.getMinutes().toString().padStart(2, '0')}`;
+                            %>
+                                <div class="comment" style="text-align: left !important; justify-content: left;">
+                                    <a href="https://www.neversfw.gg/user/<%= account.username %>" class="comment-details">
+                                        <img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/<%= account.avatarUrl %>" width="32px" height="32px">
+                                        <%= account.username %>   -  <%= formattedCommentDate %>
+                                    </a>
+                                    <p><%= comment.comment %></p>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="height: 20rem;"></div>
+
+        <!-- Footer Partial -->
+        <%- include('../../partials/_footerNew'); -%>
+
+        <script>
+            function toggleButtons() {
+                console.log(`ran: toggleButtons`);
+                const toggleButtons = document.querySelectorAll('.toggle-comments-button');
+                toggleButtons.forEach(button => {
+                    if (!button.hasAttribute('data-clicked')) {
+                        button.setAttribute('data-clicked', 'true');
+
+                        const toggleComments = () => {
+                            const content = button.nextElementSibling;
+                            content.classList.toggle('hidden');
+                        };
+
+                        button.removeEventListener('click', toggleComments);
+                        button.addEventListener('click', toggleComments);
+                    }
+                });
+            }
+        </script>
+        
+    </div>
+
+</body>
+</html>

@@ -434,7 +434,7 @@ module.exports = async function(app){
             )
         }
 
-        res.render('art', {
+        res.render('beta/art', {
             session: req.session,
             artwork,
             accounts
