@@ -242,8 +242,8 @@
                     <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
                     <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li><br>
                     <p>Here is a recommended Negative Prompt!</p>
-                    <a>worst_quality, low_quality, watermark, signature, bad_anatomy, bad_hands, deformed_limbs, blurry, cropped, 
-                        cross-eyed, extra_arms, speech_bubble, extra_legs, extra_limbs, bad_proportions, poorly_drawn_hands, text, simple_background, flat_background, </a>
+                    <a>worst_quality, low_quality, watermark, signature, bad_anatomy, bad_hands, deformed_limbs, blurry, cropped, cross-eyed, extra_arms, extra_legs,
+                        extra_limbs, extra_pupils, bad_proportions, poorly_drawn_hands, simple background,</a>
                     <br><br><li>Aspect Ratio: Change the aspect ratio of the image from a square, to portrait or landscape!</li><br>
                     <li>Steps Slider: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li><br>
                     <li>Image Quantity: This controls the number of images the image API should generate, the more the slower!</li><br>
@@ -349,6 +349,24 @@
                     <span id="quantityValue" class="range-value">4</span>
                 </div>   
 
+                <div class="form-control">
+                    <label for="img2imgCheckbox">Enable img2img:</label>
+                    <input type="checkbox" id="img2imgCheckbox" name="img2imgCheckbox">
+                </div>
+                
+                <div class="form-control" id="img2imgControls" style="display: none;">
+                    <label for="uploadedImage">Upload Image:</label>
+                    <input type="file" id="uploadedImage" name="uploadedImage" accept="image/*">
+                </div>
+
+                <div class="form-control inline-slider" id="img2imgStrengthControl" style="display: none;">
+                    <label for="img2imgStrength">img2img Strength:</label>
+                    <input type="range" id="img2imgStrength" name="img2imgStrength" min="0" max="100" step="1" value="50">
+                    <span id="img2imgStrengthValue" class="range-value">50%</span>
+                </div>
+                
+                
+
                 <center>
                     <% if (session.loggedIn == false) { %>
                         <p style="color: rgba(255, 255, 255, 0.249)"> Register for up to 150 steps from 50!</p>
@@ -387,6 +405,32 @@
 
     <script>
 
+    </script>
+
+
+
+
+
+
+
+    <script>
+        document.getElementById('img2imgCheckbox').addEventListener('change', function() {
+            const isChecked = this.checked;
+            const img2imgControls = document.getElementById('img2imgControls');
+            const img2imgStrengthControl = document.getElementById('img2imgStrengthControl');
+
+            if (isChecked) {
+                img2imgControls.style.display = 'block';
+                img2imgStrengthControl.style.display = 'block';
+            } else {
+                img2imgControls.style.display = 'none';
+                img2imgStrengthControl.style.display = 'none';
+            }
+        });
+
+        document.getElementById('img2imgStrength').addEventListener('input', function() {
+            document.getElementById('img2imgStrengthValue').innerText = this.value + '%';
+        });
     </script>
 
 

@@ -58,7 +58,11 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
 
-    
+    // Get the image file from the file input
+    const imageInput = document.getElementById('uploadedImage');
+    if (imageInput.files && imageInput.files[0]) {
+        formData.append('image', imageInput.files[0]);
+    }
 
     const styleLoraSelect = document.getElementById('style-lora');
     const selectedStyleLoraOptions = Array.from(styleLoraSelect.options)
@@ -87,6 +91,29 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     combinedLora = combinedLora.concat(selectedConceptLoraOptions)
     combinedLora = combinedLora.concat(selectedClothingLoraOptions)
 
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    checkbox = document.getElementById('img2imgCheckbox')
+    // Usage
+    console.log(checkbox.checked)
+
+    let imageBase64
+
+    if(checkbox.checked) {
+        console.log("AAAAAAAAAAAAAAAAAAAAa")
+        let file = document.getElementById('uploadedImage').files[0];
+        imageBase64 = await getBase64(file)
+    } else {
+
+    }
+    
     
     const data = {
         prompt: formData.get('prompt'),
@@ -96,17 +123,13 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         steps: targetSteps,
         model: targetModel,
         quantity: targetQuantity,
-        lora: combinedLora
+        lora: combinedLora,
+        image: imageBase64,
+        strength: formData.get('img2imgStrength')
     };
 
     try {
         document.getElementById('response').innerText = "Requesting Image, please wait...";
-
-        fetch(`/ai-generate`, {
-            method: 'POST',
-            headers: getDefaultHeaders(), // Set the headers for the POST request
-            body: JSON.stringify(data)
-        });
 
         const response = await fetch(`${API_BASE}/generate`, {
             method: 'POST',
