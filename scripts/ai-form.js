@@ -84,12 +84,18 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         .filter(option => option.selected)
         .map(option => option.value);
 
+    const characterLoraSelect = document.getElementById('character-lora');
+    const selectedCharacterLoraOptions = Array.from(characterLoraSelect.options)
+        .filter(option => option.selected)
+        .map(option => option.value);
+
     let combinedLora = []
 
     combinedLora = combinedLora.concat(selectedStyleLoraOptions)
     combinedLora = combinedLora.concat(selectedEffectLoraOptions)
     combinedLora = combinedLora.concat(selectedConceptLoraOptions)
     combinedLora = combinedLora.concat(selectedClothingLoraOptions)
+    combinedLora = combinedLora.concat(selectedCharacterLoraOptions)
 
     function getBase64(file) {
         return new Promise((resolve, reject) => {

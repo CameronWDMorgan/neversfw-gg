@@ -331,6 +331,17 @@
                         <% } %>
                     </div>
 
+                    <div class="form-control">
+                        <label for="character-lora">Character Lora:</label>
+                        <% if (data.character) { %>
+                            <select class="loraSelection" id="character-lora" name="character-lora" multiple>
+                                <% Object.entries(data.character).forEach(([key, value]) => { %>
+                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                <% }); %>
+                            </select>
+                        <% } %>
+                    </div>
+
                 </div>
                 <br><br>
                 <a>Use CTRL / Shift Left Click to select multiple Lora's! Please report any broken loras on the </a><a href="https://discord.gg/2QXV66RVMG">Discord!</a>
@@ -541,7 +552,7 @@
     
     <script src="../scripts/ai-slider-balancing.js"></script>
 
-    <script src="../scripts/ai-form.js?v3"></script>
+    <script src="../scripts/ai-form.js?v4"></script>
     <script src="../scripts/ai-autocomplete.js"></script>
     <script src="../scripts/ai-strength.js"></script>
 </body>
