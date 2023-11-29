@@ -2602,7 +2602,14 @@ module.exports = async function(app){
 
             console.log(foundAccount.ai)
 
-            res.render('ai', { session: req.session, data: cachedYAMLData, promptValue: foundAccount.ai.prompt, negativePromptValue: foundAccount.ai.negativeprompt, modelValue: foundAccount.ai.model });
+            res.render('ai', { 
+                session: req.session,
+                data: cachedYAMLData,
+                promptValue: foundAccount.ai.prompt,
+                negativePromptValue: foundAccount.ai.negativeprompt,
+                modelValue: foundAccount.ai.model,
+                selectedLoras: selectedLoras
+            });
         } catch (error) {
             console.error(error);
             res.status(500).send('Error loading tags data');
