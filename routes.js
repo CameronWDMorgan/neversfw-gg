@@ -2592,13 +2592,15 @@ module.exports = async function(app){
             if(req.session.loggedIn){
                 reqIdString = `${req.session.accountId}`
                 foundAccount = await userProfileSchema.findOne({accountId: reqIdString})
-                const selectedLoras = foundAccount.ai.loras || {};
+                
                 if(!foundAccount.ai) {
                     foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
                 }
             } else {
                 foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
             }
+
+            const selectedLoras = foundAccount.ai.loras || {};
 
             console.log(foundAccount.ai)
 
