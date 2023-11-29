@@ -149,7 +149,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         document.getElementById('response').innerText = "Requesting Image, please wait...";
 
         // POSTs to the autosaving thingy, uses mongodb
-        await fetch('/ai-generate', {
+        fetch('/ai-generate', {
             method: 'POST',
             headers: getDefaultHeaders(), // Set the headers for the POST request
             body: JSON.stringify(data)
