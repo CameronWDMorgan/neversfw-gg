@@ -131,7 +131,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         quantity: targetQuantity,
         lora: combinedLora,
         image: imageBase64,
-        strength: formData.get('img2imgStrength')
+        strength: formData.get('img2imgStrength'),
+        guidance: formData.get('cfguidance')
     };
 
     try {

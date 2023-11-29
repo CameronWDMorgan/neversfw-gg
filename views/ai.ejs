@@ -355,6 +355,12 @@
                 </div>
 
                 <div class="form-control inline-slider">
+                    <label for="cfguidance">CFG:</label>
+                    <input type="range" id="cfguidance" name="cfguidance" min="0.1" max="30" step="0.1" value="5">
+                    <span id="cfguidanceValue" class="range-value">5</span>
+                </div>
+
+                <div class="form-control inline-slider">
                     <label for="quantity">Image Quantity:</label>
                     <input type="range" id="quantity" name="quantity" min="1" max="6" step="1" value="4">
                     <span id="quantityValue" class="range-value">4</span>
@@ -441,6 +447,10 @@
 
         document.getElementById('img2imgStrength').addEventListener('input', function() {
             document.getElementById('img2imgStrengthValue').innerText = this.value + '%';
+        });
+
+        document.getElementById('cfguidance').addEventListener('input', function() {
+            document.getElementById('cfguidanceValue').innerText = this.value + '%';
         });
     </script>
 
@@ -546,13 +556,13 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 
     <script>
-        var maxStepsCountWanted = `<%= session.loggedIn ? 150 : 50 %>`
-        var maxImageQuantityWanted = 6;
+        var maxStepsCountWanted = `<%= session.loggedIn ? 100 : 50 %>`
+        var maxImageQuantityWanted = 8;
     </script>
     
     <script src="../scripts/ai-slider-balancing.js"></script>
 
-    <script src="../scripts/ai-form.js?v4"></script>
+    <script src="../scripts/ai-form.js?v5"></script>
     <script src="../scripts/ai-autocomplete.js"></script>
     <script src="../scripts/ai-strength.js"></script>
 </body>
