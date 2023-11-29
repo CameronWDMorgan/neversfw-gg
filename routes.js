@@ -2584,7 +2584,7 @@ module.exports = async function(app){
 
     
     updateYAMLCache();
-    setInterval(updateYAMLCache, 5 * 1000);
+    setInterval(updateYAMLCache, 60 * 1000);
 
     app.get('/ai', async function(req, res){
         try {
