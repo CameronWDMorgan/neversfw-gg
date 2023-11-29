@@ -20,7 +20,8 @@ let aiNegativePrompt = "worst quality, low quality, watermark, signature, bad an
 const aiSchema = new Schema({
     prompt: { type: String, default: "1girl, cute" },
     negativeprompt: { type: String, default: aiNegativePrompt },
-    model: { type: String, default: "furry" }
+    model: { type: String, default: "furry" },
+    loras: { type: Object }
 })
 
 const userProfileSchema = new Schema({
