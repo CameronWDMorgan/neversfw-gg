@@ -2592,12 +2592,16 @@ module.exports = async function(app){
             if(req.session.loggedIn){
                 reqIdString = `${req.session.accountId}`
                 foundAccount = await userProfileSchema.findOne({accountId: reqIdString})
+                const selectedLoras = foundAccount.ai.loras || {};
                 if(!foundAccount.ai) {
                     foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
                 }
             } else {
                 foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
             }
+
+            console.log(foundAccount.ai)
+
             res.render('ai', { session: req.session, data: cachedYAMLData, promptValue: foundAccount.ai.prompt, negativePromptValue: foundAccount.ai.negativeprompt, modelValue: foundAccount.ai.model });
         } catch (error) {
             console.error(error);
@@ -2608,7 +2612,17 @@ module.exports = async function(app){
     app.post('/ai-generate', async function(req, res) {
         if(req.session.loggedIn){
             reqIdString = `${req.session.accountId}`
-            await userProfileSchema.findOneAndUpdate({accountId: reqIdString},{ai: {prompt: `${req.body.prompt}`, negativeprompt: `${req.body.negativeprompt}`, model: `${req.body.model}`}})
+            await userProfileSchema.findOneAndUpdate(
+                { accountId: reqIdString },
+                { 
+                    ai: {
+                        prompt: req.body.prompt,
+                        negativeprompt: req.body.negativeprompt,
+                        model: req.body.model,
+                        loras: req.body.savedloras 
+                    }
+                }
+            )
         }
     })
 

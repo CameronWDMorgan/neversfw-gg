@@ -291,7 +291,7 @@
                         <% if (data.style) { %>
                             <select class="loraSelection" id="style-lora" name="style-lora" multiple>
                                 <% Object.entries(data.style).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                    <option value="<%= key %>" <%= selectedLoras.style.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
                                 <% }); %>
                             </select>
                         <% } %>
@@ -303,7 +303,7 @@
                         <% if (data.effect) { %>
                             <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
                                 <% Object.entries(data.effect).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                    <option value="<%= key %>" <%= selectedLoras.effect.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
                                 <% }); %>
                             </select>
                         <% } %>
@@ -314,7 +314,7 @@
                         <% if (data.concept) { %>
                             <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
                                 <% Object.entries(data.concept).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                    <option value="<%= key %>" <%= selectedLoras.concept.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
                                 <% }); %>
                             </select>
                         <% } %>
@@ -325,7 +325,7 @@
                         <% if (data.clothing) { %>
                             <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
                                 <% Object.entries(data.clothing).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                    <option value="<%= key %>" <%= selectedLoras.clothing.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
                                 <% }); %>
                             </select>
                         <% } %>
@@ -336,7 +336,7 @@
                         <% if (data.character) { %>
                             <select class="loraSelection" id="character-lora" name="character-lora" multiple>
                                 <% Object.entries(data.character).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>"><%= value.name || key %></option>
+                                    <option value="<%= key %>" <%= selectedLoras.character.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
                                 <% }); %>
                             </select>
                         <% } %>

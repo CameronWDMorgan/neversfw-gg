@@ -55,6 +55,15 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     targetQuantity = Number(targetQuantity)
     targetSteps = Number(targetSteps)
 
+    let savedloras = {
+        style: $('#style-lora').val(),
+        effect: $('#effect-lora').val(),
+        concept: $('#concept-lora').val(),
+        clothing: $('#clothing-lora').val(),
+        character: $('#character-lora').val()
+    };
+
+
 
     console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
 
@@ -132,7 +141,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         lora: combinedLora,
         image: imageBase64,
         strength: formData.get('img2imgStrength'),
-        guidance: formData.get('cfguidance')
+        guidance: formData.get('cfguidance'),
+        savedloras: savedloras
     };
 
     try {
