@@ -2606,27 +2606,6 @@ module.exports = async function(app){
 
             console.log(selectedLoras)
 
-            if (selectedLoras.style = []) {
-                selectedLoras.style = []
-            }
-            if (selectedLoras.concept = []) {
-                selectedLoras.concept = []
-            }
-            if (selectedLoras.clothing = []) {
-                selectedLoras.clothing = []
-            }
-            if (selectedLoras.effect = []) {
-                selectedLoras.effect = []
-            }
-            if (selectedLoras.character = []) {
-                selectedLoras.character = []
-            }
-            if (selectedLoras.pose = []) {
-                selectedLoras.pose = []
-            }
-
-            console.log(foundAccount.ai)
-
             res.render('ai', { 
                 session: req.session,
                 data: cachedYAMLData,
