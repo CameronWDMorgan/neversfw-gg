@@ -2604,6 +2604,25 @@ module.exports = async function(app){
 
             const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[]};
 
+            if(selectedLoras.style == undefined) {
+                selectedLoras.style = []
+            }
+            if(selectedLoras.concept == undefined) {
+                selectedLoras.concept = []
+            }
+            if(selectedLoras.clothing == undefined) {
+                selectedLoras.clothing = []
+            }
+            if(selectedLoras.effect == undefined) {
+                selectedLoras.effect = []
+            }
+            if(selectedLoras.character == undefined) {
+                selectedLoras.character = []
+            }
+            if(selectedLoras.pose == undefined) {
+                selectedLoras.pose = []
+            }
+            
             console.log(selectedLoras)
 
             res.render('ai', { 
