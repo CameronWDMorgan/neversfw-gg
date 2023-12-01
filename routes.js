@@ -2600,7 +2600,7 @@ module.exports = async function(app){
                 foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
             }
 
-            const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[]};
+            const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[]};
 
             console.log(foundAccount.ai)
 
