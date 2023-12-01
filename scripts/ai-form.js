@@ -197,7 +197,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                     
                     if (positionData.status === "waiting") {
                         document.getElementById('positionNumber').innerText = positionData.position;
-                        await new Promise(resolve => setTimeout(resolve, 500)); // Wait for 1 second before the next check
+                        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 1 second before the next check
                     } else if (positionData.status === "completed") {
                         document.getElementById('response').innerText = "Your image is ready and will be displayed shortly...";
                         isCompleted = true; // Set the flag to exit the loop
