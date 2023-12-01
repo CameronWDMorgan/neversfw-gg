@@ -2583,11 +2583,13 @@ module.exports = async function(app){
     }
 
     
-    updateYAMLCache();
-    setInterval(updateYAMLCache, 60 * 1000);
+    updateYAMLCache()
+    setInterval(updateYAMLCache, 5 * 1000);
 
     app.get('/ai', async function(req, res){
         try {
+
+            await updateYAMLCache()
 
             if(req.session.loggedIn){
                 reqIdString = `${req.session.accountId}`
@@ -2601,6 +2603,27 @@ module.exports = async function(app){
             }
 
             const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[]};
+
+            console.log(selectedLoras)
+
+            if (selectedLoras.style = []) {
+                selectedLoras.style = []
+            }
+            if (selectedLoras.concept = []) {
+                selectedLoras.concept = []
+            }
+            if (selectedLoras.clothing = []) {
+                selectedLoras.clothing = []
+            }
+            if (selectedLoras.effect = []) {
+                selectedLoras.effect = []
+            }
+            if (selectedLoras.character = []) {
+                selectedLoras.character = []
+            }
+            if (selectedLoras.pose = []) {
+                selectedLoras.pose = []
+            }
 
             console.log(foundAccount.ai)
 
