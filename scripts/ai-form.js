@@ -60,7 +60,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         effect: $('#effect-lora').val(),
         concept: $('#concept-lora').val(),
         clothing: $('#clothing-lora').val(),
-        character: $('#character-lora').val()
+        character: $('#character-lora').val(),
+        pose: $('#pose-lora').val()
     };
 
 
