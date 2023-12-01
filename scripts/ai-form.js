@@ -98,6 +98,11 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         .filter(option => option.selected)
         .map(option => option.value);
 
+    const poseLoraSelect = document.getElementById('pose-lora');
+    const selectedPoseLoraOptions = Array.from(poseLoraSelect.options)
+        .filter(option => option.selected)
+        .map(option => option.value);
+
     let combinedLora = []
 
     combinedLora = combinedLora.concat(selectedStyleLoraOptions)
@@ -105,6 +110,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     combinedLora = combinedLora.concat(selectedConceptLoraOptions)
     combinedLora = combinedLora.concat(selectedClothingLoraOptions)
     combinedLora = combinedLora.concat(selectedCharacterLoraOptions)
+    combinedLora = combinedLora.concat(selectedPoseLoraOptions)
 
     function getBase64(file) {
         return new Promise((resolve, reject) => {
