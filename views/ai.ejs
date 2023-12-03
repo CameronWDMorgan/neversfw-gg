@@ -373,7 +373,7 @@
 
                 <div class="form-control inline-slider">
                     <label for="quantity">Image Quantity:</label>
-                    <input type="range" id="quantity" name="quantity" min="-1" max="6" step="1" value="4">
+                    <input type="range" id="quantity" name="quantity" min="1" max="8" step="1" value="4">
                     <span id="quantityValue" class="range-value">4</span>
                 </div>
 
@@ -575,7 +575,7 @@
 
     <script>
         var maxStepsCountWanted = `<%= session.loggedIn ? 100 : 50 %>`
-        var maxImageQuantityWanted = 8;
+        var maxImageQuantityWanted = 9;
     </script>
     
     <script src="../scripts/ai-slider-balancing.js"></script>
