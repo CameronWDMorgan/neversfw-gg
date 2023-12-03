@@ -373,8 +373,13 @@
 
                 <div class="form-control inline-slider">
                     <label for="quantity">Image Quantity:</label>
-                    <input type="range" id="quantity" name="quantity" min="1" max="6" step="1" value="4">
+                    <input type="range" id="quantity" name="quantity" min="-1" max="6" step="1" value="4">
                     <span id="quantityValue" class="range-value">4</span>
+                </div>
+
+                <div class="form-control">
+                    <label for="seed">Seed: (-1 = random)</label>
+                    <input type="number" id="seed" name="seed" min="-18446744073709551614" max="18446744073709551615" value="-1">
                 </div>   
 
                 <div class="form-control">
@@ -408,6 +413,8 @@
                     <button type="submit" id="generateButton">Generate Image</button>
                 </div>
             </form>
+
+            <div id="additionalInfo"></div><br>
             
             <center>
                 <div id="response"></div>
@@ -573,7 +580,7 @@
     
     <script src="../scripts/ai-slider-balancing.js"></script>
 
-    <script src="../scripts/ai-form.js?v6.2"></script>
+    <script src="../scripts/ai-form.js?v7"></script>
     <script src="../scripts/ai-autocomplete.js"></script>
     <script src="../scripts/ai-strength.js"></script>
 </body>

@@ -135,14 +135,14 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     } else {
 
     }
-    
-    
+     
     const data = {
         prompt: formData.get('prompt'),
         negativeprompt: formData.get('negativeprompt'),
         width: targetWidth,
         height: targetHeight,
         steps: targetSteps,
+        seed: formData.get('seed'),
         model: targetModel,
         quantity: targetQuantity,
         lora: combinedLora,
@@ -208,7 +208,9 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                         });
                 
                         if (resultResponse.ok) {
-                            const base64Images = await resultResponse.json();
+                            const results = await resultResponse.json();
+
+                            base64Images = results.images
 
                             document.getElementById('imagesContainer').innerHTML = ''
                 
@@ -221,6 +223,17 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                                 imageElement.style.height = 'auto'
                                 document.getElementById('imagesContainer').appendChild(imageElement);
                             });
+
+                            additionalInfo = results.additionalInfo
+
+                            console.log(results)
+                            
+                            executionshort = additionalInfo.executiontime.toFixed(2)
+
+                            let infoElement = document.getElementById('additionalInfo').innerHTML = 
+                                `<p>Seed: ${additionalInfo.seed}<br>` +
+                                `Execution Time: ${executionshort}s</p>`;
+
                         } else {
                             // Handle errors or different response types
                             console.error('Failed to get images:', await resultResponse.text());
