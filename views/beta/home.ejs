@@ -67,7 +67,7 @@
                                         let hour = date.getHours().toString().padStart(2, '0');
                                         let minute = date.getMinutes().toString().padStart(2, '0');
                                         let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
-                                        commentHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + ' - ' + formattedDate + '</a>'
+                                        commentHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px" loading="lazy">' + account.username + ' - ' + formattedDate + '</a>'
                                         commentHtml += '<p>' + commentDocument.comment + '</p>'
                                         index = accounts.length +1 
                                     }

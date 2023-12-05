@@ -6,7 +6,7 @@ async function artShowMoreFunction(session, showMoreArtAggregate, accounts, show
                     account = accounts[index]
                     if (account.accountId == artwork.accountId) {
                         
-                        showMoreHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + ':</a>'
+                        showMoreHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px" loading="lazy">' + account.username + ':</a>'
                         
                         let date = new Date(Number(artwork.timestamp));
                         let day = date.getDate().toString().padStart(2, '0');
@@ -36,7 +36,7 @@ async function artShowMoreFunction(session, showMoreArtAggregate, accounts, show
                             showMoreHtml += '</video>'
                     } else {
                         showMoreHtml += '<a class="art-piece-solo" target="_blank" href="https://www.neversfw.gg/art/' + artwork.contentId + '">'
-                            showMoreHtml += '<img class="art-piece-solo" src="' + artwork.contentUrl[0] + '" width="auto" height="100%">'
+                            showMoreHtml += '<img class="art-piece-solo" src="' + artwork.contentUrl[0] + '" width="auto" height="100%" loading="lazy">'
                             showMoreHtml += '</a>'
                     }
 
@@ -50,7 +50,7 @@ async function artShowMoreFunction(session, showMoreArtAggregate, accounts, show
                             showMoreHtml += '</video>'
                         } else {
                             showMoreHtml += '<a class="art-piece" target="_blank" href="https://www.neversfw.gg/art/' + artwork.contentId + '">'
-                                showMoreHtml += '<img  src="' + artImage + '" width="auto" height="100%">'
+                                showMoreHtml += '<img  src="' + artImage + '" width="auto" height="100%" loading="lazy">'
                             showMoreHtml += '</a>'
                         }
                     })
@@ -118,7 +118,7 @@ async function artShowMoreFunction(session, showMoreArtAggregate, accounts, show
                                         let hour = date.getHours().toString().padStart(2, '0');
                                         let minute = date.getMinutes().toString().padStart(2, '0');
                                         let formattedDate = `${day}/${month}/${year} ${hour}:${minute}`;
-                                        showMoreHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px">' + account.username + '   -  ' + formattedDate + '</a>'
+                                        showMoreHtml += '<a href="https://www.neversfw.gg/user/' + account.username + '" class="comment-details"><img class="home-profile-avatar" src="https://www.neversfw.gg/ugc/avatar/' + account.avatarUrl + '" width="32px" height="32px" loading="lazy">' + account.username + '   -  ' + formattedDate + '</a>'
                                         index = accounts.length +1
                                     }
                                     index++
@@ -152,7 +152,7 @@ async function gameShowMoreFunction(session, gameAggregate, accounts, showMoreHt
                     showMoreHtml += '<a href="https://www.neversfw.gg/game/' + game.gameId + '">' + game.gameId + ' - v' + game.version + '</a>'
                 showMoreHtml += '</div>'
                 showMoreHtml += '<a class="game-thumbnail" href="https://www.neversfw.gg/game/' + game.gameId + '">'
-                    showMoreHtml += '<img class="game-thumbnail" src="' + game.thumbnailUrl + '" width="auto" height="100%">'
+                    showMoreHtml += '<img class="game-thumbnail" src="' + game.thumbnailUrl + '" width="auto" height="100%" loading="lazy">'
                 showMoreHtml += '</a>'
                 
             showMoreHtml += '</div>'
