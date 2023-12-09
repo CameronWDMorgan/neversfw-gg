@@ -148,12 +148,19 @@
             border-color: gold !important;
             width: fit-content;
         }
+
+        /* add transitions to the autocomplete-open that appears when it gets removed or added to autocomplete-space */
+
         .autocomplete-space {
+            transition: margin-top 0.5s ease-in-out;
             margin-top: 0px !important; /* Adjust this value based on your needs */
         }
         .autocomplete-open {
-            margin-top: 105px !important; /* Adjust this value based on your needs */
+            transition: margin-top 0.5s ease-in-out;
+            margin-top: 115px !important; /* Adjust this value based on your needs */
         }
+
+
 
         .imagesContainer {
             display: grid;
@@ -193,6 +200,33 @@
             height: 12rem
         }
 
+        /* animation for the details appearing on click using float in */
+        @keyframes float-in {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        details[open] > summary ~ * {
+            animation: float-in 0.5s ease-in-out;
+        }
+
+
+        /* add on hover styling, animations, etc to all the summaries in the doc */
+        summary {
+            cursor: pointer;
+            transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+            transform: scale(1) rotate(0deg); /* Default state */
+            transform-origin: center; /* Ensures the scaling happens from the center */
+        }
+        summary:hover {
+            transform: scale(1.08) rotate(1deg); 
+            background-color: #a200ff4f; /* Red */
+        }
 
 
     </style>
@@ -233,41 +267,73 @@
             <!-- Banner Advert Partial -->
         </div>
 
-        <div class="round-frosted">
 
-            <div class="instructions">
+        <style>
+            @media only screen and (max-width: 720px) {
+                .round-frosted {
+                    width: 90%;
+                }
+            }
+            @media only screen and (min-width: 720px) {
+                .round-frosted {
+                    width: 50vw   
+                }
+            }
+        </style>
+        
+        <div class="round-frosted" style="padding: 40px; justify-content: center;">
+
+            <form id="generatorForm">
                 <h2>Welcome to the AI Image Generator!</h2>
-                <p>Information on how to use it!</p>
-                <ul>
-                    <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
-                    <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li><br>
-                    <p>Here is a recommended Negative Prompt!</p>
-                    <a>worst_quality, low_quality, watermark, signature, bad_anatomy, bad_hands, deformed_limbs, blurry, cropped, cross-eyed, extra_arms, extra_legs,
-                        extra_limbs, extra_pupils, bad_proportions, poorly_drawn_hands, simple background,</a>
-                    <br><br><li>Aspect Ratio: Change the aspect ratio of the image from a square, to portrait or landscape!</li><br>
-                    <li>Steps Slider: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li><br>
-                    <li>Image Quantity: This controls the number of images the image API should generate, the more the slower!</li><br>
-                </ul>
-            </div>
+                <details>
+                    <summary>Click Here for information on how to use it!</summary>
+                    <ul>
+                        <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
+                        <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li><br>
+                        <p>Here is a recommended Negative Prompt!</p>
+                        <a>worst_quality, low_quality, watermark, signature, bad_anatomy, bad_hands, deformed_limbs, blurry, cropped, cross-eyed, extra_arms, extra_legs,
+                            extra_limbs, extra_pupils, bad_proportions, poorly_drawn_hands, simple background,</a>
+                        <br>
+                        <li>Model: Select the model you want to use, the default is the furry model which can generate human, anime and furry images!</li><br>
+                        <li>Aspect Ratio: Change the aspect ratio of the image from a square, to portrait or landscape!</li><br>
+                        <li>Style Lora's: Select the style lora's you want to use, these will be used to generate the image!</li><br>
+                        <li>Effect Lora's: Select the effect lora's you want to use, these will be used to generate the image!</li><br>
+                        <li>Concept Lora's: Select the concept lora's you want to use, these will be used to generate the image!</li><br>
+                        <li>Clothing Lora's: Select the clothing lora's you want to use, these will be used to generate the image!</li><br>
+                        <li>Character Lora's: Select the character lora's you want to use, these will be used to generate the image!</li><br>
+                        <li>Pose Lora's: Select the pose lora's you want to use, these will be used to generate the image!</li><br>
+                        <li>Steps: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li><br>
+                        <li>Quantity: This controls the number of images the image API should generate, the more the slower!</li><br>
+                        <li>img2img: This enables the img2img process, this will generate an image from an uploaded image. This can be used to generate images of specific characters or poses!</li><br>
+                        <li>img2img Strength: This controls the strength of the img2img process, a higher number will result in a more accurate image but may result in a less accurate image.</li><br>
+                        <li>CFG: This controls the amount of control the AI has over the image, a higher number will result in more control but may result in a less accurate image.</li><br>
+                        <li>Seed: This controls the seed used for the image generation, a seed of -1 will generate a random seed.</li><br>
+                        <li>Generate Image: Click this button to generate your image!</li><br>
+                    </ul>
+                </details>
+                <br>
 
-            <form id="generatorForm" class="autocomplete-space">
-                <div class="form-control">
-                    <label for="prompt">Prompt:</label>
-                    <textarea id="prompt" name="prompt" rows="4" required><%= promptValue %></textarea>
-                    <span id="wordCount" class="range-value">Words remaining: 75</span>
-                </div>
-                
-                <div class="form-control">
-                    <label for="negativeprompt">Negative Prompt:</label>
-                    <textarea id="negativeprompt" name="negativeprompt" rows="4"><%=negativePromptValue%></textarea>
-                </div>
+                <div id="autocomplete-space"></div>
+
+                <details>
+                    <summary>Prompt & Negative Prompt</summary>
+                    <p>Prompt: <span id="promptWordCount">(70)</span></p>
+                    <div class="form-control">
+                        <textarea id="prompt" name="prompt" rows="4" required><%= promptValue %></textarea>
+                    </div>
+
+                    <p>Negative Prompt: <span id="negativePromptWordCount">(70)</span></p>
+                    <div class="form-control">
+                        <textarea id="negativeprompt" name="negativeprompt" rows="4"><%=negativePromptValue%></textarea>
+                    </div>
+                </details><br>
                 
                 <div class="form-control">
                     <label for="aspectRatio">Aspect Ratio:</label>
                     <select id="aspectRatio" name="aspectRatio" value="Square">
-                        <option value="Square">Square</option>
-                        <option value="Portrait">Portrait</option>
-                        <option value="Landscape">Landscape</option>
+                        <option value="Square">Square (512 x 512)</option>
+                        <option value="Portrait">Portrait (512 x 768)</option>
+                        <option value="Landscape">Landscape (768 x 512)</option>
                     </select>
                 </div>
 
@@ -283,79 +349,230 @@
                     </select>
                 </div>
 
-
-
+                <br>
                 <div class="imagesContainer">
-                    <div class="form-control">
-                        <label for="style-lora">Styles Lora:</label>
-                        <% if (data.style) { %>
-                            <select class="loraSelection" id="style-lora" name="style-lora" multiple>
-                                <% Object.entries(data.style).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>" <%= selectedLoras.style.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                <% }); %>
-                            </select>
-                        <% } %>
-                    </div>
+                    <details>
+                        <summary>Style Lora's <span id="style-lora-count">(0)</span></summary>
+                        <div class="form-control">
+                            <% if (data.style) { %>
+                                <select class="loraSelection" id="style-lora" name="style-lora" multiple>
+                                    <% Object.entries(data.style).forEach(([key, value]) => { %>
+                                        <option value="<%= key %>" <%= selectedLoras.style.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                    <% }); %>
+                                </select>
+                            <% } %>
+                        </div>
+                    </details>
+                        
+                    <details>
+                        <summary>Effect Lora's <span id="effect-lora-count">(0)</span></summary>
+                        <div class="form-control">
+                            <% if (data.effect) { %>
+                                <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
+                                    <% Object.entries(data.effect).forEach(([key, value]) => { %>
+                                        <option value="<%= key %>" <%= selectedLoras.effect.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                    <% }); %>
+                                </select>
+                            <% } %>
+                        </div>
+                    </details>
+        
+                    <details>
+                        <summary>Concept Lora's <span id="concept-lora-count">(0)</span></summary>
+                        <div class="form-control">
+                            <% if (data.concept) { %>
+                                <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
+                                    <% Object.entries(data.concept).forEach(([key, value]) => { %>
+                                        <option value="<%= key %>" <%= selectedLoras.concept.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                    <% }); %>
+                                </select>
+                            <% } %>
+                        </div>
+                    </details>
+        
+                    <details>
+                        <summary>Clothing Lora's <span id="clothing-lora-count">(0)</span></summary>
+                        <div class="form-control">
+                            <% if (data.clothing) { %>
+                                <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
+                                    <% Object.entries(data.clothing).forEach(([key, value]) => { %>
+                                        <option value="<%= key %>" <%= selectedLoras.clothing.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                    <% }); %>
+                                </select>
+                            <% } %>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>Character Lora's <span id="character-lora-count">(0)</span></summary>
+                        <div class="form-control">
+                            <% if (data.character) { %>
+                                <select class="loraSelection" id="character-lora" name="character-lora" multiple>
+                                    <% Object.entries(data.character).forEach(([key, value]) => { %>
+                                        <option value="<%= key %>" <%= selectedLoras.character.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                    <% }); %>
+                                </select>
+                            <% } %>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>Pose Lora's <span id="pose-lora-count" >(0)</span></summary>
+                        <div class="form-control">
+                            <% if (data.pose) { %>
+                                <select class="loraSelection" id="pose-lora" name="pose-lora" multiple>
+                                    <% Object.entries(data.pose).forEach(([key, value]) => { %>
+                                        <option value="<%= key %>" <%= selectedLoras.pose.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                    <% }); %>
+                                </select>
+                            <% } %>
+                        </div>
+                    </details>
+
                     
-    
-                    <div class="form-control">
-                        <label for="effect-lora">Effects Lora:</label>
-                        <% if (data.effect) { %>
-                            <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
-                                <% Object.entries(data.effect).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>" <%= selectedLoras.effect.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                <% }); %>
-                            </select>
-                        <% } %>
-                    </div>
-    
-                    <div class="form-control">
-                        <label for="concept-lora">Concepts Lora:</label>
-                        <% if (data.concept) { %>
-                            <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
-                                <% Object.entries(data.concept).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>" <%= selectedLoras.concept.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                <% }); %>
-                            </select>
-                        <% } %>
-                    </div>
-    
-                    <div class="form-control">
-                        <label for="clothing-lora">Clothing Lora:</label>
-                        <% if (data.clothing) { %>
-                            <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
-                                <% Object.entries(data.clothing).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>" <%= selectedLoras.clothing.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                <% }); %>
-                            </select>
-                        <% } %>
-                    </div>
+                    <p>Total Lora's (<span id="totalLorasSelected"></span>/<span id="totalLoras"></span>)</p>
+                    <!-- calculate the totalLorasSelected and the totalLoras from all the loraSelection classes and display it -->
+                    <script>
+                        // get all the loraSelection classes
+                        const loraSelections = document.querySelectorAll('.loraSelection');
 
-                    <div class="form-control">
-                        <label for="character-lora">Character Lora:</label>
-                        <% if (data.character) { %>
-                            <select class="loraSelection" id="character-lora" name="character-lora" multiple>
-                                <% Object.entries(data.character).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>" <%= selectedLoras.character.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                <% }); %>
-                            </select>
-                        <% } %>
-                    </div>
+                        // get the totalLorasSelected and totalLoras elements
+                        const totalLorasSelected = document.getElementById('totalLorasSelected');
+                        const totalLoras = document.getElementById('totalLoras');
 
-                    <div class="form-control">
-                        <label for="pose-lora">Pose Lora:</label>
-                        <% if (data.pose) { %>
-                            <select class="loraSelection" id="pose-lora" name="pose-lora" multiple>
-                                <% Object.entries(data.pose).forEach(([key, value]) => { %>
-                                    <option value="<%= key %>" <%= selectedLoras.pose.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                <% }); %>
-                            </select>
-                        <% } %>
-                    </div>
+                        // get the total number of loras
+                        let totalLorasCount = 0;
+                         loraSelections.forEach(loraSelection => {
+                            totalLorasCount += loraSelection.options.length;
+                        });
+
+                        // get the total number of loras selected
+                        let totalLorasSelectedCount = 0;
+
+                        // loop through each loraSelection
+                        loraSelections.forEach(loraSelection => {
+                            // add an event listener for when the selection changes
+                            loraSelection.addEventListener('change', function() {
+                                // update the totalLorasSelectedCount
+                                totalLorasSelectedCount = 0;
+                                loraSelections.forEach(loraSelection => {
+                                    totalLorasSelectedCount += loraSelection.selectedOptions.length;
+                                });
+
+                                // update the totalLorasSelected and totalLoras elements
+                                totalLorasSelected.innerText = totalLorasSelectedCount;
+                                totalLoras.innerText = totalLorasCount;
+                            });
+                        });
+                    </script>
+
+
+                    <style>
+                        #clearAllLorasButton {
+                            background-color: #ffffff85; /* Red */
+                            border: none;
+                            color: white;
+                            padding: 15px 32px;
+                            text-align: center;
+                            text-decoration: none;
+                            display: inline-block;
+                            font-size: 16px;
+                            margin: 4px 2px;
+                            cursor: pointer;
+                            transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+                            transform: scale(1) rotate(0deg); /* Default state */
+                            transform-origin: center; /* Ensures the scaling happens from the center */
+                        }
+                        #clearAllLorasButton:hover {
+                            transform: scale(1.08) rotate(1deg); 
+                            background-color: #ff0000; /* Red */
+                        }
+                    </style>
+                    <button type="button" id="clearAllLorasButton">Clear All Lora's</button>
+                    <script>
+                        // clear all loras button functionality
+                        document.getElementById('clearAllLorasButton').addEventListener('click', function() {
+                            // loop through each loraSelection
+                            loraSelections.forEach(loraSelection => {
+                                // loop through each option in the loraSelection
+                                for (let i = 0; i < loraSelection.options.length; i++) {
+                                    // set the option to not selected
+                                    loraSelection.options[i].selected = false;
+                                }
+                            });
+
+                            // update the totalLorasSelectedCount
+                            totalLorasSelectedCount = 0;
+                            loraSelections.forEach(loraSelection => {
+                                totalLorasSelectedCount += loraSelection.selectedOptions.length;
+                            });
+
+                            // update the totalLorasSelected and totalLoras elements and their <span id="character-lora-count">(5)</span> elements to 0
+                            totalLorasSelected.innerText = totalLorasSelectedCount;
+                            totalLoras.innerText = totalLorasCount;
+                            loraSelections.forEach(loraSelection => {
+                                document.getElementById(`${loraSelection.id}-count`).innerText = '(0)';
+                            });
+
+
+
+                        });
+                    </script>
+
+
+
+
+
 
                 </div>
+
+                <script>
+                    // Update the count of selected loras when the selection changes
+
+                    // pose-lora
+                    document.getElementById('pose-lora').addEventListener('change', function() {
+                        document.getElementById('pose-lora-count').innerText = `(${this.selectedOptions.length})`;
+
+                    });
+                    document.getElementById('pose-lora').dispatchEvent(new Event('change'));
+
+                    // character-lora
+                    document.getElementById('character-lora').addEventListener('change', function() {
+                        document.getElementById('character-lora-count').innerText = `(${this.selectedOptions.length})`;
+                    });
+                    document.getElementById('character-lora').dispatchEvent(new Event('change'));
+
+                    // clothing-lora
+                    document.getElementById('clothing-lora').addEventListener('change', function() {
+                        document.getElementById('clothing-lora-count').innerText = `(${this.selectedOptions.length})`;
+                    });
+                    document.getElementById('clothing-lora').dispatchEvent(new Event('change'));
+
+                    // concept-lora
+                    document.getElementById('concept-lora').addEventListener('change', function() {
+                        document.getElementById('concept-lora-count').innerText = `(${this.selectedOptions.length})`;
+                    });
+                    document.getElementById('concept-lora').dispatchEvent(new Event('change'));
+
+                    // effect-lora
+                    document.getElementById('effect-lora').addEventListener('change', function() {
+                        document.getElementById('effect-lora-count').innerText = `(${this.selectedOptions.length})`;
+                    });
+                    document.getElementById('effect-lora').dispatchEvent(new Event('change'));
+
+                    // style-lora
+                    document.getElementById('style-lora').addEventListener('change', function() {
+                        document.getElementById('style-lora-count').innerText = `(${this.selectedOptions.length})`;
+                    });
+                    document.getElementById('style-lora').dispatchEvent(new Event('change'));
+
+                    
+
+                </script>
+
                 <br><br>
                 <a>Use CTRL / Shift Left Click to select multiple Lora's! Please report any broken loras on the </a><a href="https://discord.gg/2QXV66RVMG">Discord!</a>
+                <br><br>
 
 
 
@@ -379,8 +596,11 @@
 
                 <div class="form-control">
                     <label for="seed">Seed: (-1 = random)</label>
+                    
                     <input type="number" id="seed" name="seed" min="-18446744073709551614" max="18446744073709551615" value="-1">
+
                 </div>   
+            
 
                 <div class="form-control">
                     <label for="img2imgCheckbox">Enable img2img:</label>
@@ -491,7 +711,10 @@
             const remainingWords = 70 - totalWordCount;
 
             // Display the total word count
-            document.getElementById('wordCount').innerText = `Words remaining: ${remainingWords}`;
+            // display the remaining words to 2 spans: one for the prompt and one for the negative prompt like this: 10 (70)
+            document.getElementById('promptWordCount').innerText = `${promptWordCount} (${remainingWords})`;
+            document.getElementById('negativePromptWordCount').innerText = `${negativePromptWordCount} (${remainingWords})`;
+
 
             // // Disable the generate button if the total word count exceeds the limit
             // const generateButton = document.getElementById('generateButton');
@@ -580,8 +803,8 @@
     
     <script src="../scripts/ai-slider-balancing.js"></script>
 
-    <script src="../scripts/ai-form.js?v7"></script>
-    <script src="../scripts/ai-autocomplete.js"></script>
+    <script src="../scripts/ai-form.js"></script>
+    <script src="../scripts/ai-autocomplete.js?v1"></script>
     <script src="../scripts/ai-strength.js"></script>
 </body>
 </html>

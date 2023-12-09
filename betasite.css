@@ -178,8 +178,6 @@ button:hover {
     background-color: var(--frosted-background);
     backdrop-filter: var(--frosted-blur);
     border-radius: 30px;
-    padding: 60px;
-    padding-right: 26px
 }
 
 .navigation-side {

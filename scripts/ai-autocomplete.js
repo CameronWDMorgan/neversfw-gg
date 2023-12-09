@@ -99,10 +99,14 @@ $(document).ready(function() {
             },
 
             open: function( event, ui ) {
-                $(this).closest('form').addClass('autocomplete-open');
+                /* document.getElementById(...).addClass is not a function please rewrite it: */
+                spaceID = document.getElementById('autocomplete-space')
+                spaceID.classList.add('autocomplete-open');
             },
             close: function( event, ui ) {
-                $(this).closest('form').removeClass('autocomplete-open');
+                /* document.getElementById(...).removeClass is not a function please rewrite it: */
+                spaceID = document.getElementById('autocomplete-space')
+                spaceID.classList.remove('autocomplete-open');
             },
             search: function() {
                 var term = extractLast(this.value);
@@ -121,7 +125,7 @@ $(document).ready(function() {
                     menu.find('li').eq(index).addClass('custom-highlight');
                 }
             },
-            position: selector === '#negativeprompt' ? { my: "left+50 bottom", at: "left top-160", collision: "none" } : { my: "left+50 bottom", at: "left top-20", collision: "none" },        }).data('ui-autocomplete')._renderItem = function (ul, item) {
+            position: selector === '#negativeprompt' ? { my: "left+50 bottom", at: "left top-215", collision: "none" } : { my: "left+50 bottom", at: "left top-75", collision: "none" },        }).data('ui-autocomplete')._renderItem = function (ul, item) {
             var term = extractLast(this.term);
             var re = new RegExp("(" + $.ui.autocomplete.escapeRegex(term) + ")", "gi");
             var highlightedValue = item.label.replace(re, "<strong>$1</strong>");
