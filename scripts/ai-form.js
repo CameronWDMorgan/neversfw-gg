@@ -64,6 +64,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         pose: $('#pose-lora').val()
     };
 
+    let targetGuidance = formData.get('cfguidance')
+
 
 
     console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
@@ -74,7 +76,12 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         formData.append('image', imageInput.files[0]);
     }
 
-    const styleLoraSelect = document.getElementById('style-lora');
+    let combinedLora = []
+
+    let advancedToggle = formData.get('advancedToggle')
+
+    if(advancedToggle == "on") {
+        const styleLoraSelect = document.getElementById('style-lora');
     const selectedStyleLoraOptions = Array.from(styleLoraSelect.options)
         .filter(option => option.selected)
         .map(option => option.value);
@@ -104,14 +111,23 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         .filter(option => option.selected)
         .map(option => option.value);
 
-    let combinedLora = []
+        combinedLora = combinedLora.concat(selectedStyleLoraOptions)
+        combinedLora = combinedLora.concat(selectedEffectLoraOptions)
+        combinedLora = combinedLora.concat(selectedConceptLoraOptions)
+        combinedLora = combinedLora.concat(selectedClothingLoraOptions)
+        combinedLora = combinedLora.concat(selectedCharacterLoraOptions)
+        combinedLora = combinedLora.concat(selectedPoseLoraOptions)
+    } else {
+        targetSteps = 20
+        targetQuantity = 4
+        targetGuidance = 5
+    }
 
-    combinedLora = combinedLora.concat(selectedStyleLoraOptions)
-    combinedLora = combinedLora.concat(selectedEffectLoraOptions)
-    combinedLora = combinedLora.concat(selectedConceptLoraOptions)
-    combinedLora = combinedLora.concat(selectedClothingLoraOptions)
-    combinedLora = combinedLora.concat(selectedCharacterLoraOptions)
-    combinedLora = combinedLora.concat(selectedPoseLoraOptions)
+    
+
+    
+
+    
 
     function getBase64(file) {
         return new Promise((resolve, reject) => {
@@ -148,7 +164,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         lora: combinedLora,
         image: imageBase64,
         strength: formData.get('img2imgStrength'),
-        guidance: formData.get('cfguidance'),
+        guidance: targetGuidance,
         savedloras: savedloras
     };
 

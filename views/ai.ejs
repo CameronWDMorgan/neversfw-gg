@@ -285,9 +285,34 @@
 
             <form id="generatorForm">
                 <h2>Welcome to the AI Image Generator!</h2>
+                <!-- simple and advanced toggle that hides some elements of the website and returns them using their original display option also ensure that the advancedToggle is unchecked by default and script runs once page loads -->
+                <div class="form-control">
+                    <label for="advancedToggle">Advanced Mode:</label>
+                    <input type="checkbox" id="advancedToggle" name="advancedToggle">
+                </div>
+                <script>
+                    document.getElementById('advancedToggle').addEventListener('change', function() {
+                        const isChecked = this.checked;
+                        const advancedElements = document.querySelectorAll('.advanced');
+
+                        if (isChecked) {
+                            advancedElements.forEach(advancedElement => {
+                                advancedElement.style.display = advancedElement.dataset.display;
+                            });
+                        } else {
+                            advancedElements.forEach(advancedElement => {
+                                advancedElement.dataset.display = advancedElement.style.display;
+                                advancedElement.style.display = 'none';
+                            });
+                        }
+                    });
+                    document.getElementById('advancedToggle').dispatchEvent(new Event('change'));
+                </script>
+                
                 <details>
                     <summary>Click Here for information on how to use it!</summary>
                     <ul>
+                        <li>Advanced Mode: This enables the advanced mode which enables more options for the image generator!</li><br>
                         <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
                         <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li><br>
                         <p>Here is a recommended Negative Prompt!</p>
@@ -349,8 +374,10 @@
                     </select>
                 </div>
 
-                <br>
-                <div class="imagesContainer">
+                
+                <div class="imagesContainer advanced">
+                    <div></div>
+                    <div></div>
                     <details>
                         <summary>Style Lora's <span id="style-lora-count">(0)</span></summary>
                         <div class="form-control">
@@ -575,31 +602,34 @@
                 <br><br>
 
 
-
-                <div class="form-control inline-slider">
-                    <label for="steps">Steps:</label>
-                    <input type="range" id="steps" name="steps" min="10" max="100" step="1" value="20">
-                    <span id="stepsValue" class="range-value">20</span>
+                <div class="advanced">
+                    <div class="form-control inline-slider">
+                        <label for="steps">Steps:</label>
+                        <input type="range" id="steps" name="steps" min="10" max="100" step="1" value="20">
+                        <span id="stepsValue" class="range-value">20</span>
+                    </div>
+    
+                    <div class="form-control inline-slider">
+                        <label for="cfguidance">CFG:</label>
+                        <input type="range" id="cfguidance" name="cfguidance" min="1" max="30" step="0.1" value="5">
+                        <span id="cfguidanceValue" class="range-value">5</span>
+                    </div>
+    
+                    <div class="form-control inline-slider">
+                        <label for="quantity">Image Quantity:</label>
+                        <input type="range" id="quantity" name="quantity" min="1" max="8" step="1" value="4">
+                        <span id="quantityValue" class="range-value">4</span>
+                    </div>
+    
+                    <div class="form-control">
+                        <label for="seed">Seed: (-1 = random)</label>
+                        
+                        <input type="number" id="seed" name="seed" min="-18446744073709551614" max="18446744073709551615" value="-1">
+    
+                    </div>
                 </div>
 
-                <div class="form-control inline-slider">
-                    <label for="cfguidance">CFG:</label>
-                    <input type="range" id="cfguidance" name="cfguidance" min="1" max="30" step="0.1" value="5">
-                    <span id="cfguidanceValue" class="range-value">5</span>
-                </div>
-
-                <div class="form-control inline-slider">
-                    <label for="quantity">Image Quantity:</label>
-                    <input type="range" id="quantity" name="quantity" min="1" max="8" step="1" value="4">
-                    <span id="quantityValue" class="range-value">4</span>
-                </div>
-
-                <div class="form-control">
-                    <label for="seed">Seed: (-1 = random)</label>
-                    
-                    <input type="number" id="seed" name="seed" min="-18446744073709551614" max="18446744073709551615" value="-1">
-
-                </div>   
+                
             
 
                 <div class="form-control">
@@ -799,6 +829,9 @@
     <script>
         var maxStepsCountWanted = `<%= session.loggedIn ? 100 : 50 %>`
         var maxImageQuantityWanted = 9;
+
+        document.getElementById('advancedToggle').dispatchEvent(new Event('change'));
+
     </script>
     
     <script src="../scripts/ai-slider-balancing.js"></script>
