@@ -155,12 +155,6 @@
             transition: margin-top 0.5s ease-in-out;
             margin-top: 0px !important; /* Adjust this value based on your needs */
         }
-        .autocomplete-open {
-            transition: margin-top 0.5s ease-in-out;
-            margin-top: 115px !important; /* Adjust this value based on your needs */
-        }
-
-
 
         .imagesContainer {
             display: grid;
@@ -229,6 +223,10 @@
             background-color: #a200ff4f; /* Red */
         }
 
+        .autocomplete-open {
+            margin-top: 120px !important; /* Adjust this value based on your needs */
+        }
+
 
     </style>
 
@@ -272,7 +270,22 @@
 
             <form id="generatorForm">
                 <h2>Welcome to the AI Image Generator!</h2>
-                <!-- simple and advanced toggle that hides some elements of the website and returns them using their original display option also ensure that the advancedToggle is unchecked by default and script runs once page loads -->
+                <!-- styling for advancedToggle checkbox, hover with animations etc -->
+                <style>
+                    #advancedToggle {
+                        cursor: pointer;
+                        transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+                        transform: scale(1) rotate(0deg); /* Default state */
+                        transform-origin: center; /* Ensures the scaling happens from the center */
+                        padding: 8px;
+                        width: 20px;
+                        height: 20px;
+                    }
+                    #advancedToggle:hover {
+                        transform: scale(1.2) rotate(3deg); 
+                        color: #c259ff; /* Red */
+                    }
+                </style>
                 <div class="form-control">
                     <label for="advancedToggle">Advanced Mode:</label>
                     <input type="checkbox" id="advancedToggle" name="advancedToggle">
@@ -327,22 +340,21 @@
 
                 <div id="autocomplete-space"></div>
 
-                <details>
+                <details open>
                     <summary>Prompt & Negative Prompt</summary>
-                    <details>
-                        <summary>Prompt: <span id="promptWordCount">(70)</span></summary>
                         <div class="form-control">
+                            <!-- make the label and span on the same line -->
+                            <!-- <label for="prompt">Prompt: <span id="promptWordCount">(70)</span></label> -->
+                            <a for="prompt">Prompt: <a id="promptWordCount">(70)</a></a>
+                            <br>
+
                             <textarea id="prompt" name="prompt" rows="4" required><%= promptValue %></textarea>
                         </div>
-                    </details>
 
-
-                    <details>
-                        <summary>Negative Prompt: <span id="negativePromptWordCount">(70)</span></summary>
                         <div class="form-control">
+                            <a for="negativeprompt">Negative Prompt: <a id="negativePromptWordCount">(70)</a></a>
                             <textarea id="negativeprompt" name="negativeprompt" rows="4"><%=negativePromptValue%></textarea>
                         </div>
-                    </details>
 
                 </details><br>
                 
@@ -597,13 +609,8 @@
 
                 </script>
 
-                <br><br>
-                <a>Use CTRL / Shift Left Click to select multiple Lora's! Please report any broken loras on the </a><a href="https://discord.gg/2QXV66RVMG">Discord!</a>
-                <br><br>
-
-
                 <div class="advanced">
-                    <details>
+                    <details open>
                         <summary>Settings (Steps, CFG, Quanitity, Seed)</summary>
                         <div class="form-control inline-slider">
                             <label for="steps">Steps:</label>
@@ -727,7 +734,7 @@
             document.getElementById('cfguidanceValue').innerText = `${this.value}/${this.max}`;
         });
         document.getElementById('cfguidance').dispatchEvent(new Event('input'));
-        
+
     </script>
 
 
