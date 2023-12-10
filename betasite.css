@@ -124,7 +124,7 @@ textarea {
 
 button {
     color: rgb(255, 255, 255);
-    background-color: var(--black-01);
+    background-color: transparent;
     padding: 7px;
 }
 
@@ -182,12 +182,12 @@ button:hover {
 
 @media only screen and (max-width: 720px) {
     .round-frosted {
-        width: 90%;
+        width: 90% !important
     }
 }
 @media only screen and (min-width: 720px) {
     .round-frosted {
-        width: 50vw   
+        width: 100% !important
     }
 }
 
@@ -322,8 +322,7 @@ button:hover {
     grid-template-columns: repeat(2, 1fr);
     overflow: hidden;
     width: 200px;
-    background-color: var(--frosted-background);
-    backdrop-filter: var(--frosted-blur);
+    background-color: transparent
 }
   
 .tabs button {
@@ -335,7 +334,6 @@ button:hover {
     padding: 2px 2px;
     font-size: 50px;
     font-family: Dimbo;
-    
 }
   
 .tabs button.active {
@@ -351,6 +349,7 @@ button:hover {
     grid-template-columns: repeat(2, 1fr);
     overflow: hidden;
     width: 200px;
+    background-color: transparent
 }
   
 .subtabs button {
@@ -370,11 +369,9 @@ button:hover {
 
 .subtabs button:hover {
     color:rgb(255, 255, 255);
-    background-color: rgba(0, 0, 0, 0);
 }
 
 .tabcontent {
-    background-color: var(--frosted-background);
     backdrop-filter: var(--frosted-blur);
     border-radius: 10px;
 }

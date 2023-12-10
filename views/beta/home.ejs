@@ -224,33 +224,40 @@
 
         <div class="page-right" style="min-height: 100vh; max-height: 100%;">
 
-            <div class="tabs">
-                <button class="tablinks active" onclick="openTab(event, 'art')">Art</button>
-                <button class="tablinks" onclick="openTab(event, 'games')">Games</button>
-            </div>
-            
-            <div id="art" class="tabcontent" style="display: block;">
 
-                <div class="subtabs">
-                    <button class="subtablinks active" onclick="openSubtab(event, 'recent')">Recent</button>
-                    <button class="subtablinks" onclick="openSubtab(event, 'hottest')">Hottest</button>
+            <div class="round-frosted" style="padding: 20px;">
+
+                <div class="tabs">
+                    <button class="tablinks active" onclick="openTab(event, 'art')">Art</button>
+                    <button class="tablinks" onclick="openTab(event, 'games')">Games</button>
+                </div>
+                
+                <div id="art" class="tabcontent" style="display: block; justify-content: center;">
+    
+                    <div class="subtabs">
+                        <button class="subtablinks active" onclick="openSubtab(event, 'recent')">Recent</button>
+                        <button class="subtablinks" onclick="openSubtab(event, 'hottest')">Hottest</button>
+                    </div>
+    
+                    <div id="recent" class="subtabcontent" style="display: block;">
+                        <% artFunction('Recent','home') %>
+                    </div>
+    
+                    <div id="hottest" class="subtabcontent" style="display: none;">
+                        <% artFunction('Popular','home') %>
+                    </div>
+    
+                </div>
+                
+    
+    
+                <div id="games" class="tabcontent" style="display: none;">
+                    <% gameFunction('Recent','gameHome') %>
                 </div>
 
-                <div id="recent" class="subtabcontent" style="display: block;">
-                    <% artFunction('Recent','home') %>
-                </div>
-
-                <div id="hottest" class="subtabcontent" style="display: none;">
-                    <% artFunction('Popular','home') %>
-                </div>
-
             </div>
-            
 
 
-            <div id="games" class="tabcontent" style="display: none;">
-                <% gameFunction('Recent','gameHome') %>
-            </div>
 
 
             <script>

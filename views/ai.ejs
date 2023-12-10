@@ -222,6 +222,7 @@
             transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
             transform: scale(1) rotate(0deg); /* Default state */
             transform-origin: center; /* Ensures the scaling happens from the center */
+            padding: 8px;
         }
         summary:hover {
             transform: scale(1.08) rotate(1deg); 
@@ -266,20 +267,6 @@
             <%- include('../partials/_mobileNavigation'); -%>
             <!-- Banner Advert Partial -->
         </div>
-
-
-        <style>
-            @media only screen and (max-width: 720px) {
-                .round-frosted {
-                    width: 90%;
-                }
-            }
-            @media only screen and (min-width: 720px) {
-                .round-frosted {
-                    width: 50vw   
-                }
-            }
-        </style>
         
         <div class="round-frosted" style="padding: 40px; justify-content: center;">
 
@@ -318,7 +305,7 @@
                         <p>Here is a recommended Negative Prompt!</p>
                         <a>worst_quality, low_quality, watermark, signature, bad_anatomy, bad_hands, deformed_limbs, blurry, cropped, cross-eyed, extra_arms, extra_legs,
                             extra_limbs, extra_pupils, bad_proportions, poorly_drawn_hands, simple background,</a>
-                        <br>
+                        <br><br>
                         <li>Model: Select the model you want to use, the default is the furry model which can generate human, anime and furry images!</li><br>
                         <li>Aspect Ratio: Change the aspect ratio of the image from a square, to portrait or landscape!</li><br>
                         <li>Style Lora's: Select the style lora's you want to use, these will be used to generate the image!</li><br>
@@ -342,15 +329,21 @@
 
                 <details>
                     <summary>Prompt & Negative Prompt</summary>
-                    <p>Prompt: <span id="promptWordCount">(70)</span></p>
-                    <div class="form-control">
-                        <textarea id="prompt" name="prompt" rows="4" required><%= promptValue %></textarea>
-                    </div>
+                    <details>
+                        <summary>Prompt: <span id="promptWordCount">(70)</span></summary>
+                        <div class="form-control">
+                            <textarea id="prompt" name="prompt" rows="4" required><%= promptValue %></textarea>
+                        </div>
+                    </details>
 
-                    <p>Negative Prompt: <span id="negativePromptWordCount">(70)</span></p>
-                    <div class="form-control">
-                        <textarea id="negativeprompt" name="negativeprompt" rows="4"><%=negativePromptValue%></textarea>
-                    </div>
+
+                    <details>
+                        <summary>Negative Prompt: <span id="negativePromptWordCount">(70)</span></summary>
+                        <div class="form-control">
+                            <textarea id="negativeprompt" name="negativeprompt" rows="4"><%=negativePromptValue%></textarea>
+                        </div>
+                    </details>
+
                 </details><br>
                 
                 <div class="form-control">
@@ -384,7 +377,8 @@
                         <br>
                         <div class="imagesContainer">
                             <details>
-                                <summary>Style Lora's <span id="style-lora-count">(0)</span></summary>
+                                <!-- style-lora-count / style-lora-total -->
+                                <summary>Style Lora's <span id="style-lora-summary"></span></summary>
                                 <div class="form-control">
                                     <% if (data.style) { %>
                                         <select class="loraSelection" id="style-lora" name="style-lora" multiple>
@@ -397,7 +391,7 @@
                             </details>
                                 
                             <details>
-                                <summary>Effect Lora's <span id="effect-lora-count">(0)</span></summary>
+                                <summary>Effect Lora's <span id="effect-lora-summary"></span></summary>
                                 <div class="form-control">
                                     <% if (data.effect) { %>
                                         <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
@@ -410,7 +404,7 @@
                             </details>
                 
                             <details>
-                                <summary>Concept Lora's <span id="concept-lora-count">(0)</span></summary>
+                                <summary>Concept Lora's <span id="concept-lora-summary"></span></summary>
                                 <div class="form-control">
                                     <% if (data.concept) { %>
                                         <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
@@ -423,7 +417,7 @@
                             </details>
                 
                             <details>
-                                <summary>Clothing Lora's <span id="clothing-lora-count">(0)</span></summary>
+                                <summary>Clothing Lora's <span id="clothing-lora-summary"></span></summary>
                                 <div class="form-control">
                                     <% if (data.clothing) { %>
                                         <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
@@ -436,7 +430,7 @@
                             </details>
 
                             <details>
-                                <summary>Character Lora's <span id="character-lora-count">(0)</span></summary>
+                                <summary>Character Lora's <span id="character-lora-summary"></span></summary>
                                 <div class="form-control">
                                     <% if (data.character) { %>
                                         <select class="loraSelection" id="character-lora" name="character-lora" multiple>
@@ -449,7 +443,7 @@
                             </details>
 
                             <details>
-                                <summary>Pose Lora's <span id="pose-lora-count" >(0)</span></summary>
+                                <summary>Pose Lora's <span id="pose-lora-summary"></span></summary>
                                 <div class="form-control">
                                     <% if (data.pose) { %>
                                         <select class="loraSelection" id="pose-lora" name="pose-lora" multiple>
@@ -544,7 +538,8 @@
                             totalLorasSelected.innerText = totalLorasSelectedCount;
                             totalLoras.innerText = totalLorasCount;
                             loraSelections.forEach(loraSelection => {
-                                document.getElementById(`${loraSelection.id}-count`).innerText = '(0)';
+                                console.log(loraSelection.id);
+                                document.getElementById(`${loraSelection.id}`).dispatchEvent(new Event('change'));
                             });
 
 
@@ -564,38 +559,37 @@
 
                     // pose-lora
                     document.getElementById('pose-lora').addEventListener('change', function() {
-                        document.getElementById('pose-lora-count').innerText = `(${this.selectedOptions.length})`;
-
+                        document.getElementById('pose-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
                     });
                     document.getElementById('pose-lora').dispatchEvent(new Event('change'));
 
                     // character-lora
                     document.getElementById('character-lora').addEventListener('change', function() {
-                        document.getElementById('character-lora-count').innerText = `(${this.selectedOptions.length})`;
+                        document.getElementById('character-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
                     });
                     document.getElementById('character-lora').dispatchEvent(new Event('change'));
 
                     // clothing-lora
                     document.getElementById('clothing-lora').addEventListener('change', function() {
-                        document.getElementById('clothing-lora-count').innerText = `(${this.selectedOptions.length})`;
+                        document.getElementById('clothing-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
                     });
                     document.getElementById('clothing-lora').dispatchEvent(new Event('change'));
 
                     // concept-lora
                     document.getElementById('concept-lora').addEventListener('change', function() {
-                        document.getElementById('concept-lora-count').innerText = `(${this.selectedOptions.length})`;
+                        document.getElementById('concept-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
                     });
                     document.getElementById('concept-lora').dispatchEvent(new Event('change'));
 
                     // effect-lora
                     document.getElementById('effect-lora').addEventListener('change', function() {
-                        document.getElementById('effect-lora-count').innerText = `(${this.selectedOptions.length})`;
+                        document.getElementById('effect-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
                     });
                     document.getElementById('effect-lora').dispatchEvent(new Event('change'));
 
                     // style-lora
                     document.getElementById('style-lora').addEventListener('change', function() {
-                        document.getElementById('style-lora-count').innerText = `(${this.selectedOptions.length})`;
+                        document.getElementById('style-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
                     });
                     document.getElementById('style-lora').dispatchEvent(new Event('change'));
 
@@ -610,7 +604,7 @@
 
                 <div class="advanced">
                     <details>
-                        <summary>Generation Settings</summary>
+                        <summary>Settings (Steps, CFG, Quanitity, Seed)</summary>
                         <div class="form-control inline-slider">
                             <label for="steps">Steps:</label>
                             <input type="range" id="steps" name="steps" min="10" max="100" step="1" value="20">
@@ -727,10 +721,13 @@
         document.getElementById('img2imgStrength').addEventListener('input', function() {
             document.getElementById('img2imgStrengthValue').innerText = this.value + '%';
         });
+        document.getElementById('img2imgStrength').dispatchEvent(new Event('input'));
 
         document.getElementById('cfguidance').addEventListener('input', function() {
-            document.getElementById('cfguidanceValue').innerText = this.value;
+            document.getElementById('cfguidanceValue').innerText = `${this.value}/${this.max}`;
         });
+        document.getElementById('cfguidance').dispatchEvent(new Event('input'));
+        
     </script>
 
 
