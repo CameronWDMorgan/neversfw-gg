@@ -79,6 +79,12 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     let combinedLora = []
 
     let advancedToggle = formData.get('advancedToggle')
+    
+    let enhance_prompt = formData.get('enhance_prompt')
+
+    if(enhance_prompt == "on") {
+        enhance_prompt = true
+    }
 
     if(advancedToggle == "on") {
         const styleLoraSelect = document.getElementById('style-lora');
@@ -165,7 +171,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         image: imageBase64,
         strength: formData.get('img2imgStrength'),
         guidance: targetGuidance,
-        savedloras: savedloras
+        savedloras: savedloras,
+        enhance_prompt: enhance_prompt
     };
 
     try {
