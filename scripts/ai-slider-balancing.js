@@ -2,8 +2,6 @@ function updateMaxValuesWanted() {
     // Get the max values wanted from the query string
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    // refresh every 250ms
-    setTimeout(updateMaxValuesWanted, 250);
     // Update the max values wanted
     maxStepsCountWanted = document.getElementById('maxStepsCountWanted').value;
     maxImageQuantityWanted = document.getElementById('maxImageQuantityWanted').value;
@@ -11,6 +9,8 @@ function updateMaxValuesWanted() {
     console.log(`maxStepsCountWanted: ${maxStepsCountWanted}`);
     console.log(`maxImageQuantityWanted: ${maxImageQuantityWanted}`);
     console.log(`minStepsCount: ${minStepsCount}`);
+    // refresh every 250ms
+    setTimeout(updateMaxValuesWanted, 250);
 }
 updateMaxValuesWanted();
 
