@@ -386,8 +386,8 @@
                     document.getElementById('model').addEventListener('change', function() {
                         const model = this.value;
                         const loraSelections = document.querySelectorAll('.loraSelection');
-                        const loraSummary = document.getElementById('lora-details')
-
+                        // get div with ID lora-details & set it to have class sdxl-turbo if model is sdxl-turbo
+                        const loraSummary = document.getElementById('lora-details');
                         if (model === 'sdxl-turbo') {
                             loraSummary.classList.add('sdxl-turbo');
                         } else {
