@@ -12,7 +12,6 @@ function updateMaxValuesWanted() {
     // refresh every 250ms
     setTimeout(updateMaxValuesWanted, 250);
 }
-updateMaxValuesWanted();
 
 function updateSliderDisplay() {
     // Update the displayed value for steps and quantity
@@ -68,4 +67,5 @@ window.onload = function() {
     adjustImageQuantity();
     adjustSteps();
     updateSliderDisplay();
+    updateMaxValuesWanted();
 };
