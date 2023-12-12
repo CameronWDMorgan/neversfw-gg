@@ -310,11 +310,10 @@
                     <ul>
                         <li>Advanced Mode: This enables the advanced mode which enables more options for the image generator!</li><br>
                         <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
-                        <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here.</li><br>
-                        <p>Here is a recommended Negative Prompt:</p>
-                        <a>worst_quality, low_quality, watermark, signature, bad_anatomy, bad_hands, deformed_limbs, blurry, cropped, cross-eyed, extra_arms, extra_legs, extra_limbs, extra_pupils, bad_proportions, poorly_drawn_hands, simple background,</a>
+                        <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here, Here is a recommended one!</li><br>
+                        <a>worst_quality, low_quality, watermark, signature, bad_anatomy, bad_hands, deformed_limbs, blurry, cropped, cross-eyed, extra_arms, extra_legs, extra_limbs, extra_pupils, bad_proportions, poorly_drawn_hands, simple_background, bad_background, bad_lighting, bad_perspective,</a>
                         <br><br>
-                        <li>Model: Select the model you want to use, the default is the furry model which can generate human, anime and furry images!</li><br>
+                        <li>Model: Select the model you want to use, the default is the furry model which can generate, anime human, anime and furry images, also realistic images too!</li><br>
                         <li>Aspect Ratio: Change the aspect ratio of the image from a square, to portrait or landscape!</li><br>
                         <li>Style Lora's: Select the style lora's you want to use, these will be used to generate the image!</li><br>
                         <li>Effect Lora's: Select the effect lora's you want to use, these will be used to generate the image!</li><br>
@@ -371,11 +370,12 @@
                     <label for="model">Model:</label>
                     <select id="model" name="model" value="<%=modelValue%>">
                         <option value="furry">Default - Furry Vixens (Anime, Human & Furry)</option>
-                        <option value="sonic">SonicDiffusion (Sonic Characters)</option>
+                        <option value="sonic">SonicDiffusion (Sonic the Hedgehog)</option>
                         <option value="cyberreal">Cyberreal (Realistic)</option>
                         <option value="aing">AingDiffusion (Anime)</option>
                         <option value="flat2DAnimerge">flat2DAnimerge (Anime)</option>
-                        <option value="sdxl-turbo">sdxl-turbo (SDXL - General)</option>
+                        <option value="ponyDiffusion">ponyDiffusion (My Little Pony)</option>
+                        <option value="realisticVision">realisticVision (Realstic)</option>
                     </select>
                 </div>
 
@@ -531,8 +531,6 @@
                             });
                         });
                     </script>
-
-
                     
                     <script>
                         // clear all loras button functionality
@@ -564,11 +562,6 @@
 
                         });
                     </script>
-
-
-
-
-
 
                 </div>
 
@@ -620,7 +613,7 @@
                         <summary>Settings (Steps, CFG, Quanitity, Seed)</summary>
                         <div class="form-control inline-slider">
                             <label for="steps">Steps:</label>
-                            <input type="range" id="steps" name="steps" min="1" max="100" step="1" value="20">
+                            <input type="range" id="steps" name="steps" min="10" max="100" step="1" value="20">
                             <span id="stepsValue" class="range-value">20</span>
                         </div>
         
@@ -632,7 +625,7 @@
         
                         <div class="form-control inline-slider">
                             <label for="quantity">Image Quantity:</label>
-                            <input type="range" id="quantity" name="quantity" min="1" max="8" step="1" value="4">
+                            <input type="range" id="quantity" name="quantity" min="1" max="9" step="1" value="4">
                             <span id="quantityValue" class="range-value">4</span>
                         </div>
         
