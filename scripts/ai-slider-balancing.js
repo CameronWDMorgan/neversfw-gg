@@ -8,6 +8,9 @@ function updateMaxValuesWanted() {
     maxStepsCountWanted = document.getElementById('maxStepsCountWanted').value;
     maxImageQuantityWanted = document.getElementById('maxImageQuantityWanted').value;
     minStepsCount = document.getElementById('maxStepsCountWanted').min;
+    console.log(`maxStepsCountWanted: ${maxStepsCountWanted}`);
+    console.log(`maxImageQuantityWanted: ${maxImageQuantityWanted}`);
+    console.log(`minStepsCount: ${minStepsCount}`);
 }
 updateMaxValuesWanted();
 
