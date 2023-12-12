@@ -384,18 +384,26 @@
                     document.getElementById('model').addEventListener('change', function() {
                         const model = this.value;
                         const loraSelections = document.querySelectorAll('.loraSelection');
+                        loraSummary = document.getElementById('lora-details')
 
                         if (model === 'sdxl-turbo') {
-                            loraSelections.forEach(loraSelection => {
-                                loraSelection.classList.add('sdxl-turbo');
-                            });
+                            loraSummary.classList.add('sdxl-turbo');
                         } else {
-                            loraSelections.forEach(loraSelection => {
-                                loraSelection.classList.remove('sdxl-turbo');
-                            });
+                            loraSummary.classList.remove('sdxl-turbo');
                         }
                     });
                     document.getElementById('model').dispatchEvent(new Event('change'));
+                    // set max steps to 50 when using sdxl-turbo, making sure that the correct one is sent into ai-slider-balancing.js
+                    document.getElementById('model').addEventListener('change', function() {
+                        const model = this.value;
+                        const steps = document.getElementById('steps');
+                        if (model === 'sdxl-turbo') {
+                            steps.max = 50;
+                        } else {
+                            steps.max = 100;
+                        }
+                    });
+
                 </script>
                 <style>
                     .sdxl-turbo {
@@ -405,7 +413,7 @@
 
 
                 
-                <div class="advanced sdxl-turbo">
+                <div class="advanced" id="lora-details">
                     <div></div>
                     <div></div>
                     <!-- by default should be expanded -->
@@ -870,11 +878,7 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 
     <script>
-        var maxStepsCountWanted = `<%= session.loggedIn ? 100 : 50 %>`
-        var maxImageQuantityWanted = 9;
-
         document.getElementById('advancedToggle').dispatchEvent(new Event('change'));
-
     </script>
     
     <script src="../scripts/ai-slider-balancing.js"></script>
