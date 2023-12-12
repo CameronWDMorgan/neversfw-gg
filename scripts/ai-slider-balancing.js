@@ -1,3 +1,15 @@
+function updateMaxValuesWanted() {
+    // Get the max values wanted from the query string
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    // refresh every 250ms
+    setTimeout(updateMaxValuesWanted, 250);
+    // Update the max values wanted
+    maxStepsCountWanted = document.getElementById('maxStepsCountWanted').value;
+    maxImageQuantityWanted = document.getElementById('maxImageQuantityWanted').value;
+}
+updateMaxValuesWanted();
+
 function updateSliderDisplay() {
     // Update the displayed value for steps and quantity
     stepsValue = document.getElementById('steps').value

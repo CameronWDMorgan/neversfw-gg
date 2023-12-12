@@ -380,6 +380,8 @@
                 </div>
 
                 <!-- if model is sdxl-turbo. add class to hide loras with a new class -->
+                <span id="maxStepsCountWanted" value=100></span>
+                <span id="maxImageQuantityWanted" value=9></span>
                 <script>
                     document.getElementById('model').addEventListener('change', function() {
                         const model = this.value;
@@ -396,11 +398,11 @@
                     // set max steps to 50 when using sdxl-turbo, making sure that the correct one is sent into ai-slider-balancing.js
                     document.getElementById('model').addEventListener('change', function() {
                         const model = this.value;
-                        const steps = document.getElementById('steps');
+                        const maxSteps = document.getElementById('maxStepsCountWanted');
                         if (model === 'sdxl-turbo') {
-                            steps.max = 50;
+                            maxStepsCountWanted.value = 50
                         } else {
-                            steps.max = 100;
+                            maxStepsCountWanted.value = 100
                         }
                     });
 
