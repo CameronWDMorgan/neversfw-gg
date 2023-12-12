@@ -379,8 +379,33 @@
                     </select>
                 </div>
 
+                <!-- if model is sdxl-turbo. add class to hide loras with a new class -->
+                <script>
+                    document.getElementById('model').addEventListener('change', function() {
+                        const model = this.value;
+                        const loraSelections = document.querySelectorAll('.loraSelection');
+
+                        if (model === 'sdxl-turbo') {
+                            loraSelections.forEach(loraSelection => {
+                                loraSelection.classList.add('sdxl-turbo');
+                            });
+                        } else {
+                            loraSelections.forEach(loraSelection => {
+                                loraSelection.classList.remove('sdxl-turbo');
+                            });
+                        }
+                    });
+                    document.getElementById('model').dispatchEvent(new Event('change'));
+                </script>
+                <style>
+                    .sdxl-turbo {
+                        display: none;
+                    }
+                </style>
+
+
                 
-                <div class="advanced">
+                <div class="advanced sdxl-turbo">
                     <div></div>
                     <div></div>
                     <!-- by default should be expanded -->
