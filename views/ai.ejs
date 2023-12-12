@@ -379,37 +379,11 @@
                     </select>
                 </div>
 
-                
 
-                <!-- if model is sdxl-turbo. add class to hide loras with a new class -->
-                <input class="form-control" type="hidden" id="maxStepsCountWanted" name="maxStepsCountWanted" value="100" min="10">
-                <input class="form-control" type="hidden" id="maxImageQuantityWanted" name="maxImageQuantityWanted" value="9" min="1">
-                <script>
-
-                    // set max steps to 50 when using sdxl-turbo, making sure that the correct one is sent into ai-slider-balancing.js
-                    document.getElementById('model').addEventListener('change', function() {
-                        const model = this.value;
-                        const maxSteps = document.getElementById('maxStepsCountWanted');
-                        if (model === 'sdxl-turbo') {
-                            maxSteps.value = 50
-                            maxSteps.min = 1
-                        } else {
-                            maxSteps.value = 100
-                            maxSteps.min = 10
-                        }
-                    });
-                    document.getElementById('model').dispatchEvent(new Event('change'));
-                    console.log(document.getElementById('maxStepsCountWanted').value)
-                </script>
-                <style>
-                    .sdxl-turbo {
-                        display: none;
-                    }
-                </style>
 
 
                 
-                <div class="advanced lora-details">
+                <div class="advanced">
                     <div></div>
                     <div></div>
                     <!-- by default should be expanded -->
@@ -646,7 +620,7 @@
                         <summary>Settings (Steps, CFG, Quanitity, Seed)</summary>
                         <div class="form-control inline-slider">
                             <label for="steps">Steps:</label>
-                            <input type="range" id="steps" name="steps" min="10" max="100" step="1" value="20">
+                            <input type="range" id="steps" name="steps" min="1" max="100" step="1" value="20">
                             <span id="stepsValue" class="range-value">20</span>
                         </div>
         
@@ -874,7 +848,11 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 
     <script>
+        var maxStepsCountWanted = `<%= session.loggedIn ? 100 : 50 %>`
+        var maxImageQuantityWanted = 9;
+
         document.getElementById('advancedToggle').dispatchEvent(new Event('change'));
+
     </script>
     
     <script src="../scripts/ai-slider-balancing.js"></script>
