@@ -7,6 +7,7 @@ function updateMaxValuesWanted() {
     // Update the max values wanted
     maxStepsCountWanted = document.getElementById('maxStepsCountWanted').value;
     maxImageQuantityWanted = document.getElementById('maxImageQuantityWanted').value;
+    minStepsCount = document.getElementById('maxStepsCountWanted').min;
 }
 updateMaxValuesWanted();
 
@@ -22,7 +23,7 @@ function updateSliderDisplay() {
 
 function adjustImageQuantity() {
     const steps = document.getElementById('steps').value;
-    const stepsProportion = (steps - 10) / (maxStepsCountWanted - 10);
+    const stepsProportion = (steps - minStepsCount) / (maxStepsCountWanted - minStepsCount);
     
     // Adjust max image quantity based on steps proportion
     const maxImageQuantity = Math.round(maxImageQuantityWanted - stepsProportion * (maxImageQuantityWanted - 1));
@@ -39,7 +40,7 @@ function adjustSteps() {
     const imageProportion = (imageQuantity - 1) / (maxImageQuantityWanted - 1);
     
     // Adjust max steps based on image quantity proportion
-    const maxSteps = Math.round(maxStepsCountWanted - imageProportion * (maxStepsCountWanted - 10));
+    const maxSteps = Math.round(maxStepsCountWanted - imageProportion * (maxStepsCountWanted - minStepsCount));
     const stepsInput = document.getElementById('steps');
     stepsInput.max = maxSteps;
     

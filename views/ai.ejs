@@ -380,7 +380,7 @@
                 </div>
 
                 <!-- if model is sdxl-turbo. add class to hide loras with a new class -->
-                <span id="maxStepsCountWanted" value=100></span>
+                <span id="maxStepsCountWanted" value=100 min="10"></span>
                 <span id="maxImageQuantityWanted" value=9></span>
                 <script>
                     document.getElementById('model').addEventListener('change', function() {
@@ -401,8 +401,10 @@
                         const maxSteps = document.getElementById('maxStepsCountWanted');
                         if (model === 'sdxl-turbo') {
                             maxStepsCountWanted.value = 50
+                            maxStepsCountWanted.min = 1
                         } else {
                             maxStepsCountWanted.value = 100
+                            maxStepsCountWanted.min = 10
                         }
                     });
 
