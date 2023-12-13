@@ -126,17 +126,6 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
         console.log(combinedLora.length)
 
-        if(combinedLora.length > 10) {
-            // lora limit reached
-            error = "You have reached the limit of 10 lora options. Please deselect some and try again."
-            console.error('An error occurred:', error);
-            document.getElementById('response').innerText = "An error occurred: " + error;
-            generateButton.disabled = false;
-            generateButton.textContent = 'Generate Image';
-            generateButton.classList.remove('generating');
-            return
-        }
-
     } else {
         targetSteps = 20
         targetQuantity = 4
@@ -210,6 +199,15 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         });
 
         const jsonResponse = await response.json();
+
+        console.log(jsonResponse)
+
+        if (jsonResponse.status === "error") {
+            document.getElementById('response').innerText = "An error occurred: " + jsonResponse.message;
+            generateButton.disabled = false;
+            generateButton.textContent = 'Generate Image';
+            generateButton.classList.remove('generating');
+        }        
 
 
         if (jsonResponse.status === "queued") {
