@@ -39,20 +39,100 @@
             margin-top: 0.5rem;
             font-weight: bold;
         }
+
+        /* add onto the styling for the inline-slider range, with outlines and purple colours */
         .form-control.inline-slider {
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
         .form-control.inline-slider label {
             margin-right: 1rem; /* Adjust as needed */
         }
-
         .form-control.inline-slider input[type="range"] {
-            flex-grow: 1; /* Allows the slider to grow and fill the space */
-            margin: 0 1rem; /* Adjust as needed */
+            width: 100%;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border: transparent;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: white;
+            background-color: #ffffff15;
+            font-size: 16px;
+            outline: none;
+            -webkit-appearance: none; /* Removes default styling */
         }
+        /* slider thumb trail and white outline */
+        .form-control.inline-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Removes default styling */
+            width: 1rem; /* Adjust as needed */
+            height: 1rem; /* Adjust as needed */
+            background-color: #c259ff; /* Adjust as needed */
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translateY(-0.25rem);
+            box-shadow: 0 0 0 0.075rem #ffffff; /* Adjust as needed */
+        }
+        .form-control.inline-slider input[type="range"]::-moz-range-thumb {
+            width: 1rem; /* Adjust as needed */
+            height: 1rem; /* Adjust as needed */
+            background-color: #c259ff; /* Adjust as needed */
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translateY(-0.25rem);
+            box-shadow: 0 0 0 0.075rem #ffffff; /* Adjust as needed */
+        }
+        .form-control.inline-slider input[type="range"]::-ms-thumb {
+            width: 1rem; /* Adjust as needed */
+            height: 1rem; /* Adjust as needed */
+            background-color: #c259ff; /* Adjust as needed */
+            border-radius: 50%;
+            cursor: pointer;
+            transform: translateY(-0.25rem);
+            box-shadow: 0 0 0 0.075rem #ffffff; /* Adjust as needed */
+        }
+
+
+        .form-control.inline-slider input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 0.5rem; /* Adjust as needed */
+            background-color: #ffffff15; /* Adjust as needed */
+            border-radius: 4px;
+        }
+        .form-control.inline-slider input[type="range"]::-moz-range-track {
+            width: 100%;
+            height: 0.5rem; /* Adjust as needed */
+            background-color: #ffffff15; /* Adjust as needed */
+            border-radius: 4px;
+        }
+        .form-control.inline-slider input[type="range"]::-ms-track {
+            width: 100%;
+            height: 0.5rem; /* Adjust as needed */
+            background-color: #ffffff15; /* Adjust as needed */
+            border-radius: 4px;
+        }
+        .form-control.inline-slider input[type="range"]::-ms-fill-lower {
+            background-color: #ffffff15; /* Adjust as needed */
+            border-radius: 4px;
+        }
+        .form-control.inline-slider input[type="range"]::-ms-fill-upper {
+            background-color: #ffffff15; /* Adjust as needed */
+            border-radius: 4px;
+        }
+        .form-control.inline-slider input[type="range"]::-ms-tooltip {
+            display: none; /* Removes default styling */
+        }
+        .form-control.inline-slider .range-value {
+            min-width: 3rem; /* Ensures that the value doesn't collapse */
+            text-align: center;
+        }
+        
+
+
+
+
+
+
 
         .form-control select {
             width: 100%;
