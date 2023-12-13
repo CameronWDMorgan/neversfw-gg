@@ -88,34 +88,34 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     if(advancedToggle == "on") {
         const styleLoraSelect = document.getElementById('style-lora');
-    const selectedStyleLoraOptions = Array.from(styleLoraSelect.options)
-        .filter(option => option.selected)
-        .map(option => option.value);
+        const selectedStyleLoraOptions = Array.from(styleLoraSelect.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
 
-    const effectLoraSelect = document.getElementById('effect-lora');
-    const selectedEffectLoraOptions = Array.from(effectLoraSelect.options)
-        .filter(option => option.selected)
-        .map(option => option.value);
+        const effectLoraSelect = document.getElementById('effect-lora');
+        const selectedEffectLoraOptions = Array.from(effectLoraSelect.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
 
-    const conceptLoraSelect = document.getElementById('concept-lora');
-    const selectedConceptLoraOptions = Array.from(conceptLoraSelect.options)
-        .filter(option => option.selected)
-        .map(option => option.value);
+        const conceptLoraSelect = document.getElementById('concept-lora');
+        const selectedConceptLoraOptions = Array.from(conceptLoraSelect.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
 
-    const clothingLoraSelect = document.getElementById('clothing-lora');
-    const selectedClothingLoraOptions = Array.from(clothingLoraSelect.options)
-        .filter(option => option.selected)
-        .map(option => option.value);
+        const clothingLoraSelect = document.getElementById('clothing-lora');
+        const selectedClothingLoraOptions = Array.from(clothingLoraSelect.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
 
-    const characterLoraSelect = document.getElementById('character-lora');
-    const selectedCharacterLoraOptions = Array.from(characterLoraSelect.options)
-        .filter(option => option.selected)
-        .map(option => option.value);
+        const characterLoraSelect = document.getElementById('character-lora');
+        const selectedCharacterLoraOptions = Array.from(characterLoraSelect.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
 
-    const poseLoraSelect = document.getElementById('pose-lora');
-    const selectedPoseLoraOptions = Array.from(poseLoraSelect.options)
-        .filter(option => option.selected)
-        .map(option => option.value);
+        const poseLoraSelect = document.getElementById('pose-lora');
+        const selectedPoseLoraOptions = Array.from(poseLoraSelect.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
 
         combinedLora = combinedLora.concat(selectedStyleLoraOptions)
         combinedLora = combinedLora.concat(selectedEffectLoraOptions)
@@ -123,11 +123,27 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         combinedLora = combinedLora.concat(selectedClothingLoraOptions)
         combinedLora = combinedLora.concat(selectedCharacterLoraOptions)
         combinedLora = combinedLora.concat(selectedPoseLoraOptions)
+
+        console.log(combinedLora.length)
+
+        if(combinedLora.length > 10) {
+            // lora limit reached
+            error = "You have reached the limit of 10 lora options. Please deselect some and try again."
+            console.error('An error occurred:', error);
+            document.getElementById('response').innerText = "An error occurred: " + error;
+            generateButton.disabled = false;
+            generateButton.textContent = 'Generate Image';
+            generateButton.classList.remove('generating');
+            return
+        }
+
     } else {
         targetSteps = 20
         targetQuantity = 4
         targetGuidance = 5
     }
+
+
 
     
 
