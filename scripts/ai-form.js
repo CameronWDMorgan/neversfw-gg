@@ -143,20 +143,21 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
             reader.readAsDataURL(file);
         });
     }
-    
-    checkbox = document.getElementById('img2imgCheckbox')
-    // Usage
-    console.log(checkbox.checked)
 
     let imageBase64
 
-    if(checkbox.checked) {
+    if(document.getElementById('img2imgCheckbox').checked) {
         console.log("AAAAAAAAAAAAAAAAAAAAa")
         let file = document.getElementById('uploadedImage').files[0];
         imageBase64 = await getBase64(file)
-    } else {
-
     }
+
+    if(document.getElementById('img2imgCheckbox').checked) {
+        reqType = "img2img"
+    } else {
+        reqType = "txt2img"
+    }
+
      
     const data = {
         prompt: formData.get('prompt'),
@@ -172,7 +173,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         strength: formData.get('img2imgStrength'),
         guidance: targetGuidance,
         savedloras: savedloras,
-        enhance_prompt: enhance_prompt
+        enhance_prompt: enhance_prompt,
+        request_type: reqType
     };
 
     try {

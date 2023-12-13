@@ -724,8 +724,6 @@
                 <br>
             
 
-                
-            
 
                 <div class="form-control">
                     <label for="img2imgCheckbox">Enable img2img:</label>
@@ -742,8 +740,7 @@
                     <input type="range" id="img2imgStrength" name="img2imgStrength" min="0" max="100" step="1" value="50">
                     <span id="img2imgStrengthValue" class="range-value">50%</span>
                 </div>
-                
-                
+
 
                 <center>
                     <% if (session.loggedIn == false) { %>
@@ -817,6 +814,32 @@
             document.getElementById('cfguidanceValue').innerText = `${this.value}/${this.max}`;
         });
         document.getElementById('cfguidance').dispatchEvent(new Event('input'));
+
+        document.getElementById('img2vidCheckbox').addEventListener('change', function() {
+            const isChecked = this.checked;
+            const img2vidControls = document.getElementById('img2vidControls');
+
+            if (isChecked) {
+                img2vidControls.style.display = 'block';
+            } else {
+                img2vidControls.style.display = 'none';
+            }
+        });
+
+        document.getElementById('img2vidStrength').addEventListener('input', function() {
+            document.getElementById('img2vidStrengthValue').innerText = this.value + '%';
+        });
+        document.getElementById('img2vidStrength').dispatchEvent(new Event('input'));
+
+        document.getElementById('img2vidFPS').addEventListener('input', function() {
+            document.getElementById('img2vidFPSValue').innerText = this.value + ' FPS';
+        });
+        document.getElementById('img2vidFPS').dispatchEvent(new Event('input'));
+
+        document.getElementById('img2vidLength').addEventListener('input', function() {
+            document.getElementById('img2vidLengthValue').innerText = this.value + ' seconds';
+        });
+        document.getElementById('img2vidLength').dispatchEvent(new Event('input'));
 
     </script>
 
