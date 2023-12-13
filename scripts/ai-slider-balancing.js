@@ -3,14 +3,12 @@ function updateMaxValuesWanted() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     // Update the max values wanted
-    maxStepsCountWanted = document.getElementById('maxStepsCountWanted').value;
-    maxImageQuantityWanted = document.getElementById('maxImageQuantityWanted').value;
-    minStepsCount = document.getElementById('maxStepsCountWanted').min;
+    maxStepsCountWanted = document.getElementById('maxStepsCountWanted').value
+    maxImageQuantityWanted = document.getElementById('maxImageQuantityWanted').value
+    minStepsCountWanted = document.getElementById('maxStepsCountWanted').min
     console.log(`maxStepsCountWanted: ${maxStepsCountWanted}`);
     console.log(`maxImageQuantityWanted: ${maxImageQuantityWanted}`);
-    console.log(`minStepsCount: ${minStepsCount}`);
-    // refresh every 250ms
-    setTimeout(updateMaxValuesWanted, 250);
+    console.log(`minStepsCount: ${minStepsCountWanted}`);
 }
 
 function updateSliderDisplay() {
@@ -25,7 +23,7 @@ function updateSliderDisplay() {
 
 function adjustImageQuantity() {
     const steps = document.getElementById('steps').value;
-    const stepsProportion = (steps - minStepsCount) / (maxStepsCountWanted - minStepsCount);
+    const stepsProportion = (steps - minStepsCountWanted) / (maxStepsCountWanted - minStepsCountWanted);
     
     // Adjust max image quantity based on steps proportion
     const maxImageQuantity = Math.round(maxImageQuantityWanted - stepsProportion * (maxImageQuantityWanted - 1));
@@ -42,7 +40,7 @@ function adjustSteps() {
     const imageProportion = (imageQuantity - 1) / (maxImageQuantityWanted - 1);
     
     // Adjust max steps based on image quantity proportion
-    const maxSteps = Math.round(maxStepsCountWanted - imageProportion * (maxStepsCountWanted - minStepsCount));
+    const maxSteps = Math.round(maxStepsCountWanted - imageProportion * (maxStepsCountWanted - minStepsCountWanted));
     const stepsInput = document.getElementById('steps');
     stepsInput.max = maxSteps;
     
@@ -64,8 +62,8 @@ document.getElementById('quantity').addEventListener('input', function() {
 
 // Initialize the sliders
 window.onload = function() {
+    updateMaxValuesWanted();
     adjustImageQuantity();
     adjustSteps();
     updateSliderDisplay();
-    updateMaxValuesWanted();
 };

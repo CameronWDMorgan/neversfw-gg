@@ -40,7 +40,7 @@
     "mozjpeg": "^8.0.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.1",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.0.2",
     "openssl": "^2.0.0",
     "os": "^0.1.2",
     "plupload": "^2.3.9",
