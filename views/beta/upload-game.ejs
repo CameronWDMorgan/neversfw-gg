@@ -45,7 +45,7 @@
 
         <input name="accountId" value="<%=session.accountId%>" hidden>
 
-        <div class="round-frosted">
+        <div class="round-frosted" style="padding: 40px; width: max-content;"> 
             <h1 style="font-size: xxx-large;">Create Game Page</h1>
             <p></p>
             <label>Game Name: </label>
@@ -69,7 +69,31 @@
             <div id="myProgress">
                 <div id="myBar"></div>
             </div>
-            <button id="start-game-upload">Create Game</button>
+            <br>
+            <style>
+                /* upload button animation, hover etc */
+                .uploadButton {
+                    background-color: #4CAF50; /* Green */
+                    border: none;
+                    color: white;
+                    padding: 16px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    transition-duration: 0.4s;
+                    cursor: pointer;
+                    border-radius: 8px;
+                }
+                /* scale button on hover */
+                .uploadButton:hover {
+                    transform: scale(1.1);
+                }
+
+
+            </style>
+            <button class="uploadButton" id="start-game-upload">Create Game</button>
         </div>
 
 
