@@ -179,7 +179,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         guidance: targetGuidance,
         savedloras: savedloras,
         enhance_prompt: enhance_prompt,
-        request_type: reqType
+        request_type: reqType,
+        advancedMode: advancedToggle
     };
 
     try {

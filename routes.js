@@ -2596,10 +2596,10 @@ module.exports = async function(app){
                 foundAccount = await userProfileSchema.findOne({accountId: reqIdString})
                 
                 if(!foundAccount.ai) {
-                    foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
+                    foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry", advancedMode: false}}
                 }
             } else {
-                foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry"}}
+                foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry", advancedMode: false}}
             }
 
             const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[]};
@@ -2625,13 +2625,26 @@ module.exports = async function(app){
             
             console.log(selectedLoras)
 
+            console.log(foundAccount.ai.advancedMode)
+
+            if(foundAccount.ai.advancedMode == true) {
+                advancedMode = "checked"
+                console.log('AA true')
+            } else {
+                advancedMode = ""
+            }
+
+            console.log(foundAccount.ai.advancedMode)
+
+
             res.render('ai', { 
                 session: req.session,
                 data: cachedYAMLData,
                 promptValue: foundAccount.ai.prompt,
                 negativePromptValue: foundAccount.ai.negativeprompt,
                 modelValue: foundAccount.ai.model,
-                selectedLoras: selectedLoras
+                selectedLoras: selectedLoras,
+                advancedMode: advancedMode
             });
         } catch (error) {
             console.error(error);
@@ -2642,6 +2655,11 @@ module.exports = async function(app){
     app.post('/ai-generate', async function(req, res) {
         if(req.session.loggedIn){
             reqIdString = `${req.session.accountId}`
+            if(req.body.advancedMode == "on") {
+                req.body.advancedMode = true
+            } else {
+                req.body.advancedMode = false
+            }
             await userProfileSchema.findOneAndUpdate(
                 { accountId: reqIdString },
                 { 
@@ -2649,7 +2667,8 @@ module.exports = async function(app){
                         prompt: req.body.prompt,
                         negativeprompt: req.body.negativeprompt,
                         model: req.body.model,
-                        loras: req.body.savedloras 
+                        loras: req.body.savedloras,
+                        advancedMode: req.body.advancedMode
                     }
                 }
             )
