@@ -128,12 +128,7 @@
         }
         
 
-
-
-
-
-
-
+        /* custom styling for the select dropdowns, both for select and select multiple, transitions */
         .form-control select {
             width: 100%;
             margin-top: 0.5rem;
@@ -142,9 +137,44 @@
             border-radius: 4px;
             box-sizing: border-box;
             color: white;
-            background-color: #ffffff15;
+            background-color: rgba(0, 0, 0, 0.103);
             font-size: 16px;
+            outline: none;
         }
+        /* for single select dropdowns */
+        .form-control select option {
+            color: rgb(255, 255, 255);
+            background-color: rgba(0, 0, 0, 0.815);
+            padding: 4px;
+        }
+        .form-control select option:checked {
+            color: white;
+            background-color: rgba(165, 68, 255, 0.473);
+        }
+        .form-control select option:hover {
+            color: white;
+            background-color: rgba(165, 68, 255, 0.507);
+        }
+        /* for multiple select dropdowns */
+        .form-control select[multiple] {
+            height: 12rem;
+        }
+        .form-control select[multiple] option {
+            color: rgb(255, 255, 255);
+            background-color: rgba(0, 0, 0, 0.103);
+            padding: 4px;
+        }
+        .form-control select[multiple] option:checked {
+            color: white;
+            background-color: rgb(165, 68, 255);
+        }
+        .form-control select[multiple] option:hover {
+            color: white;
+            background-color: rgb(165, 68, 255);
+        }
+
+
+
 
         /* Additional styling for dropdown arrow */
         .form-control select::after {
@@ -157,6 +187,7 @@
             color: white;
             background-color: #00000015;
         }
+
 
         .form-control select[multiple] option:checked {
             color: white;
