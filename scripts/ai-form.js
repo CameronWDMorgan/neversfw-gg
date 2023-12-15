@@ -19,7 +19,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     const formData = new FormData(event.target);
 
     console.log(formData)
-    let session = formData.get('user-session')
+    let session = document.getElementById('user-session').value
 
     let targetSteps = formData.get('steps')
     let targetModel = formData.get('model')
