@@ -729,8 +729,15 @@
 
                 </script>
 
-                <input id="maxStepsCountWanted" value=100 min=0 hidden>
-                <input id="maxImageQuantityWanted" value=9 hidden>
+                <% if (session.loggedIn == false) { %>
+                    <input id="maxStepsCountWanted" value=100 min=0 hidden>
+                    <input id="maxImageQuantityWanted" value=9 hidden>
+                <% } else if (session.accountId == "0") { %>
+                    <input id="maxStepsCountWanted" value=200 min=0 hidden>
+                    <input id="maxImageQuantityWanted" value=18 hidden>
+                <% } %>
+
+                <input id="user-session" hidden value="<%=session%>">
 
 
                 <div class="advanced">
