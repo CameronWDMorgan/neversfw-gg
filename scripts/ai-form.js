@@ -40,6 +40,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     targetQuantity = formData.get('quantity')
 
+    console.log(session)
+
     if(session.accountId != "0" ){
 
         if(targetQuantity > 6 || targetQuantity < 0) {
