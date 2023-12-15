@@ -18,9 +18,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     const formData = new FormData(event.target);
 
-    console.log(formData)
-    let session = document.getElementById('user-session').value
-
+    let accountId = document.getElementById('user-session').value
+    
     let targetSteps = formData.get('steps')
     let targetModel = formData.get('model')
 
@@ -40,9 +39,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     targetQuantity = formData.get('quantity')
 
-    console.log(session)
-
-    if(session.accountId != "0" ){
+    if(accountId !== "0" ){
 
         if(targetQuantity > 6 || targetQuantity < 0) {
             if(targetSteps > 100) {
