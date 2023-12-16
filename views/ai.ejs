@@ -725,16 +725,14 @@
                     });
                     document.getElementById('style-lora').dispatchEvent(new Event('change'));
 
-                    
-
                 </script>
-
-                <% if (session.loggedIn == false) { %>
+\           
+                <% if (session.loggedIn === undefined || session.loggedIn == false) { %>
                     <input id="maxStepsCountWanted" value=100 min=0 hidden>
                     <input id="maxImageQuantityWanted" value=9 hidden>
                 <% } else if (session.accountId == "0") { %>
-                    <input id="maxStepsCountWanted" value=200 min=0 hidden>
-                    <input id="maxImageQuantityWanted" value=18 hidden>
+                        <input id="maxStepsCountWanted" value=200 min=0 hidden>
+                        <input id="maxImageQuantityWanted" value=18 hidden>
                 <% } %>
 
                 <input name="user-session" id="user-session" value="<%-session.accountId%>" hidden>
@@ -996,8 +994,6 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 
     <script>
-        var maxStepsCountWanted = `<%= session.loggedIn ? 100 : 50 %>`
-        var maxImageQuantityWanted = 9;
 
         document.getElementById('advancedToggle').dispatchEvent(new Event('change'));
 

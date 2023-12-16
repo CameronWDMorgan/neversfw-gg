@@ -2636,7 +2636,6 @@ module.exports = async function(app){
 
             console.log(foundAccount.ai.advancedMode)
 
-
             res.render('ai', { 
                 session: req.session,
                 data: cachedYAMLData,
