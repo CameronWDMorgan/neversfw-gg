@@ -726,13 +726,16 @@
                     document.getElementById('style-lora').dispatchEvent(new Event('change'));
 
                 </script>
-                          
+
                 <% if (session.loggedIn === undefined || session.loggedIn == false) { %>
                     <input id="maxStepsCountWanted" value=100 min=0 hidden>
                     <input id="maxImageQuantityWanted" value=9 hidden>
                 <% } else if (session.accountId == "0") { %>
-                        <input id="maxStepsCountWanted" value=200 min=0 hidden>
-                        <input id="maxImageQuantityWanted" value=18 hidden>
+                    <input id="maxStepsCountWanted" value=200 min=0 hidden>
+                    <input id="maxImageQuantityWanted" value=18 hidden>
+                <% } else { %>
+                    <input id="maxStepsCountWanted" value=100 min=0 hidden>
+                    <input id="maxImageQuantityWanted" value=9 hidden>
                 <% } %>
 
                 <input name="user-session" id="user-session" value="<%-session.accountId%>" hidden>
