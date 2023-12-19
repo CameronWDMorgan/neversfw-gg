@@ -1937,7 +1937,7 @@ module.exports = async function(app){
 
         let potentialGame = await userGameSchema.findOne({ gameId: req.body.gameId })
 
-        if(req.sesson.accountId !== "0"){
+        if(req.session.accountId !== "0"){
             if(potentialGame.accountId !== req.session.accountId){
                 res.render('sysmessage', {
                     session: req.session,
