@@ -637,7 +637,7 @@
                                     // loop through each loraSelection
                                     loraSelections.forEach(loraSelection => {
                                         // close the loraSelection
-                                        loraSelection.parentElement.parentElement.removeAttribute('open')
+                                        loraSelection.parentElement.parentElement.setAttribute('open', '');
                                     });
                                 }
 
