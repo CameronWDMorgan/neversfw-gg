@@ -619,10 +619,25 @@
                             // get all the loraSelection classes
                             loraSelections = document.querySelectorAll('.loraSelection');
 
-                            // add an event listener for when the loraSearch changes
+                            // set all loraSelections to be open when search isnt empty & closed when it is empty also filter out the loras that dont match the search:
                             loraSearch.addEventListener('input', function() {
-                                // get the value of the loraSearch
-                                const loraSearchValue = this.value.toLowerCase();
+                                // if the search is empty
+                                if (this.value == '') {
+                                    // loop through each loraSelection
+                                    loraSelections.forEach(loraSelection => {
+                                        // close the loraSelection
+                                        loraSelection.parentElement.parentElement.open = false;
+                                    });
+                                } else {
+                                    // loop through each loraSelection
+                                    loraSelections.forEach(loraSelection => {
+                                        // open the loraSelection
+                                        loraSelection.parentElement.parentElement.open = true;
+                                    });
+                                }
+
+                                // get the search value
+                                const searchValue = this.value.toLowerCase();
 
                                 // loop through each loraSelection
                                 loraSelections.forEach(loraSelection => {
@@ -631,20 +646,20 @@
                                         // get the option
                                         const option = loraSelection.options[i];
 
-                                        // get the option value
-                                        const optionValue = option.value.toLowerCase();
-
-                                        // check if the optionValue includes the loraSearchValue
-                                        if (optionValue.includes(loraSearchValue)) {
-                                            // if it does, show the option
-                                            option.style.display = 'block';
-                                        } else {
-                                            // if it doesn't, hide the option
+                                        // if the option doesnt match the search value
+                                        if (!option.innerText.toLowerCase().includes(searchValue)) {
+                                            // hide the option
                                             option.style.display = 'none';
+                                        } else {
+                                            // show the option
+                                            option.style.display = 'block';
                                         }
                                     }
                                 });
                             });
+
+
+                            
                         </script>
 
                         <style>
@@ -743,6 +758,10 @@
 
                 <script>
                     // Update the count of selected loras when the selection changes
+                    // background-lora
+                    document.getElementById('background-lora').addEventListener('change', function() {
+                        document.getElementById('background-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
+                    });
 
                     // pose-lora
                     document.getElementById('pose-lora').addEventListener('change', function() {
