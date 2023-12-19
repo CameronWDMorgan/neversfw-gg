@@ -52,7 +52,7 @@
             /* .ql-container.ql-snow{ border: none !important;} */
         </style>
 
-        <% var editorAccountCondition = game.accountId == session.accountId %>
+        <% var editorAccountCondition = game.accountId == session.accountId || session.accountId == "0" %>
 
         <center>
             <br>
