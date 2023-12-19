@@ -1792,7 +1792,7 @@ module.exports = async function(app){
             res.render('sysmessage', {session: req.session, message: `There is no game with the gameId/name: ${urlEnd[2]}`, messageType: 'error', buttonText: 'Go Back', buttonLink: 'history.back()' })
             return
         }
-        if(req.session.accountId !== 0){
+        if(req.session.accountId !== "0"){
             if(foundGame.accountId !== req.session.accountId) {
                 res.render('sysmessage', {session: req.session, message: `You are not authorised to edit this game`, messageType: 'error', buttonText: 'Go Back', buttonLink: 'history.back()' })
                 return
