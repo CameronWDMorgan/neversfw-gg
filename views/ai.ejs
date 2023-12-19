@@ -604,7 +604,6 @@
                                 <% if (data.background) { %>
                                     <select class="loraSelection" id="background-lora" name="background-lora" multiple>
                                         <% Object.entries(data.background).forEach(([key, value]) => { %>
-                                            <!-- make the value.words be text aligned to the right -->
                                             <option value="<%= key %>" <%= selectedLoras.background.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
                                         <% }); %>
                                     </select>

@@ -64,7 +64,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         concept: $('#concept-lora').val(),
         clothing: $('#clothing-lora').val(),
         character: $('#character-lora').val(),
-        pose: $('#pose-lora').val()
+        pose: $('#pose-lora').val(),
+        background: $('#background-lora').val()
     };
 
     let targetGuidance = formData.get('cfguidance')
