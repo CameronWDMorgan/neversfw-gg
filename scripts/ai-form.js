@@ -120,12 +120,18 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
             .filter(option => option.selected)
             .map(option => option.value);
 
+        const backgroundLoraSelect = document.getElementById('background-lora');
+        const selectedBackgroundLoraOptions = Array.from(backgroundLoraSelect.options)
+            .filter(option => option.selected)
+            .map(option => option.value);
+
         combinedLora = combinedLora.concat(selectedStyleLoraOptions)
         combinedLora = combinedLora.concat(selectedEffectLoraOptions)
         combinedLora = combinedLora.concat(selectedConceptLoraOptions)
         combinedLora = combinedLora.concat(selectedClothingLoraOptions)
         combinedLora = combinedLora.concat(selectedCharacterLoraOptions)
         combinedLora = combinedLora.concat(selectedPoseLoraOptions)
+        combinedLora = combinedLora.concat(selectedBackgroundLoraOptions)
 
         console.log(combinedLora.length)
 
