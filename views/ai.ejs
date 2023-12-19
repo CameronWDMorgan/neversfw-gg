@@ -775,6 +775,7 @@
                     document.getElementById('background-lora').addEventListener('change', function() {
                         document.getElementById('background-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
                     });
+                    document.getElementById('background-lora').dispatchEvent(new Event('change'));
 
                     // pose-lora
                     document.getElementById('pose-lora').addEventListener('change', function() {
@@ -1063,10 +1064,10 @@
 
     </script>
     
-    <script src="../scripts/ai-slider-balancing.js?v16122023"></script>
+    <script src="../scripts/ai-slider-balancing.js?v19122023"></script>
 
-    <script src="../scripts/ai-form.js?v16122023"></script>
-    <script src="../scripts/ai-autocomplete.js?v16122023"></script>
-    <script src="../scripts/ai-strength.js?v16122023"></script>
+    <script src="../scripts/ai-form.js?v19122023"></script>
+    <script src="../scripts/ai-autocomplete.js?v19122023"></script>
+    <script src="../scripts/ai-strength.js?v19122023"></script>
 </body>
 </html>
