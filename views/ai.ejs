@@ -510,6 +510,12 @@
                     <!-- by default should be expanded -->
                     <details open>
                         <summary>Loras (<span id="totalLorasSelected"></span>/<span id="totalLoras"></span>)</summary>
+                        <!-- search through loras and only show filtered ones -->
+                        <!-- lora search -->
+                        <div class="form-control">
+                            <label for="loraSearch">Lora Search:</label>
+                            <input type="text" id="loraSearch" name="loraSearch" placeholder="Search for a lora...">
+                        </div>
                         <br>
                         <div class="imagesContainer">
                             <details>
@@ -590,7 +596,56 @@
                                     <% } %>
                                 </div>
                             </details>
+
+                            <details>
+                                <summary>Background Lora's <span id="background-lora-summary"></span></summary>
+                                <div class="form-control">
+                                    <% if (data.background) { %>
+                                        <select class="loraSelection" id="background-lora" background="background-lora" multiple>
+                                            <% Object.entries(data.background).forEach(([key, value]) => { %>
+                                                <option value="<%= key %>" <%= selectedLoras.background.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                            <% }); %>
+                                        </select>
+                                    <% } %>
+                                </div>
+                            </details>
                         </div>
+
+                        <!-- filter loras with the string of: loraSearch: -->
+                        <script>
+                            // get the loraSearch element
+                            const loraSearch = document.getElementById('loraSearch');
+
+                            // get all the loraSelection classes
+                            loraSelections = document.querySelectorAll('.loraSelection');
+
+                            // add an event listener for when the loraSearch changes
+                            loraSearch.addEventListener('input', function() {
+                                // get the value of the loraSearch
+                                const loraSearchValue = this.value.toLowerCase();
+
+                                // loop through each loraSelection
+                                loraSelections.forEach(loraSelection => {
+                                    // loop through each option in the loraSelection
+                                    for (let i = 0; i < loraSelection.options.length; i++) {
+                                        // get the option
+                                        const option = loraSelection.options[i];
+
+                                        // get the option value
+                                        const optionValue = option.value.toLowerCase();
+
+                                        // check if the optionValue includes the loraSearchValue
+                                        if (optionValue.includes(loraSearchValue)) {
+                                            // if it does, show the option
+                                            option.style.display = 'block';
+                                        } else {
+                                            // if it doesn't, hide the option
+                                            option.style.display = 'none';
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
 
                         <style>
                             #clearAllLorasButton {

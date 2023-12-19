@@ -2608,7 +2608,7 @@ module.exports = async function(app){
                 foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry", advancedMode: false}}
             }
 
-            const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[]};
+            const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[],background:[]};
 
             if(selectedLoras.style == undefined) {
                 selectedLoras.style = []
@@ -2627,6 +2627,9 @@ module.exports = async function(app){
             }
             if(selectedLoras.pose == undefined) {
                 selectedLoras.pose = []
+            }
+            if(selectedLoras.background == undefined) {
+                selectedLoras.background = []
             }
             
             console.log(selectedLoras)
