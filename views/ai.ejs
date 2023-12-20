@@ -492,7 +492,7 @@
 
                 <div class="form-control">
                     <label for="model">Model:</label>
-                    <select id="model" name="model" value="<%=modelValue%>">
+                    <select id="model" name="model">
                         <option value="furry">Default - Furry Vixens (Anime, Human & Furry)</option>
                         <option value="sonic">SonicDiffusion (Sonic the Hedgehog)</option>
                         <option value="cyberreal">Cyberreal (Realistic)</option>
@@ -501,6 +501,19 @@
                         <!-- <option value="ponyDiffusion">ponyDiffusion (My Little Pony)</option> -->
                         <option value="realisticVision">realisticVision (Realstic)</option>
                     </select>
+
+                    <script>
+                        // get the model select element
+                        const modelSelect = document.getElementById('model')
+                        const modelValue = '<%=modelValue%>'
+
+                        for (let i = 0; i < modelSelect.options.length; i++) {
+                            const option = modelSelect.options[i]
+                            if (option.value === modelValue) {
+                                option.selected = true;
+                            }
+                        }
+                    </script>
                 </div>
 
 
