@@ -87,11 +87,11 @@ $(document).ready(function() {
                 } else {
                     appendText = ", "; // Add comma and space otherwise
                 }
+
+                actualTag = actualTag.replace(/_/g, ' ');
             
                 var newText = leftText.substring(0, leftText.length - (leftWordMatch ? leftWordMatch[0].length : 0)) + actualTag + appendText + rightText.substring(rightWordMatch ? rightWordMatch[0].length : 0);
                 textarea.val(newText);
-
-                actualTag = actualTag.replace(/_/g, ' ');
             
                 // Update the cursor position to be after the inserted tag and appendText
                 var newCursorPos = cursorPos - replaceLength + actualTag.length + appendText.length;
