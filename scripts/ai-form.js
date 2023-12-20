@@ -86,6 +86,23 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     
     let enhance_prompt = formData.get('enhance_prompt')
 
+    let inpainting_toggle = formData.get('inpaintingCheckbox')
+
+    let inpaintingToggle = false
+
+    if(inpainting_toggle == "on") {
+        inpaintingToggle = true;
+        
+        // Get the mask with a black background
+        const maskDataUrl = getMaskWithBlackBackground();
+    
+        // Append the mask image to the FormData
+        formData.append('mask', maskDataUrl);
+
+        originalImage = document.getElementById('imageLoader').files[0];
+        
+    }
+
     if(enhance_prompt == "on") {
         enhance_prompt = true
     }
@@ -142,14 +159,6 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         targetGuidance = 5
     }
 
-
-
-    
-
-    
-
-    
-
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -166,9 +175,15 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         let file = document.getElementById('uploadedImage').files[0];
         imageBase64 = await getBase64(file)
     }
+    if(document.getElementById('inpaintingCheckbox').checked) {
+        let file = originalImage
+        imageBase64 = await getBase64(file)
+    }
 
     if(document.getElementById('img2imgCheckbox').checked) {
         reqType = "img2img"
+    } else if(document.getElementById('inpaintingCheckbox').checked) {
+        reqType = "inpainting"
     } else {
         reqType = "txt2img"
     }
@@ -190,7 +205,9 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         savedloras: savedloras,
         enhance_prompt: enhance_prompt,
         request_type: reqType,
-        advancedMode: advancedToggle
+        advancedMode: advancedToggle,
+        inpainting: inpaintingToggle,
+        inpaintingMask: formData.get('mask')
     };
 
     try {
