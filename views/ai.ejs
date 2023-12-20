@@ -669,6 +669,7 @@
                                     }
                                 });
                             });
+                            loraSearch.dispatchEvent(new Event('input'));
 
 
                             
@@ -757,7 +758,6 @@
                             totalLorasSelected.innerText = totalLorasSelectedCount;
                             totalLoras.innerText = totalLorasCount;
                             loraSelections.forEach(loraSelection => {
-                                console.log(loraSelection.id);
                                 document.getElementById(`${loraSelection.id}`).dispatchEvent(new Event('change'));
                             });
 
