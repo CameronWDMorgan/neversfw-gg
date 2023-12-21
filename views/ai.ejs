@@ -162,7 +162,7 @@
         .form-control select[multiple] option {
             color: rgb(255, 255, 255);
             background-color: rgba(0, 0, 0, 0.103);
-            padding: 4px;
+            padding: 0px !important;
         }
         .form-control select[multiple] option:checked {
             color: white;
@@ -314,7 +314,7 @@
         /* loraSelection when the loras are set to only 1 visible have it be smaller for example */
         .loraSelection {
             min-height: 1rem !important;
-            max-height: 12rem !important;
+            max-height: 7rem !important;
         }
 
         /* animation for the details appearing on click using float in */
@@ -532,103 +532,106 @@
                     <!-- by default should be expanded -->
                     <details open>
                         <summary>Loras (<span id="totalLorasSelected"></span>/<span id="totalLoras"></span>)</summary>
-                        <!-- search through loras and only show filtered ones -->
-                        <!-- lora search -->
-                        <div class="form-control">
-                            <label for="loraSearch">Lora Search:</label>
-                            <input type="text" id="loraSearch" name="loraSearch" placeholder="Search for a lora...">
+                            <!-- search through loras and only show filtered ones -->
+                            <!-- lora search -->
+                            <div class="form-control">
+                                <label for="loraSearch">Lora Search:</label>
+                                <input type="text" id="loraSearch" name="loraSearch" placeholder="Search for a lora...">
+                            </div>
+                        <div class="imagesContainer">
+                            <details>
+                                <!-- style-lora-count / style-lora-total -->
+                                <summary>Style Lora's <span id="style-lora-summary"></span></summary>
+                                <div class="form-control">
+                                    <% if (data.style) { %>
+                                        <select class="loraSelection" id="style-lora" name="style-lora" multiple>
+                                            <% Object.entries(data.style).forEach(([key, value]) => { %>
+                                                <option value="<%= key %>" <%= selectedLoras.style.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                            <% }); %>
+                                        </select>
+                                    <% } %>
+                                </div>
+                            </details>
+                                
+                            <details>
+                                <summary>Effect Lora's <span id="effect-lora-summary"></span></summary>
+                                <div class="form-control">
+                                    <% if (data.effect) { %>
+                                        <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
+                                            <% Object.entries(data.effect).forEach(([key, value]) => { %>
+                                                <option value="<%= key %>" <%= selectedLoras.effect.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                            <% }); %>
+                                        </select>
+                                    <% } %>
+                                </div>
+                            </details>
+                
+                            <details>
+                                <summary>Concept Lora's <span id="concept-lora-summary"></span></summary>
+                                <div class="form-control">
+                                    <% if (data.concept) { %>
+                                        <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
+                                            <% Object.entries(data.concept).forEach(([key, value]) => { %>
+                                                <option value="<%= key %>" <%= selectedLoras.concept.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                            <% }); %>
+                                        </select>
+                                    <% } %>
+                                </div>
+                            </details>
+                
+                            <details>
+                                <summary>Clothing Lora's <span id="clothing-lora-summary"></span></summary>
+                                <div class="form-control">
+                                    <% if (data.clothing) { %>
+                                        <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
+                                            <% Object.entries(data.clothing).forEach(([key, value]) => { %>
+                                                <option value="<%= key %>" <%= selectedLoras.clothing.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                            <% }); %>
+                                        </select>
+                                    <% } %>
+                                </div>
+                            </details>
+
+                            <details>
+                                <summary>Character Lora's <span id="character-lora-summary"></span></summary>
+                                <div class="form-control">
+                                    <% if (data.character) { %>
+                                        <select class="loraSelection" id="character-lora" name="character-lora" multiple>
+                                            <% Object.entries(data.character).forEach(([key, value]) => { %>
+                                                <option value="<%= key %>" <%= selectedLoras.character.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                            <% }); %>
+                                        </select>
+                                    <% } %>
+                                </div>
+                            </details>
+
+                            <details>
+                                <summary>Pose Lora's <span id="pose-lora-summary"></span></summary>
+                                <div class="form-control">
+                                    <% if (data.pose) { %>
+                                        <select class="loraSelection" id="pose-lora" name="pose-lora" multiple>
+                                            <% Object.entries(data.pose).forEach(([key, value]) => { %>
+                                                <option value="<%= key %>" <%= selectedLoras.pose.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                            <% }); %>
+                                        </select>
+                                    <% } %>
+                                </div>
+                            </details>
+
+                            <details>
+                                <summary>Background Lora's <span id="background-lora-summary"></span></summary>
+                                <div class="form-control">
+                                    <% if (data.background) { %>
+                                        <select class="loraSelection" id="background-lora" name="background-lora" multiple>
+                                            <% Object.entries(data.background).forEach(([key, value]) => { %>
+                                                <option value="<%= key %>" <%= selectedLoras.background.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                            <% }); %>
+                                        </select>
+                                    <% } %>
+                                </div>
+                            </details>
                         </div>
-                        <details>
-                            <!-- style-lora-count / style-lora-total -->
-                            <summary>Style Lora's <span id="style-lora-summary"></span></summary>
-                            <div class="form-control">
-                                <% if (data.style) { %>
-                                    <select class="loraSelection" id="style-lora" name="style-lora" multiple>
-                                        <% Object.entries(data.style).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.style.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                        <% }); %>
-                                    </select>
-                                <% } %>
-                            </div>
-                        </details>
-                            
-                        <details>
-                            <summary>Effect Lora's <span id="effect-lora-summary"></span></summary>
-                            <div class="form-control">
-                                <% if (data.effect) { %>
-                                    <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
-                                        <% Object.entries(data.effect).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.effect.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                        <% }); %>
-                                    </select>
-                                <% } %>
-                            </div>
-                        </details>
-            
-                        <details>
-                            <summary>Concept Lora's <span id="concept-lora-summary"></span></summary>
-                            <div class="form-control">
-                                <% if (data.concept) { %>
-                                    <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
-                                        <% Object.entries(data.concept).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.concept.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                        <% }); %>
-                                    </select>
-                                <% } %>
-                            </div>
-                        </details>
-            
-                        <details>
-                            <summary>Clothing Lora's <span id="clothing-lora-summary"></span></summary>
-                            <div class="form-control">
-                                <% if (data.clothing) { %>
-                                    <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
-                                        <% Object.entries(data.clothing).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.clothing.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                        <% }); %>
-                                    </select>
-                                <% } %>
-                            </div>
-                        </details>
 
-                        <details>
-                            <summary>Character Lora's <span id="character-lora-summary"></span></summary>
-                            <div class="form-control">
-                                <% if (data.character) { %>
-                                    <select class="loraSelection" id="character-lora" name="character-lora" multiple>
-                                        <% Object.entries(data.character).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.character.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                        <% }); %>
-                                    </select>
-                                <% } %>
-                            </div>
-                        </details>
-
-                        <details>
-                            <summary>Pose Lora's <span id="pose-lora-summary"></span></summary>
-                            <div class="form-control">
-                                <% if (data.pose) { %>
-                                    <select class="loraSelection" id="pose-lora" name="pose-lora" multiple>
-                                        <% Object.entries(data.pose).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.pose.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                        <% }); %>
-                                    </select>
-                                <% } %>
-                            </div>
-                        </details>
-
-                        <details>
-                            <summary>Background Lora's <span id="background-lora-summary"></span></summary>
-                            <div class="form-control">
-                                <% if (data.background) { %>
-                                    <select class="loraSelection" id="background-lora" name="background-lora" multiple>
-                                        <% Object.entries(data.background).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.background.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                        <% }); %>
-                                    </select>
-                                <% } %>
-                            </div>
-                        </details>
 
                         <!-- filter loras with the string of: loraSearch: -->
                         <script>
@@ -693,31 +696,33 @@
 
                             
                         </script>
-
-                        <style>
-                            #clearAllLorasButton {
-                                background-color: #ff000085; /* Red */
-                                border: none;
-                                color: white;
-                                padding: 15px 32px;
-                                text-align: center;
-                                text-decoration: none;
-                                display: inline-block;
-                                font-size: 16px;
-                                margin: 4px 2px;
-                                cursor: pointer;
-                                transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
-                                transform: scale(1) rotate(0deg); /* Default state */
-                                transform-origin: center; /* Ensures the scaling happens from the center */
-                            }
-                            #clearAllLorasButton:hover {
-                                transform: scale(1.08) rotate(1deg); 
-                                background-color: #ff0000; /* Red */
-                            }
-                        </style>
-
-                        <button type="button" id="clearAllLorasButton">Clear All Lora's</button>
+                    
                     </details>
+
+                    <style>
+                        #clearAllLorasButton {
+                            width: 100%;
+                            background-color: #ff000085; /* Red */
+                            border: none;
+                            color: white;
+                            padding: 15px 32px;
+                            text-align: center;
+                            text-decoration: none;
+                            display: inline-block;
+                            font-size: 16px;
+                            margin: 4px 2px;
+                            cursor: pointer;
+                            transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+                            transform: scale(1) rotate(0deg); /* Default state */
+                            transform-origin: center; /* Ensures the scaling happens from the center */
+                        }
+                        #clearAllLorasButton:hover {
+                            transform: scale(1.08) rotate(1deg); 
+                            background-color: #ff0000; /* Red */
+                        }
+                    </style>
+
+                    <button type="button" id="clearAllLorasButton">Clear All Lora's</button>
                     <br>
 
                     <!-- calculate the totalLorasSelected and the totalLoras from all the loraSelection classes and display it -->
