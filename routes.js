@@ -2600,12 +2600,14 @@ module.exports = async function(app){
             if(req.session.loggedIn){
                 reqIdString = `${req.session.accountId}`
                 foundAccount = await userProfileSchema.findOne({accountId: reqIdString})
+
+                negativePromptValue = "worst quality, low quality, watermark, signature, bad anatomy, bad hands, deformed limbs, blurry, cropped, cross-eyed, extra arms, extra legs, extra limbs, extra pupils, bad proportions, poorly drawn hands, simple background, bad background, bad lighting, bad perspective,"
                 
                 if(!foundAccount.ai) {
-                    foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry", advancedMode: false}}
+                    foundAccount = {ai: {prompt: "", negativeprompt: negativePromptValue, model: "furry", advancedMode: false}}
                 }
             } else {
-                foundAccount = {ai: {prompt: "", negativeprompt: "", model: "furry", advancedMode: false}}
+                foundAccount = {ai: {prompt: "", negativeprompt: negativePromptValue, model: "furry", advancedMode: false}}
             }
 
             const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[],background:[]};

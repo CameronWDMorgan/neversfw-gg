@@ -52,7 +52,6 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                 targetSteps = 20
             }
         }
-
     }
 
     targetQuantity = Number(targetQuantity)
@@ -207,7 +206,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         request_type: reqType,
         advancedMode: advancedToggle,
         inpainting: inpaintingToggle,
-        inpaintingMask: formData.get('mask')
+        inpaintingMask: formData.get('mask'),
+        accountId: accountId
     };
 
     try {
