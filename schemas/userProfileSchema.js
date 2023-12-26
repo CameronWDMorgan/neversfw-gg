@@ -21,6 +21,7 @@ const aiSchema = new Schema({
     prompt: { type: String, default: "1girl, cute" },
     negativeprompt: { type: String, default: aiNegativePrompt },
     model: { type: String, default: "furry" },
+    aspectRatio: { type: String, default: "Square" },
     loras: { type: Object },
     advancedMode: { type: Boolean, default: false },
 })

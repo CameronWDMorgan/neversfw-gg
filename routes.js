@@ -2604,10 +2604,10 @@ module.exports = async function(app){
                 foundAccount = await userProfileSchema.findOne({accountId: reqIdString})
                 
                 if(!foundAccount.ai) {
-                    foundAccount = {ai: {prompt: "", negativeprompt: negativePromptValue, model: "furry", advancedMode: false}}
+                    foundAccount = {ai: {prompt: "", negativeprompt: negativePromptValue, model: "furry", aspectRatio: "Square", advancedMode: false}}
                 }
             } else {
-                foundAccount = {ai: {prompt: "", negativeprompt: negativePromptValue, model: "furry", advancedMode: false}}
+                foundAccount = {ai: {prompt: "", negativeprompt: negativePromptValue, model: "furry", aspectRatio: "Square", advancedMode: false}}
             }
 
             const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[],background:[]};
@@ -2653,6 +2653,7 @@ module.exports = async function(app){
                 promptValue: foundAccount.ai.prompt,
                 negativePromptValue: foundAccount.ai.negativeprompt,
                 modelValue: foundAccount.ai.model,
+                aspectRatioValue: foundAccount.ai.aspectRatio,
                 selectedLoras: selectedLoras,
                 advancedMode: advancedMode
             });
@@ -2670,6 +2671,16 @@ module.exports = async function(app){
             } else {
                 req.body.advancedMode = false
             }
+
+            let aspectRatio
+            if (req.body.width == 512 && req.body.height == 512) {
+                aspectRatio = "Square"
+            } else if (req.body.width == 512 && req.body.height == 768) {
+                aspectRatio = "Portrait"
+            } else if (req.body.width == 768 && req.body.height == 512) {
+                aspectRatio = "Landscape"
+            }
+
             await userProfileSchema.findOneAndUpdate(
                 { accountId: reqIdString },
                 { 
@@ -2677,6 +2688,7 @@ module.exports = async function(app){
                         prompt: req.body.prompt,
                         negativeprompt: req.body.negativeprompt,
                         model: req.body.model,
+                        aspectRatio: aspectRatio,
                         loras: req.body.savedloras,
                         advancedMode: req.body.advancedMode
                     }

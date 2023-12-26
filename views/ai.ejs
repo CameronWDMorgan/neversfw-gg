@@ -496,6 +496,19 @@
                             <option value="Landscape">Landscape (768 x 512)</option>
                         </select>
                     </div>
+
+                    <script>
+                        // get the aspectRatio select element
+                        const aspectRatioSelect = document.getElementById('aspectRatio')
+                        const aspectRatioValue = '<%=aspectRatioValue%>'
+
+                        for (let i = 0; i < aspectRatioSelect.options.length; i++) {
+                            const option = aspectRatioSelect.options[i]
+                            if (option.value === aspectRatioValue) {
+                                option.selected = true;
+                            }
+                        }
+                    </script>
     
     
                     <div class="form-control">
@@ -505,7 +518,6 @@
                             <option value="sonic">SonicDiffusion (Sonic the Hedgehog)</option>
                             <option value="aing">AingDiffusion (Anime)</option>
                             <option value="flat2DAnimerge">flat2DAnimerge (Anime)</option>
-                            <!-- <option value="ponyDiffusion">ponyDiffusion (My Little Pony)</option> -->
                             <option value="realisticVision">realisticVision (Realstic)</option>
                         </select>
     
