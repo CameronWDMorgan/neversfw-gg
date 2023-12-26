@@ -21,7 +21,7 @@
         .form-control label,
         .form-control input,
         .form-control textarea,
-        .form-control span {
+        .form-control {
             display: block;
         }
         .form-control input[type="text"],
@@ -542,97 +542,84 @@
                                 <input type="text" id="loraSearch" name="loraSearch" placeholder="Search for a lora...">
                             </div>
                         <div class="imagesContainer">
-                            <details>
-                                <!-- style-lora-count / style-lora-total -->
-                                <summary>Style Lora's <span id="style-lora-summary"></span></summary>
-                                <div class="form-control">
-                                    <% if (data.style) { %>
-                                        <select class="loraSelection" id="style-lora" name="style-lora" multiple>
-                                            <% Object.entries(data.style).forEach(([key, value]) => { %>
-                                                <option value="<%= key %>" <%= selectedLoras.style.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                            <% }); %>
-                                        </select>
-                                    <% } %>
-                                </div>
-                            </details>
-                                
-                            <details>
-                                <summary>Effect Lora's <span id="effect-lora-summary"></span></summary>
-                                <div class="form-control">
-                                    <% if (data.effect) { %>
-                                        <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
-                                            <% Object.entries(data.effect).forEach(([key, value]) => { %>
-                                                <option value="<%= key %>" <%= selectedLoras.effect.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                            <% }); %>
-                                        </select>
-                                    <% } %>
-                                </div>
-                            </details>
-                
-                            <details>
-                                <summary>Concept Lora's <span id="concept-lora-summary"></span></summary>
-                                <div class="form-control">
-                                    <% if (data.concept) { %>
-                                        <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
-                                            <% Object.entries(data.concept).forEach(([key, value]) => { %>
-                                                <option value="<%= key %>" <%= selectedLoras.concept.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                            <% }); %>
-                                        </select>
-                                    <% } %>
-                                </div>
-                            </details>
-                
-                            <details>
-                                <summary>Clothing Lora's <span id="clothing-lora-summary"></span></summary>
-                                <div class="form-control">
-                                    <% if (data.clothing) { %>
-                                        <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
-                                            <% Object.entries(data.clothing).forEach(([key, value]) => { %>
-                                                <option value="<%= key %>" <%= selectedLoras.clothing.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                            <% }); %>
-                                        </select>
-                                    <% } %>
-                                </div>
-                            </details>
+                            <!-- style-lora-count / style-lora-total -->
+                            <div class="form-control">
+                                <a for="style-lora">Style Lora's <span id="style-lora-summary"></span></a>
+                                <% if (data.style) { %>
+                                    <select class="loraSelection" id="style-lora" name="style-lora" multiple>
+                                        <% Object.entries(data.style).forEach(([key, value]) => { %>
+                                            <option value="<%= key %>" <%= selectedLoras.style.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% }); %>
+                                    </select>
+                                <% } %>
+                            </div>
 
-                            <details>
-                                <summary>Character Lora's <span id="character-lora-summary"></span></summary>
-                                <div class="form-control">
-                                    <% if (data.character) { %>
-                                        <select class="loraSelection" id="character-lora" name="character-lora" multiple>
-                                            <% Object.entries(data.character).forEach(([key, value]) => { %>
-                                                <option value="<%= key %>" <%= selectedLoras.character.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                            <% }); %>
-                                        </select>
-                                    <% } %>
-                                </div>
-                            </details>
+                            <div class="form-control">
+                                <a for="effect-lora">Effect Lora's <span id="effect-lora-summary"></span></a>
+                                <% if (data.effect) { %>
+                                    <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
+                                        <% Object.entries(data.effect).forEach(([key, value]) => { %>
+                                            <option value="<%= key %>" <%= selectedLoras.effect.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% }); %>
+                                    </select>
+                                <% } %>
+                            </div>
 
-                            <details>
-                                <summary>Pose Lora's <span id="pose-lora-summary"></span></summary>
-                                <div class="form-control">
-                                    <% if (data.pose) { %>
-                                        <select class="loraSelection" id="pose-lora" name="pose-lora" multiple>
-                                            <% Object.entries(data.pose).forEach(([key, value]) => { %>
-                                                <option value="<%= key %>" <%= selectedLoras.pose.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                            <% }); %>
-                                        </select>
-                                    <% } %>
-                                </div>
-                            </details>
+                            <div class="form-control">
+                                <a for="concept-lora">Concept Lora's <span id="concept-lora-summary"></span></a>
+                                <% if (data.concept) { %>
+                                    <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
+                                        <% Object.entries(data.concept).forEach(([key, value]) => { %>
+                                            <option value="<%= key %>" <%= selectedLoras.concept.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% }); %>
+                                    </select>
+                                <% } %>
+                            </div>
 
-                            <details>
-                                <summary>Background Lora's <span id="background-lora-summary"></span></summary>
-                                <div class="form-control">
-                                    <% if (data.background) { %>
-                                        <select class="loraSelection" id="background-lora" name="background-lora" multiple>
-                                            <% Object.entries(data.background).forEach(([key, value]) => { %>
-                                                <option value="<%= key %>" <%= selectedLoras.background.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
-                                            <% }); %>
-                                        </select>
-                                    <% } %>
-                                </div>
-                            </details>
+                            <div class="form-control">
+                                <a for="clothing-lora">Clothing Lora's <span id="clothing-lora-summary"></span></a>
+                                <% if (data.clothing) { %>
+                                    <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
+                                        <% Object.entries(data.clothing).forEach(([key, value]) => { %>
+                                            <option value="<%= key %>" <%= selectedLoras.clothing.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% }); %>
+                                    </select>
+                                <% } %>
+                            </div>
+
+                            <div class="form-control">
+                                <a for="character-lora">Character Lora's <span id="character-lora-summary"></span></a>
+                                <% if (data.character) { %>
+                                    <select class="loraSelection" id="character-lora" name="character-lora" multiple>
+                                        <% Object.entries(data.character).forEach(([key, value]) => { %>
+                                            <option value="<%= key %>" <%= selectedLoras.character.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% }); %>
+                                    </select>
+                                <% } %>
+                            </div>
+
+                            <div class="form-control">
+                                <a for="pose-lora">Pose Lora's <span id="pose-lora-summary"></span></a>
+                                <% if (data.pose) { %>
+                                    <select class="loraSelection" id="pose-lora" name="pose-lora" multiple>
+                                        <% Object.entries(data.pose).forEach(([key, value]) => { %>
+                                            <option value="<%= key %>" <%= selectedLoras.pose.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% }); %>
+                                    </select>
+                                <% } %>
+                            </div>
+
+                            <div class="form-control">
+                                <a for="background-lora">Background Lora's <span id="background-lora-summary"></span></a>
+                                <% if (data.background) { %>
+                                    <select class="loraSelection" id="background-lora" name="background-lora" multiple>
+                                        <% Object.entries(data.background).forEach(([key, value]) => { %>
+                                            <option value="<%= key %>" <%= selectedLoras.background.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% }); %>
+                                    </select>
+                                <% } %>
+                            </div>
+
                         </div>
 
 
@@ -644,26 +631,12 @@
                             // get all the loraSelection classes
                             loraSelections = document.querySelectorAll('.loraSelection');
 
-                            function openAllLoras() {
-                                // loop through each loraSelection
-                                loraSelections.forEach(loraSelection => {
-                                    // open the loraSelection
-                                    loraSelection.parentElement.parentElement.setAttribute('open', '');
-                                });
-                            }
-
-                            openAllLoras();
-
-                            // set all loraSelections to be open when search isnt empty & closed when it is empty also filter out the loras that dont match the search:
+                            // make it so the height is smaller when there are less active loras, and 0 when they have no loras left, also filter out the loras that dont match the search:
                             loraSearch.addEventListener('input', function() {
-                                openAllLoras();
                                 // if the search is empty
                                 if (this.value == '') {
-                                    // loop through each loraSelection
-                                    loraSelections.forEach(loraSelection => {
-                                        // close the loraSelection
-                                        loraSelection.parentElement.parentElement.setAttribute('open', '');
-                                    });
+                                    // empty
+
                                 }
 
                                 // get the search value
@@ -679,12 +652,11 @@
                                         // if the option doesnt match the search value
                                         if (!option.innerText.toLowerCase().includes(searchValue)) {
                                             // hide the option
-                                            option.style.display = 'none';
-                                            // if the loraSelection has no options left to show
-                                            loraOptionsLeft = loraSelection.querySelectorAll('option[style="display: block;"]');
-                                            if (loraOptionsLeft.length == 0) {
-                                                // close the loraSelection
-                                                loraSelection.parentElement.parentElement.removeAttribute('open')
+                                            // if the option is selected keep it visible
+                                            if (option.selected) {
+                                                option.style.display = 'block';
+                                            } else {
+                                                option.style.display = 'none';
                                             }
                                             
                                         } else {
@@ -695,8 +667,6 @@
                                 });
                             });
                             loraSearch.dispatchEvent(new Event('input'));
-
-
                             
                         </script>
                     
@@ -944,14 +914,37 @@
                     }
                 </style>
 
-                <div class="form-control" id="inpaintingControls" style="display: none; margin-bottom: 40rem;" >
+                <div class="form-control" id="inpaintingControls" style="display: none;" >
                     <label for="inpaintingImage">Upload Image:</label>
                     <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
+                    <!-- Pen Size Slider -->
+                    <label for="penSize">Pen Size (<span id="penSizeValue">50</span>)</label>
+                    <input type="range" id="penSize" min="50" max="200" value="50">
+                    
+                    <!-- Eraser Toggle -->
+                    <label for="eraserToggle">Eraser:</label>
+                    <input type="checkbox" id="eraserToggle">
                     <div class="canvas-container">
                         <canvas id="maskCanvas"></canvas>
                         <canvas id="displayCanvas"></canvas>
                     </div>
                     <script src="../scripts/ai-inpainting.js" type="text/javascript"></script>
+
+                    <script>
+                        // get the penSize element
+                        const penSize = document.getElementById('penSize');
+
+                        // get the penSizeValue element
+                        const penSizeValue = document.getElementById('penSizeValue');
+
+                        // add an event listener for when the penSize changes
+                        penSize.addEventListener('input', function() {
+                            // update the penSizeValue
+                            penSizeValue.innerText = this.value;
+                        });
+                        penSize.dispatchEvent(new Event('input'));
+                    </script>
+
                 </div>
 
 
