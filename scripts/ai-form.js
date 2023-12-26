@@ -179,6 +179,12 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         imageBase64 = await getBase64(file)
     }
 
+    if(document.getElementById('inpaintingOriginalCheckbox').checked) {
+        inpainting_original_option = true
+    } else {
+        inpainting_original_option = false
+    }
+
     if(document.getElementById('img2imgCheckbox').checked) {
         reqType = "img2img"
     } else if(document.getElementById('inpaintingCheckbox').checked) {
@@ -207,7 +213,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         advancedMode: advancedToggle,
         inpainting: inpaintingToggle,
         inpaintingMask: formData.get('mask'),
-        accountId: accountId
+        accountId: accountId,
+        inpainting_original_option: inpainting_original_option
     };
 
     try {

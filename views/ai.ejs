@@ -435,7 +435,17 @@
                 </script>
                 
                 <details>
-                    <summary>Click Here for information on how to use it!</summary>
+                    <style>
+                        /* variable for glow colour: */
+                        :root {
+                            --glow-color: #fffb00;
+                        }
+                        .informationStyle {
+                            /* make it so it has a strong glow around the text of itself using --glow-color: */
+                            text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 80px var(--glow-color), 0 0 120px var(--glow-color);
+                        }
+                    </style>
+                    <summary class="informationStyle">Click Here for information on how to use it!</summary>
                     <ul>
                         <li>Advanced Mode: This enables the advanced mode which enables more options for the image generator!</li><br>
                         <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
@@ -455,6 +465,8 @@
                         <li>Quantity: This controls the number of images the image API should generate, the more the slower!</li><br>
                         <li>img2img: This enables the img2img process, this will generate an image from an uploaded image. This can be used to generate images of specific characters or poses!</li><br>
                         <li>img2img Strength: This controls the strength of the img2img process, a higher number will result in a more accurate image but may result in a less accurate image.</li><br>
+                        <li>Inpainting: This enables the inpainting process where you can paint over an image to remove or add elements to/from it!</li><br>
+                        <li>Inpainting "Use Original Model": This enables the inpainting process to use the model selected in the model dropdown, otherwise it will use an inpainting specific model!</li><br>
                         <li>CFG: This controls the amount of control the AI has over the image, a higher number will result in more control but may result in a less accurate image.</li><br>
                         <li>Seed: This controls the seed used for the image generation, a seed of -1 will generate a random seed.</li><br>
                         <li>Generate Image: Click this button to generate your image!</li><br>
@@ -535,10 +547,6 @@
                         </script>
                     </div>
                 </details>
-                
-
-
-
 
                 
                 <div class="advanced">
@@ -893,7 +901,7 @@
                 <details>
                     <summary>Image2Image & Inpainting</summary>
                     <div class="form-control">
-                        <label for="img2imgCheckbox">Enable img2img:</label>
+                        <label for="img2imgCheckbox">Enable Image2Image:</label>
                         <input type="checkbox" id="img2imgCheckbox" name="img2imgCheckbox">
                     </div>
                     
@@ -946,6 +954,9 @@
                 <div class="form-control" id="inpaintingControls" style="display: none;" >
                     <label for="inpaintingImage">Upload Image:</label>
                     <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
+
+                    <label for="inpaintingOriginalCheckbox">Use Original Model:</label>
+                    <input type="checkbox" id="inpaintingOriginalCheckbox">
                     <!-- Pen Size Slider -->
                     <label for="penSize">Pen Size (<span id="penSizeValue">50</span>)</label>
                     <input type="range" id="penSize" min="50" max="200" value="50">
@@ -975,6 +986,36 @@
                     </script>
 
                 </div>
+
+
+            <!-- <script> to make inpaintingCheckbox and img2imgCheckbox exclusive: -->
+            <script>
+                // get the inpaintingCheckbox and img2imgCheckbox elements
+                const inpaintingCheckbox = document.getElementById('inpaintingCheckbox');
+                const img2imgCheckbox = document.getElementById('img2imgCheckbox');
+
+                // add an event listener for when the inpaintingCheckbox changes
+                inpaintingCheckbox.addEventListener('change', function() {
+                    // if the inpaintingCheckbox is checked
+                    if (this.checked) {
+                        // uncheck the img2imgCheckbox
+                        img2imgCheckbox.checked = false;
+                        img2imgControls.style.display = 'none';
+                    }
+                });
+
+                // add an event listener for when the img2imgCheckbox changes
+                img2imgCheckbox.addEventListener('change', function() {
+                    // if the img2imgCheckbox is checked
+                    if (this.checked) {
+                        // uncheck the inpaintingCheckbox
+                        inpaintingCheckbox.checked = false;
+                        inpaintingControls.style.display = 'none';
+                    }
+                });
+
+            </script>
+
 
 
 
