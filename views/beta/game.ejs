@@ -295,7 +295,7 @@
                                 document.getElementById("downloadStartText").style.display = "block";
 
                                 setTimeout(function() {
-
+                                    event.preventDefault();
                                     window.location.href = "/ai";
                                 }, 3000); // Redirect after 1 second (adjust the delay as needed)
                             }
