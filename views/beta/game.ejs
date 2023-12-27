@@ -265,22 +265,10 @@
                         </style>
                         
                         <div id="allDownloadsBox">
-                            <style>
-                                /* variable for glow colour: */
-                                :root {
-                                    --glow-color: #ff00ee;
-                                }
-                                .downloadStartText {
-                                    /* make it so it has a strong glow around the text of itself using --glow-color: */
-                                    text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 80px var(--glow-color), 0 0 120px var(--glow-color);
-                                }
-                            </style>
-                            <h1 id="downloadStartText" class="downloadStartText" style="display: none;">Download Started!</h1>
                             <% if (game.gameFiles.length > 0) { %>
                                 <h1 style="font-size: xx-large;"><%=game.gameId%> v<%=game.version%> Downloads:</h1>
                                 <% game.gameFiles.forEach(element => { %>
-                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" onclick="startDownload(event)">
-                                        <input id="hrefValue" value="/download/?gameFile=<%=element.downloadUrl%>" hidden></input>
+                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" onclick="startDownload()">
                                         <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage">
                                         <h1 class="downloadText"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
                                     </a>
@@ -291,31 +279,13 @@
                         </div>
                         
                         <script>
-                            // get all the download boxes and add an event listener to them:
-                            const downloadBoxes = document.querySelectorAll('.downloadBox');
-                            downloadBoxes.forEach(downloadBox => {
-                                downloadBox.addEventListener('click', startDownload);
-                            });
-                            // function to start the download:
-                            function startDownload(event) {
-                                // prevent the default behaviour of the link:
-                                event.preventDefault();
-                                // get the href value of the link:
-                                const hrefValue = event.target.parentElement.querySelector('#hrefValue').value;
-                                // get the download start text:
-                                const downloadStartText = document.getElementById('downloadStartText');
-                                // show the download start text:
-                                downloadStartText.style.display = 'block';
-                                // set a timeout to hide the download start text after 2 seconds:
-                                setTimeout(() => {
-                                    downloadStartText.style.display = 'none';
-                                    window.location.href = hrefValue;
-                                }, 2000);
-                                // redirect the user to the download link:
-                                window.location.href = hrefValue;
+                            function startDownload() {
+                                setTimeout(function() {
+
+                                    window.location.href = "/ai";
+                                }, 3000); // Redirect after 1 second (adjust the delay as needed)
                             }
                         </script>
-                        
                 </center>
     
                     <div class="art-below">
