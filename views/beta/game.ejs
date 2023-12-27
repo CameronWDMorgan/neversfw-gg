@@ -294,24 +294,33 @@
                             document.addEventListener('DOMContentLoaded', function () {
                                 document.querySelectorAll('.downloadBox').forEach(item => {
                                     item.addEventListener('click', event => {
-                                        let platform = event.target.id;
-                                        console.log(event)
-                                        console.log(event.target.id)
+                                        // Find the closest .downloadBox element and get its ID
+                                        let downloadBox = event.target.closest('.downloadBox');
+                                        let platform = downloadBox.id;
+
+                                        console.log(event);
+                                        console.log(downloadBox.id);
                                         console.log(`${platform}-downloadStartedText`);
+
                                         let downloadStartedText = document.getElementById(`${platform}-downloadStartedText`);
                                         
                                         if (downloadStartedText) {
                                             downloadStartedText.style.display = 'block';
                                             setTimeout(() => {
                                                 downloadStartedText.style.display = 'none';
-                                                window.location.href = `/ai`;
+                                                // Redirect to the download link
+                                                window.location.href = downloadBox.getAttribute('href');
                                             }, 3000);
                                         } else {
                                             console.error('Download started text element not found for platform:', platform);
                                         }
+
+                                        // Prevent default anchor action
+                                        event.preventDefault();
                                     });
                                 });
                             });
+
 
                         </script>
                 </center>
