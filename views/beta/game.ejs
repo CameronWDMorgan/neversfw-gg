@@ -290,9 +290,24 @@
                         </div>
                         
                         <script>
+                            // add event listener to the download buttons to detect when they are clicked and so we know which one was clicked and can redirect to the ai page:
+                            document.querySelectorAll('.downloadBox').forEach(item => {
+                                item.addEventListener('click', event => {
+                                    // detect which download button was clicked
+                                    // change the text of the download button to "Download Started!"
+                                    // redirect to the ai page
+                                    document.getElementById("downloadStartedText").style.display = "block";
+                                })
+                            })
+
                             function startDownload() {
                                 setTimeout(function() {
+                                    // detect which download button was clicked
+                                    // change the text of the download button to "Download Started!"
+                                    // redirect to the ai page
                                     document.getElementById("downloadStartedText").style.display = "block";
+
+                                    
                                     window.location.href = "/ai";
                                 }, 3000); // Redirect after 3 seconds
                             }
