@@ -306,12 +306,10 @@
                                         
                                         if (downloadStartedText) {
                                             downloadStartedText.style.display = 'block';
-                                            // send the user to the download link then the /ai page:
-                                            setTimeout(() => {
-                                                downloadStartedText.style.display = 'none';
-                                                // Redirect to the download link
-                                                window.location.href = "/ai"
-                                            }, 3000);
+                                            // the download is handled by the href of the window, ONLY send the user to the /ai page WITHOUT waiting for the download to finish:
+                                            window.location.href = `/ai`;
+                                            
+
                                         } else {
                                             console.error('Download started text element not found for platform:', platform);
                                         }
