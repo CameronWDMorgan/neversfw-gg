@@ -295,6 +295,8 @@
                                 document.querySelectorAll('.downloadBox').forEach(item => {
                                     item.addEventListener('click', event => {
                                         let downloadButtonId = event.target.id;
+                                        console.log(event)
+                                        console.log(event.target.id)
                                         let platform = downloadButtonId.split('-')[0];
                                         console.log(`${platform}-downloadStartedText`);
                                         let downloadStartedText = document.getElementById(`${platform}-downloadStartedText`);
