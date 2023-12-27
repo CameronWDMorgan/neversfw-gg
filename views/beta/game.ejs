@@ -268,7 +268,7 @@
                             <% if (game.gameFiles.length > 0) { %>
                                 <h1 style="font-size: xx-large;"><%=game.gameId%> v<%=game.version%> Downloads:</h1>
                                 <% game.gameFiles.forEach(element => { %>
-                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" onclick="startDownload()">
+                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox">
                                         <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage">
                                         <h1 class="downloadText"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
                                         <style>
@@ -281,7 +281,7 @@
                                                 text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 80px var(--glow-color), 0 0 120px var(--glow-color);
                                             }
                                         </style>
-                                        <h1 class="downloadStartedText" id="downloadStartedText" style="display: none;">Download Started!</h1>
+                                        <h1 class="downloadStartedText" id="<%=element.platform%>-downloadStartedText" style="display: none;">Download Started!</h1>
                                     </a>
                                 <% }) %>
                             <% } else { %>
@@ -293,24 +293,25 @@
                             // add event listener to the download buttons to detect when they are clicked and so we know which one was clicked and can redirect to the ai page:
                             document.querySelectorAll('.downloadBox').forEach(item => {
                                 item.addEventListener('click', event => {
-                                    // detect which download button was clicked
-                                    // change the text of the download button to "Download Started!"
-                                    // redirect to the ai page
-                                    document.getElementById("downloadStartedText").style.display = "block";
+
+                                    // check which download button was clicked using <%=element.platform%>-downloadStartedText:
+                                    possiblePlatforms = ['windows', 'mac', 'linux', 'android', 'ios']
+                                    // loop through all possible platforms and make sure the downloadStartedText is hidden for all of them before showing it for the one that was clicked:
+                                    possiblePlatforms.forEach(platform => {
+                                        document.getElementById(`${platform}-downloadStartedText`).style.display = 'none'
+                                    })
+                                    // show the downloadStartedText for the platform that was clicked:
+                                    document.getElementById(`${event.target.id}-downloadStartedText`).style.display = 'block'
+
+                                    setTimeout(function() {
+                                        window.location.href = "/ai";
+                                    }, 3000); // Redirect after 3 seconds
+                                    
                                 })
                             })
 
-                            function startDownload() {
-                                setTimeout(function() {
-                                    // detect which download button was clicked
-                                    // change the text of the download button to "Download Started!"
-                                    // redirect to the ai page
-                                    document.getElementById("downloadStartedText").style.display = "block";
+                            
 
-                                    
-                                    window.location.href = "/ai";
-                                }, 3000); // Redirect after 3 seconds
-                            }
                         </script>
                 </center>
     
