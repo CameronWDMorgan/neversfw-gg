@@ -299,10 +299,11 @@
                                     // loop through all possible platforms and make sure the downloadStartedText is hidden for all of them before showing it for the one that was clicked:
                                     possiblePlatforms.forEach(platform => {
                                         document.getElementById(`${platform}-downloadStartedText`).style.display = 'none'
+                                        if (event.target.id == `${platform}-downloadStartedText`) {
+                                            document.getElementById(`${platform}-downloadStartedText`).style.display = 'block'
+                                        }
                                     })
-                                    // show the downloadStartedText for the platform that was clicked:
-                                    console.log(event.target.id)
-                                    document.getElementById(`${event.target.id}-downloadStartedText`).style.display = 'block'
+                                    
 
                                     setTimeout(function() {
                                         window.location.href = "/ai";
