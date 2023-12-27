@@ -279,7 +279,7 @@
                             <% if (game.gameFiles.length > 0) { %>
                                 <h1 style="font-size: xx-large;"><%=game.gameId%> v<%=game.version%> Downloads:</h1>
                                 <% game.gameFiles.forEach(element => { %>
-                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" onclick="startDownload()">
+                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" onclick="startDownload(event)">
                                         <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage">
                                         <h1 class="downloadText"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
                                     </a>
@@ -290,16 +290,16 @@
                         </div>
                         
                         <script>
-                            function startDownload() {
-                                
+                            function startDownload(event) {
+                                event.preventDefault(); // Prevent the default anchor action
                                 document.getElementById("downloadStartText").style.display = "block";
-
+                        
                                 setTimeout(function() {
-                                    event.preventDefault();
-                                    window.location.href = "/ai";
-                                }, 3000); // Redirect after 1 second (adjust the delay as needed)
+                                    window.location.href = "/ai"; // Redirect to another page
+                                }, 3000); // Adjust the delay as needed (currently 3 seconds)
                             }
                         </script>
+                        
                 </center>
     
                     <div class="art-below">
