@@ -29,6 +29,10 @@
 
     <script>
         $(document).ready(function(){
+            // if ?redirect=ai is in the url, redirect to the /ai page
+            if (window.location.href.indexOf("?redirect=ai") > -1) {
+                window.location.href = "https://www.neversfw.gg/ai";
+            }
             toggleButtons()
         })
     </script>
