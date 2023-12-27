@@ -268,7 +268,7 @@
                             <% if (game.gameFiles.length > 0) { %>
                                 <h1 style="font-size: xx-large;"><%=game.gameId%> v<%=game.version%> Downloads:</h1>
                                 <% game.gameFiles.forEach(element => { %>
-                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox">
+                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" id="<%=element.platform%>">
                                         <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage">
                                         <h1 class="downloadText"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
                                         <style>
@@ -294,10 +294,9 @@
                             document.addEventListener('DOMContentLoaded', function () {
                                 document.querySelectorAll('.downloadBox').forEach(item => {
                                     item.addEventListener('click', event => {
-                                        let downloadButtonId = event.target.id;
+                                        let platform = event.target.id;
                                         console.log(event)
                                         console.log(event.target.id)
-                                        let platform = downloadButtonId.split('-')[0];
                                         console.log(`${platform}-downloadStartedText`);
                                         let downloadStartedText = document.getElementById(`${platform}-downloadStartedText`);
                                         
