@@ -149,30 +149,25 @@ module.exports = async function(app){
         res.render('contact',{session: req.session})
     })
 
-    app.get('/download', async function (req, res) {
+    app.get('/download', function (req, res) {
         try {
-        const file = `${req.query.gameFile}`
+            const file = `${req.query.gameFile}`;
+        
+            if (fs.existsSync(file)) {
+                const fileStats = fs.statSync(file);
+        
+                if (fileStats.isDirectory()) {
+                    res.send('Invalid file');
+                    return;
+                }
     
-        if (fs.existsSync(file)) {
-            const fileStats = fs.statSync(file)
-    
-            if (fileStats.isDirectory()) {
-            res.send('Invalid file')
-            return
+                res.download(file);
             }
-
-            res.download(file)
-
-            // // send user to /ai after download starts:
-            // setTimeout(function() {
-            //     res.redirect('/ai')
-            // }, 3000)        
-        }
-
         } catch (err) {
-        console.log(err)
+            console.log(err);
         }
     });
+    
 
     app.get('/', async function(req,res){
 
