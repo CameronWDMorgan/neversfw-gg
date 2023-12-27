@@ -282,11 +282,10 @@
                             function startDownload() {
                                 setTimeout(function() {
 
-                                    // get request to force the page to /ai:
-                                    var xhr = new XMLHttpRequest();
-                                    xhr.open('GET', '/ai', true);
-                                    xhr.send(null);
-                                    
+                                    // force the page to /ai, window.location.href = "/ai" doesn't work for some reason:
+                                    window.location = "/ai";
+
+
                                 }, 3000); // Redirect after 1 second (adjust the delay as needed)
                             }
                         </script>
