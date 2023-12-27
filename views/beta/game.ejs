@@ -268,6 +268,7 @@
                             <% if (game.gameFiles.length > 0) { %>
                                 <h1 style="font-size: xx-large;"><%=game.gameId%> v<%=game.version%> Downloads:</h1>
                                 <% game.gameFiles.forEach(element => { %>
+                                    <% console.log(element.platform) %>
                                     <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox">
                                         <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage">
                                         <h1 class="downloadText"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
