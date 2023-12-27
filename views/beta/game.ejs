@@ -306,6 +306,7 @@
                                         
                                         if (downloadStartedText) {
                                             downloadStartedText.style.display = 'block';
+                                            window.location.href = downloadBox.getAttribute('href')
                                             setTimeout(() => {
                                                 downloadStartedText.style.display = 'none';
                                                 // Redirect to the download link
