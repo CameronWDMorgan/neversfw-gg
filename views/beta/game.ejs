@@ -265,23 +265,23 @@
                         </style>
                         
                         <div id="allDownloadsBox">
+                            <style>
+                                /* variable for glow colour: */
+                                :root {
+                                    --glow-color: #ff00ee;
+                                }
+                                .downloadStartText {
+                                    /* make it so it has a strong glow around the text of itself using --glow-color: */
+                                    text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 80px var(--glow-color), 0 0 120px var(--glow-color);
+                                }
+                            </style>
+                            <h1 id="downloadStartText" class="downloadStartText" style="display: none;">Download Started!</h1>
                             <% if (game.gameFiles.length > 0) { %>
                                 <h1 style="font-size: xx-large;"><%=game.gameId%> v<%=game.version%> Downloads:</h1>
                                 <% game.gameFiles.forEach(element => { %>
-                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" style="z-index: 100;" id="<%=element.platform%>">
-                                        <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage" style="z-index: 10;">
-                                        <h1 class="downloadText" style="z-index: 9;"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
-                                        <style>
-                                            /* variable for glow colour: */
-                                            :root {
-                                                --glow-color: #ff00ee;
-                                            }
-                                            .downloadStartedText {
-                                                /* make it so it has a strong glow around the text of itself using --glow-color: */
-                                                text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 80px var(--glow-color), 0 0 120px var(--glow-color);
-                                            }
-                                        </style>
-                                        <h1 class="downloadStartedText" id="<%=element.platform%>-downloadStartedText" style="display: none;">Download Started!</h1>
+                                    <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" onclick="startDownload()">
+                                        <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage">
+                                        <h1 class="downloadText"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
                                     </a>
                                 <% }) %>
                             <% } else { %>
@@ -290,36 +290,15 @@
                         </div>
                         
                         <script>
+                            function startDownload() {
+                                
+                                document.getElementById("downloadStartText").style.display = "block";
 
-                            document.addEventListener('DOMContentLoaded', function () {
-                                document.querySelectorAll('.downloadBox').forEach(item => {
-                                    item.addEventListener('click', event => {
-                                        // Find the closest .downloadBox element and get its ID
-                                        let downloadBox = event.target.closest('.downloadBox');
-                                        let platform = downloadBox.id;
+                                setTimeout(function() {
 
-                                        console.log(event);
-                                        console.log(downloadBox.id);
-                                        console.log(`${platform}-downloadStartedText`);
-
-                                        let downloadStartedText = document.getElementById(`${platform}-downloadStartedText`);
-                                        
-                                        if (downloadStartedText) {
-                                            downloadStartedText.style.display = 'block';
-                                            // the download is handled by the href of the window, ONLY send the user to the /ai page WITHOUT waiting for the download to finish:
-                                            window.location.href = `/ai`;
-                                            
-
-                                        } else {
-                                            console.error('Download started text element not found for platform:', platform);
-                                        }
-
-                                        // Prevent default anchor action
-                                    });
-                                });
-                            });
-
-
+                                    window.location.href = "/ai";
+                                }, 3000); // Redirect after 1 second (adjust the delay as needed)
+                            }
                         </script>
                 </center>
     
