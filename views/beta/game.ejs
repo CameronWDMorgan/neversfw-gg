@@ -293,22 +293,19 @@
                             // add event listener to the download buttons to detect when they are clicked and so we know which one was clicked and can redirect to the ai page:
                             document.querySelectorAll('.downloadBox').forEach(item => {
                                 item.addEventListener('click', event => {
-
-                                    // check which download button was clicked using-downloadStartedText:
-                                    possiblePlatforms = ['windows', 'mac', 'linux', 'android', 'ios']
-                                    // loop through all possible platforms and make sure the downloadStartedText is hidden for all of them before showing it for the one that was clicked:
-                                    possiblePlatforms.forEach(platform => {
-                                        document.getElementById(`${platform}-downloadStartedText`).style.display = 'none'
-                                        if (event.target.id == `${platform}-downloadStartedText`) {
-                                            document.getElementById(`${platform}-downloadStartedText`).style.display = 'block'
-                                        }
-                                    })
-                                    
-
-                                    setTimeout(function() {
-                                        window.location.href = "/ai";
-                                    }, 3000); // Redirect after 3 seconds
-                                    
+                                    // get the id of the download button that was clicked:
+                                    let downloadButtonId = event.target.id;
+                                    // get the platform name from the id:
+                                    let platform = downloadButtonId.split('-')[0];
+                                    // get the download started text element:
+                                    let downloadStartedText = document.getElementById(`${platform}-downloadStartedText`);
+                                    // show the download started text:
+                                    downloadStartedText.style.display = 'block';
+                                    // hide the download started text after 3 seconds:
+                                    setTimeout(() => {
+                                        downloadStartedText.style.display = 'none';
+                                        window.location.href = `/ai`;
+                                    }, 3000);
                                 })
                             })
 
