@@ -296,6 +296,7 @@
                                     item.addEventListener('click', event => {
                                         let downloadButtonId = event.target.id;
                                         let platform = downloadButtonId.split('-')[0];
+                                        console.log(`${platform}-downloadStartedText`);
                                         let downloadStartedText = document.getElementById(`${platform}-downloadStartedText`);
                                         
                                         if (downloadStartedText) {
