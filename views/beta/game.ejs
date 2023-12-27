@@ -271,6 +271,17 @@
                                     <a href="/download/?gameFile=<%=element.downloadUrl%>" class="downloadBox" onclick="startDownload()">
                                         <img src="https://www.neversfw.gg/<%=element.platform%>.png" class="downloadImage">
                                         <h1 class="downloadText"><%=element.platform.charAt(0).toUpperCase() + element.platform.slice(1)%> Download</h1>
+                                        <style>
+                                            /* variable for glow colour: */
+                                            :root {
+                                                --glow-color: #ff00ee;
+                                            }
+                                            .downloadStartedText {
+                                                /* make it so it has a strong glow around the text of itself using --glow-color: */
+                                                text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 80px var(--glow-color), 0 0 120px var(--glow-color);
+                                            }
+                                        </style>
+                                        <h1 class="downloadStartedText" id="downloadStartedText" style="display: none;">Download Started!</h1>
                                     </a>
                                 <% }) %>
                             <% } else { %>
@@ -281,9 +292,9 @@
                         <script>
                             function startDownload() {
                                 setTimeout(function() {
-
-                                    window.location.href = "/";
-                                }, 3000); // Redirect after 1 second (adjust the delay as needed)
+                                    document.getElementById("downloadStartedText").style.display = "block";
+                                    window.location.href = "/ai";
+                                }, 3000); // Redirect after 3 seconds
                             }
                         </script>
                 </center>
