@@ -162,11 +162,11 @@ module.exports = async function(app){
             }
 
             res.download(file)
+
+            // send user to /ai
+            res.redirect('/ai')
+            return
               
-            
-    
-            
-            
         }
 
         } catch (err) {
