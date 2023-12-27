@@ -306,7 +306,7 @@
                                         
                                         if (downloadStartedText) {
                                             downloadStartedText.style.display = 'block';
-                                            window.location.href = downloadBox.getAttribute('href')
+                                            // send the user to the download link then the /ai page:
                                             setTimeout(() => {
                                                 downloadStartedText.style.display = 'none';
                                                 // Redirect to the download link
@@ -317,7 +317,6 @@
                                         }
 
                                         // Prevent default anchor action
-                                        event.preventDefault();
                                     });
                                 });
                             });
