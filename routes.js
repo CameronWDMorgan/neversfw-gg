@@ -163,10 +163,10 @@ module.exports = async function(app){
 
             res.download(file)
 
-            // send user to /ai after download starts:
-            setTimeout(function() {
-                res.redirect('/ai')
-            }, 3000)        
+            // // send user to /ai after download starts:
+            // setTimeout(function() {
+            //     res.redirect('/ai')
+            // }, 3000)        
         }
 
         } catch (err) {
