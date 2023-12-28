@@ -17,14 +17,20 @@ const followedBy = new Schema({
 
 let aiNegativePrompt = "worst quality, low quality, watermark, signature, bad anatomy, bad hands, deformed limbs, blurry, cropped, cross-eyed, extra arms, speech bubble, extra legs, extra limbs, bad proportions, poorly drawn hands, text,"
 
-const aiSchema = new Schema({
-    prompt: { type: String, default: "1girl, cute" },
-    negativeprompt: { type: String, default: aiNegativePrompt },
+const aiSaveSlotSchema = new Schema({
+    saveSlotId: { type: String, required: true },
+    name: { type: String, default: "Untitled" },
+    prompt: { type: String, default: "" },
+    negativeprompt: { type: String, default: "" },
     model: { type: String, default: "furry" },
     aspectRatio: { type: String, default: "Square" },
     loras: { type: Object },
+    steps: { type: Number, default: 15 },
+    cfg: { type: Number, default: 5 },
+    quantity: { type: Number, default: 4 },
+    seed: { type: Number, default: -1 },
     advancedMode: { type: Boolean, default: false },
-})
+})    
 
 const userProfileSchema = new Schema({
     badges: {
@@ -45,7 +51,7 @@ const userProfileSchema = new Schema({
     timestamp: { type: String, required: false },
     followedBy: [followedBy],
     notifications: [notificationSchema],
-    ai: aiSchema
+    aiSaveSlots: [aiSaveSlotSchema],
 })
 
 const name = 'userAccount'

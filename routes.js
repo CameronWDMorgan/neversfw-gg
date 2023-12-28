@@ -2592,65 +2592,30 @@ module.exports = async function(app){
 
             await updateYAMLCache()
 
-            negativePromptValue = "worst quality, low quality, watermark, signature, bad anatomy, bad hands, deformed limbs, blurry, cropped, cross-eyed, extra arms, extra legs, extra limbs, extra pupils, bad proportions, poorly drawn hands, simple background, bad background, bad lighting, bad perspective,"
+            reqIdString = `${req.session.accountId}`
+            foundAccount = await userProfileSchema.findOne({accountId: reqIdString})
 
-            if(req.session.loggedIn){
-                reqIdString = `${req.session.accountId}`
-                foundAccount = await userProfileSchema.findOne({accountId: reqIdString})
-                
-                if(!foundAccount.ai) {
-                    foundAccount = {ai: {prompt: "", negativeprompt: negativePromptValue, model: "furry", aspectRatio: "Square", advancedMode: false}}
+            if(foundAccount !== null) {
+                if(foundAccount.aiSaveSlots !== null) {
+                    aiSaveSlots = foundAccount.aiSaveSlots
+                } else {
+                    aiSaveSlots = []
+                    await userProfileSchema.findOneAndUpdate({ accountId: reqIdString },
+                        {
+                            aiSaveSlots: []
+                        }
+                    )
                 }
             } else {
-                foundAccount = {ai: {prompt: "", negativeprompt: negativePromptValue, model: "furry", aspectRatio: "Square", advancedMode: false}}
+                aiSaveSlots = []
             }
 
-            const selectedLoras = foundAccount.ai.loras || {style:[],concept:[],clothing:[],effect:[],character:[],pose:[],background:[]};
-
-            if(selectedLoras.style == undefined) {
-                selectedLoras.style = []
-            }
-            if(selectedLoras.concept == undefined) {
-                selectedLoras.concept = []
-            }
-            if(selectedLoras.clothing == undefined) {
-                selectedLoras.clothing = []
-            }
-            if(selectedLoras.effect == undefined) {
-                selectedLoras.effect = []
-            }
-            if(selectedLoras.character == undefined) {
-                selectedLoras.character = []
-            }
-            if(selectedLoras.pose == undefined) {
-                selectedLoras.pose = []
-            }
-            if(selectedLoras.background == undefined) {
-                selectedLoras.background = []
-            }
-            
-            console.log(selectedLoras)
-
-            console.log(foundAccount.ai.advancedMode)
-
-            if(foundAccount.ai.advancedMode == true) {
-                advancedMode = "checked"
-                console.log('AA true')
-            } else {
-                advancedMode = ""
-            }
-
-            console.log(foundAccount.ai.advancedMode)
+            console.log(typeof(foundAccount))
 
             res.render('ai', { 
                 session: req.session,
-                data: cachedYAMLData,
-                promptValue: foundAccount.ai.prompt,
-                negativePromptValue: foundAccount.ai.negativeprompt,
-                modelValue: foundAccount.ai.model,
-                aspectRatioValue: foundAccount.ai.aspectRatio,
-                selectedLoras: selectedLoras,
-                advancedMode: advancedMode
+                lora_data: cachedYAMLData,
+                aiSaveSlots: aiSaveSlots,
             });
         } catch (error) {
             console.error(error);
@@ -2658,38 +2623,182 @@ module.exports = async function(app){
         }
     });
 
-    app.post('/ai-generate', async function(req, res) {
-        if(req.session.loggedIn){
-            reqIdString = `${req.session.accountId}`
-            if(req.body.advancedMode == "on") {
-                req.body.advancedMode = true
-            } else {
-                req.body.advancedMode = false
-            }
 
-            let aspectRatio
-            if (req.body.width == 512 && req.body.height == 512) {
-                aspectRatio = "Square"
-            } else if (req.body.width == 512 && req.body.height == 768) {
-                aspectRatio = "Portrait"
-            } else if (req.body.width == 768 && req.body.height == 512) {
-                aspectRatio = "Landscape"
-            }
 
-            await userProfileSchema.findOneAndUpdate(
-                { accountId: reqIdString },
-                { 
-                    ai: {
-                        prompt: req.body.prompt,
-                        negativeprompt: req.body.negativeprompt,
-                        model: req.body.model,
-                        aspectRatio: aspectRatio,
-                        loras: req.body.savedloras,
-                        advancedMode: req.body.advancedMode
-                    }
-                }
-            )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    app.post('/ai-save-create', async function(req, res){
+
+        userProfile = await userProfileSchema.findOne({accountId: req.session.accountId})
+
+        console.log(userProfile)
+
+        if(userProfile == null) {
+            res.send({error: 'User profile not found'})
+            return
         }
+
+        // using mongoose push empty save slot to user profile,
+        // using the defaults in the schema apart from the saveSlotId which needs to be +1 of the last one:
+        if(userProfile.aiSaveSlots === null) {
+            userProfile.aiSaveSlots = []
+        }
+        nextSaveSlotId = userProfile.aiSaveSlots.length
+        String(nextSaveSlotId)
+
+        console.log(req.body)
+
+        /* 
+        
+        let formData = {
+                            name: document.getElementById('saveSlotName').value,
+                            prompt: document.getElementById('prompt').value,
+                            negativeprompt: document.getElementById('negativeprompt').value,
+                            aspectRatio: document.getElementById('aspectRatio').value,
+                            model: document.getElementById('model').value,
+                            loras: loras,
+                            steps: document.getElementById('steps').value,
+                            quantity: document.getElementById('quantity').value,
+                            cfg: document.getElementById('cfguidance').value,
+                            seed: document.getElementById('seed').value
+                        }
+        
+        */
+
+        await userProfileSchema.findOneAndUpdate({ accountId: req.session.accountId },
+            {
+                $push: { aiSaveSlots: { 
+                    saveSlotId: nextSaveSlotId,
+                    name: req.body.name,
+                    prompt: req.body.prompt,
+                    negativeprompt: req.body.negativeprompt,
+                    aspectRatio: req.body.aspectRatio,
+                    model: req.body.model,
+                    loras: req.body.loras,
+                    steps: req.body.steps,
+                    quantity: req.body.quantity,
+                    cfg: req.body.cfg,
+                    seed: req.body.seed
+                } }
+            }
+        )
+    })
+
+
+
+    app.post('/ai-save-update', async function(req, res){
+
+        userProfile = await userProfileSchema.findOne({accountId: req.session.accountId})
+
+        console.log(userProfile)
+
+        if(userProfile == null) {
+            res.send({error: 'User profile not found'})
+            return
+        }
+
+        if(userProfile.aiSaveSlots === null) {
+            userProfile.aiSaveSlots = []
+        }
+        
+        saveSlotId = req.body.saveSlotId
+
+        console.log(req.body)
+
+        /* 
+        
+        let formData = {
+                            saveSlotId: slotId,
+                            prompt: document.getElementById('prompt').value,
+                            negativeprompt: document.getElementById('negativeprompt').value,
+                            aspectRatio: document.getElementById('aspectRatio').value,
+                            model: document.getElementById('model').value,
+                            loras: loras,
+                            steps: document.getElementById('steps').value,
+                            quantity: document.getElementById('quantity').value,
+                            cfg: document.getElementById('cfguidance').value,
+                            seed: document.getElementById('seed').value
+                        }
+        
+        */
+
+        // update the save slot using the saveSlotId to find it in the array of save slots: 
+        await userProfileSchema.findOneAndUpdate({ accountId: req.session.accountId, "aiSaveSlots.saveSlotId": saveSlotId },
+            {
+                $set: { "aiSaveSlots.$.prompt": req.body.prompt,
+                        "aiSaveSlots.$.negativeprompt": req.body.negativeprompt,
+                        "aiSaveSlots.$.aspectRatio": req.body.aspectRatio,
+                        "aiSaveSlots.$.model": req.body.model,
+                        "aiSaveSlots.$.loras": req.body.loras,
+                        "aiSaveSlots.$.steps": req.body.steps,
+                        "aiSaveSlots.$.quantity": req.body.quantity,
+                        "aiSaveSlots.$.cfg": req.body.cfg,
+                        "aiSaveSlots.$.seed": req.body.seed
+                }
+            }
+        )
+
+        res.send({success: 'Updated'})
+        
+    })
+
+
+
+
+
+
+
+
+    app.get('/ai-saves-get', async function(req, res){
+    
+        userProfile = await userProfileSchema.findOne({accountId: req.session.accountId})
+
+        if(userProfile == null) {
+            res.send({error: 'User profile not found'})
+            return
+        }
+
+        res.send({aiSaveSlots: userProfile.aiSaveSlots})
+
+    })
+
+
+    app.post('/ai-save-delete/', async function(req, res){
+
+        userProfile = await userProfileSchema.findOne({accountId: req.session.accountId})
+
+        if(userProfile == null) {
+            res.send({error: 'User profile not found'})
+            return
+        }
+
+        // delete the specific array item from the userprofile.aiSaveSlots array
+        saveSlotId = req.body.saveSlotId
+        await userProfileSchema.findOneAndUpdate({ accountId: req.session.accountId },
+            {
+                $pull: { aiSaveSlots: { saveSlotId: saveSlotId } }
+            }
+        )
+
+        res.send({success: 'Deleted'})
+
+
+
     })
 
 }

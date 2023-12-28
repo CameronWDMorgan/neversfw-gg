@@ -393,9 +393,408 @@
         
         <div class="round-frosted" style="padding: 40px; justify-content: center;">
 
+            <h2>Welcome to the AI Image Generator!</h2>
+
+            <details>
+                <style>
+                    /* variable for glow colour: */
+                    :root {
+                        --glow-color: #fffb00;
+                    }
+                    .informationStyle {
+                        /* make it so it has a strong glow around the text of itself using --glow-color: */
+                        text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 80px var(--glow-color), 0 0 120px var(--glow-color);
+                    }
+                </style>
+                <summary class="informationStyle">Click Here for information on how to use it!</summary>
+                <ul>
+                    <li>Advanced Mode: This enables the advanced mode which enables more options for the image generator!</li><br>
+                    <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
+                    <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here, Here is a recommended one!</li><br>
+                    <a>worst quality, low quality, watermark, signature, bad anatomy, bad hands, deformed limbs, blurry, cropped, cross-eyed, extra arms, extra legs, extra limbs, extra pupils, bad proportions, poorly drawn hands, simple background, bad background, bad lighting, bad perspective,</a>
+                    <br><br>
+                    <li>Model: Select the model you want to use, the default is the furry model which can generate, anime human, anime and furry images, also realistic images too!</li><br>
+                    <li>Aspect Ratio: Change the aspect ratio of the image from a square, to portrait or landscape!</li><br>
+                    <li>Style Lora's: Select the style lora's you want to use, these will be used to generate the image!</li><br>
+                    <li>Effect Lora's: Select the effect lora's you want to use, these will be used to generate the image!</li><br>
+                    <li>Concept Lora's: Select the concept lora's you want to use, these will be used to generate the image!</li><br>
+                    <li>Clothing Lora's: Select the clothing lora's you want to use, these will be used to generate the image!</li><br>
+                    <li>Character Lora's: Select the character lora's you want to use, these will be used to generate the image!</li><br>
+                    <li>Pose Lora's: Select the pose lora's you want to use, these will be used to generate the image!</li><br>
+                    <li>Background Lora's: Select the background lora's you want to use, these will be used to generate the image!</li><br>
+                    <li>Steps: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li><br>
+                    <li>Quantity: This controls the number of images the image API should generate, the more the slower!</li><br>
+                    <li>img2img: This enables the img2img process, this will generate an image from an uploaded image. This can be used to generate images of specific characters or poses!</li><br>
+                    <li>img2img Strength: This controls the strength of the img2img process, a higher number will result in a more accurate image but may result in a less accurate image.</li><br>
+                    <li>Inpainting: This enables the inpainting process where you can paint over an image to remove or add elements to/from it!</li><br>
+                    <li>Inpainting "Use Original Model": This enables the inpainting process to use the model selected in the model dropdown, otherwise it will use an inpainting specific model!</li><br>
+                    <li>CFG: This controls the amount of control the AI has over the image, a higher number will result in more control but may result in a less accurate image.</li><br>
+                    <li>Seed: This controls the seed used for the image generation, a seed of -1 will generate a random seed.</li><br>
+                    <li>Generate Image: Click this button to generate your image!</li><br>
+                </ul>
+            </details>
+
+            <!-- style the save slot buttons, with on hover effects -->
+            <style>
+                .saveSlotButton.Load {
+                    background-color: #4c68af95; /* Green */
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+                    transform: scale(1) rotate(0deg); /* Default state */
+                    transform-origin: center; /* Ensures the scaling happens from the center */
+                }
+                .saveSlotButton.Load:hover {
+                    transform: scale(1.08) rotate(1deg); 
+                    background-color: #4c6aaf; /* Green */
+                }
+
+
+                .saveSlotButton.Delete {
+                    background-color: #ff000095; /* Red */
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+                    transform: scale(1) rotate(0deg); /* Default state */
+                    transform-origin: center; /* Ensures the scaling happens from the center */
+                }
+                .saveSlotButton.Delete:hover {
+                    transform: scale(1.08) rotate(1deg); 
+                    background-color: #ff0000; /* Red */
+                }
+
+
+                .saveSlotButton.Update {
+                    background-color: #2fa72d95; /* Red */
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+                    transform: scale(1) rotate(0deg); /* Default state */
+                    transform-origin: center; /* Ensures the scaling happens from the center */
+                }
+                .saveSlotButton.Update:hover {
+                    transform: scale(1.08) rotate(1deg); 
+                    background-color: #5dbe40; /* Red */
+                }
+
+                .createSaveSlotButton {
+                    background-color: #4caf4f95; /* Green */
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: pointer;
+                    transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+                    transform: scale(1) rotate(0deg); /* Default state */
+                    transform-origin: center; /* Ensures the scaling happens from the center */
+                }
+                .createSaveSlotButton:hover {
+                    transform: scale(1.08) rotate(1deg); 
+                    background-color: #4CAF50; /* Green */
+                }
+                .createSaveSlotButton:active {
+                    transform: scale(1.1);
+                    background-color: #ffe600; /* Red */
+                }
+                .createSaveSlotButton[disabled] {
+                    background-color: #60606095; /* Green */
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    margin: 4px 2px;
+                    cursor: not-allowed;
+                    transition: transform 0.7s, background-color 0.3s; /* Adjust time as needed */
+                    transform: scale(1) rotate(0deg); /* Default state */
+                    transform-origin: center; /* Ensures the scaling happens from the center */
+                }
+
+
+
+            </style>
+
+            <details open>
+                <summary>Save Slots</summary>
+                <div class="form-control">
+                    <!-- Display Existing Save Slots -->
+                    <% if (aiSaveSlots && aiSaveSlots.length > 0) { %>
+                        <div id="saveSlotMasterDiv"></div>
+                        <script>
+                            // fetch the users save slots from /ai-saves-get and display them:
+                            window.refreshSaveSlots = async function() {
+                                await fetch('/ai-saves-get')
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Handle loaded data
+                                    console.log(data);
+                                    // get the save slots from the data:
+                                    const saveSlots = data.aiSaveSlots;
+                                    // make a div inside of saveSlotMasterDiv with a details for each save slot, with the summary being the name of the save slot:
+                                    const saveSlotMasterDiv = document.getElementById('saveSlotMasterDiv');
+                                    finalHtml = ''
+                                    saveSlots.forEach(saveSlot => {
+                                        // made the div id the saveSlot id so it can be used to load the save slot:
+                                        
+                                        finalHtml += `<div id="saveSlot-${saveSlot.saveSlotId}">
+                                            <details>
+                                            <summary>${saveSlot.name}</summary>
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-prompt" type="hidden" value="${saveSlot.prompt}"></input> 
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-negativeprompt" type="hidden" value="${saveSlot.negativeprompt}"></input>
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-aspectRatio" type="hidden" value="${saveSlot.aspectRatio}"></input>
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-model" type="hidden" value="${saveSlot.model}"></input>
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-loras" type="hidden" value="${saveSlot.loras}"></input>
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-steps" type="hidden" value="${saveSlot.steps}"></input>
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-quantity" type="hidden" value="${saveSlot.quantity}"></input>
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-cfg" type="hidden" value="${saveSlot.cfg}"></input>
+                                            <input id="saveSlot-${saveSlot.saveSlotId}-seed" type="hidden" value="${saveSlot.seed}"></input>
+
+
+                                            <p>Prompt: ${saveSlot.prompt}</p>
+                                            <p>Negative Prompt: ${saveSlot.negativeprompt}</p>
+                                            <p>Aspect Ratio: ${saveSlot.aspectRatio}</p>
+                                            <p>Model: ${saveSlot.model}</p>
+                                            <p>Lora's: ${saveSlot.loras}</p>
+                                            <p>Steps: ${saveSlot.steps}</p>
+                                            <p>Quantity: ${saveSlot.quantity}</p>
+                                            <p>CFG: ${saveSlot.cfg}</p>
+                                            <p>Seed: ${saveSlot.seed}</p>
+                                            </details>
+                                            <a style="display: flex; justify-content: space-between;">
+                                                <button class="saveSlotButton Load" type="button" onclick="loadSlot('${saveSlot.saveSlotId}')">Load 💾</button>
+                                                <button class="saveSlotButton Delete" type="button" onclick="deleteSlot('${saveSlot.saveSlotId}')">Delete 🗑️</button>
+                                                <button class="saveSlotButton Update" type="button" onclick="updateSlot('${saveSlot.saveSlotId}')">Update ⬆️</button>
+                                            </a>
+                                            </div>
+
+                                            <br>
+                                            </div>
+                                            `  
+                                    })
+                                    finalHtml += ''
+                                    saveSlotMasterDiv.innerHTML = finalHtml;
+                                    
+                                });
+                            }
+
+                            refreshSaveSlots();
+
+                            
+                            
+                        </script>
+                    <% } %>
+
+                    <!-- Form to Create a New Save Slot -->
+
+                    <!-- if user is logged in let them use the form, else show a grayed out version with text ontop -->
+                    <% if (session.loggedIn) { %>
+                        <form id="createSlotForm">
+                            <input type="text" id="saveSlotName" name="name" placeholder="Slot Name">
+                            <button class="createSaveSlotButton" type="submit">Create Slot</button>
+                        </form>
+                    <% } else { %>
+                        <form id="createSlotForm">
+                            <input type="text" id="saveSlotName" name="name" placeholder="Slot Name" disabled>
+                            <button class="createSaveSlotButton" type="submit" disabled>Create Slot</button>
+                        </form>
+                        <!-- center the <p>: -->
+                        <style>
+                            .disabledSaveSlots {
+                                text-align: center;
+                            }
+                        </style>
+                        <p class="disabledSaveSlots" >You must be logged in to create a save slot!</p>
+                    <% } %>
+
+
+                    <script>
+                        // JavaScript to handle form submission and slot loading
+
+                        document.getElementById('createSlotForm').addEventListener('submit', function(event) {
+                            event.preventDefault();
+
+                            let loras = ''
+                            let loraSelection_a = document.getElementsByClassName('loraSelection');
+                            for (let i = 0; i < loraSelection_a.length; i++) {
+                                const loraSelection = loraSelection_a[i];
+                                // get the selected options from the lora selection:
+                                const selectedOptions = loraSelection.selectedOptions;
+                                // loop through the selected options and add their IDs to the loras string:
+                                for (let j = 0; j < selectedOptions.length; j++) {
+                                    const selectedOption = selectedOptions[j];
+                                    loras += selectedOption.id + ', ';
+                                }
+                            }
+
+                            let savedata = {
+                                name: document.getElementById('saveSlotName').value,
+                                prompt: document.getElementById('prompt').value,
+                                negativeprompt: document.getElementById('negativeprompt').value,
+                                aspectRatio: document.getElementById('aspectRatio').value,
+                                model: document.getElementById('model').value,
+                                loras: loras,
+                                steps: document.getElementById('steps').value,
+                                quantity: document.getElementById('quantity').value,
+                                cfg: document.getElementById('cfguidance').value,
+                                seed: document.getElementById('seed').value
+                            }
+
+                            // Send a request to the server to create a new slot
+                            fetch('/ai-save-create', {
+                                method: 'POST',
+                                body: JSON.stringify(savedata),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            }).then(response => response.json())
+                            .then(data => {
+                                // Handle response
+                                console.log(data);
+                                refreshSaveSlots()
+                            });
+                        });
+
+                        function updateSlot(slotId) {
+                            event.preventDefault();
+
+                            let loras = ''
+                            let loraSelection_a = document.getElementsByClassName('loraSelection');
+                            for (let i = 0; i < loraSelection_a.length; i++) {
+                                const loraSelection = loraSelection_a[i];
+                                // get the selected options from the lora selection:
+                                const selectedOptions = loraSelection.selectedOptions;
+                                // loop through the selected options and add their IDs to the loras string:
+                                for (let j = 0; j < selectedOptions.length; j++) {
+                                    const selectedOption = selectedOptions[j];
+                                    loras += selectedOption.id + ', ';
+                                }
+                            }
+
+                            let savedata = {
+                                saveSlotId: slotId,
+                                prompt: document.getElementById('prompt').value,
+                                negativeprompt: document.getElementById('negativeprompt').value,
+                                aspectRatio: document.getElementById('aspectRatio').value,
+                                model: document.getElementById('model').value,
+                                loras: loras,
+                                steps: document.getElementById('steps').value,
+                                quantity: document.getElementById('quantity').value,
+                                cfg: document.getElementById('cfguidance').value,
+                                seed: document.getElementById('seed').value
+                            }
+
+                            fetch('/ai-save-update', {
+                                method: 'POST',
+                                body: JSON.stringify(savedata),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            }).then(response => response.json())
+                            .then(data => {
+                                // Handle response
+                                console.log(data);
+                                alert('Updated Save Slot!')
+                                refreshSaveSlots()
+                            });
+                        }
+
+                        function loadSlot(slotId) {
+                            // load the slot with the given slotId
+                            console.log(slotId)
+                            let saveData = document.getElementById(`saveSlot-${slotId}`)
+
+                            // set the generator form values to the save slot values:
+                            // get the save slot details:
+                            const saveSlotDetails = saveData.getElementsByTagName('details')[0];
+                            const saveSlotDetailsParagraphs = saveSlotDetails.getElementsByTagName('p');
+
+                            console.log(slotId)
+
+                            const saveSlotPrompt = document.getElementById(`saveSlot-${slotId}-prompt`).value
+                            const saveSlotNegativePrompt = document.getElementById(`saveSlot-${slotId}-negativeprompt`).value
+                            const saveSlotAspectRatio = document.getElementById(`saveSlot-${slotId}-aspectRatio`).value
+                            const saveSlotModel = document.getElementById(`saveSlot-${slotId}-model`).value
+                            const saveSlotLoras = document.getElementById(`saveSlot-${slotId}-loras`).value
+                            const saveSlotSteps = document.getElementById(`saveSlot-${slotId}-steps`).value
+                            const saveSlotQuantity = document.getElementById(`saveSlot-${slotId}-quantity`).value
+                            const saveSlotCFG = document.getElementById(`saveSlot-${slotId}-cfg`).value
+                            const saveSlotSeed = document.getElementById(`saveSlot-${slotId}-seed`).value
+
+                            // set the generator form values to the save slot values:
+                            document.getElementById('prompt').value = saveSlotPrompt;
+                            document.getElementById('negativeprompt').value = saveSlotNegativePrompt;
+                            document.getElementById('aspectRatio').value = saveSlotAspectRatio;
+                            document.getElementById('model').value = saveSlotModel;
+                            // set the lora selections individual options to selected:
+                            const saveSlotLorasArray = saveSlotLoras.split(', ');
+                            saveSlotLorasArray.forEach(loraId => {
+                                if (loraId) {
+                                    // get the option by ID and set it to selected:
+                                    const loraOption = document.getElementById(loraId);
+                                    if (loraOption) {
+                                        loraOption.selected = true;
+                                    }
+                                }
+                            });
+                            document.getElementById('steps').value = saveSlotSteps;
+                            document.getElementById('quantity').value = saveSlotQuantity;
+                            document.getElementById('cfguidance').value = saveSlotCFG;
+                            document.getElementById('seed').value = saveSlotSeed;
+                            
+                        }
+
+                        function deleteSlot(slotId) {
+                            // delete the slot with the given slotId
+                            console.log(slotId)
+                            fetch('/ai-save-delete', {
+                                method: 'POST',
+                                body: JSON.stringify({saveSlotId: slotId}),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            }).then(response => response.json())
+                            .then(data => {
+                                // Handle response
+                                console.log(data);
+                                refreshSaveSlots()
+                            });
+                        }
+
+                    </script>
+                    
+                </div>
+            </details>
+
             <form id="generatorForm">
-                <h2>Welcome to the AI Image Generator!</h2>
-                <!-- styling for advancedToggle checkbox, hover with animations etc -->
+                
+                <!-- styling for advancedToggle checkbox, hover with animations etc
                 <style>
                     #advancedToggle {
                         cursor: pointer;
@@ -413,7 +812,7 @@
                 </style>
                 <div class="form-control">
                     <label for="advancedToggle">Advanced Mode:</label>
-                    <input type="checkbox" id="advancedToggle" name="advancedToggle" <%=advancedMode%>>
+                    <input type="checkbox" id="advancedToggle" name="advancedToggle">
                 </div>
                 <script>
                     document.getElementById('advancedToggle').addEventListener('change', function() {
@@ -432,68 +831,21 @@
                         }
                     });
                     document.getElementById('advancedToggle').dispatchEvent(new Event('change'));
-                </script>
-                
-                <details>
-                    <style>
-                        /* variable for glow colour: */
-                        :root {
-                            --glow-color: #fffb00;
-                        }
-                        .informationStyle {
-                            /* make it so it has a strong glow around the text of itself using --glow-color: */
-                            text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color), 0 0 80px var(--glow-color), 0 0 120px var(--glow-color);
-                        }
-                    </style>
-                    <summary class="informationStyle">Click Here for information on how to use it!</summary>
-                    <ul>
-                        <li>Advanced Mode: This enables the advanced mode which enables more options for the image generator!</li><br>
-                        <li>Prompt: Enter a descriptive and clear text prompt that outlines what you want to generate. Be as specific as possible to get the best results & be sure to use the autocomplete dropdown!</li><br>
-                        <li>Negative Prompt: If there are elements you want to avoid in your image, specify them here, Here is a recommended one!</li><br>
-                        <a>worst quality, low quality, watermark, signature, bad anatomy, bad hands, deformed limbs, blurry, cropped, cross-eyed, extra arms, extra legs, extra limbs, extra pupils, bad proportions, poorly drawn hands, simple background, bad background, bad lighting, bad perspective,</a>
-                        <br><br>
-                        <li>Model: Select the model you want to use, the default is the furry model which can generate, anime human, anime and furry images, also realistic images too!</li><br>
-                        <li>Aspect Ratio: Change the aspect ratio of the image from a square, to portrait or landscape!</li><br>
-                        <li>Style Lora's: Select the style lora's you want to use, these will be used to generate the image!</li><br>
-                        <li>Effect Lora's: Select the effect lora's you want to use, these will be used to generate the image!</li><br>
-                        <li>Concept Lora's: Select the concept lora's you want to use, these will be used to generate the image!</li><br>
-                        <li>Clothing Lora's: Select the clothing lora's you want to use, these will be used to generate the image!</li><br>
-                        <li>Character Lora's: Select the character lora's you want to use, these will be used to generate the image!</li><br>
-                        <li>Pose Lora's: Select the pose lora's you want to use, these will be used to generate the image!</li><br>
-                        <li>Background Lora's: Select the background lora's you want to use, these will be used to generate the image!</li><br>
-                        <li>Steps: This controls the number of steps the diffusion process will take. A higher number of steps can result in more detailed images but may take longer to generate.</li><br>
-                        <li>Quantity: This controls the number of images the image API should generate, the more the slower!</li><br>
-                        <li>img2img: This enables the img2img process, this will generate an image from an uploaded image. This can be used to generate images of specific characters or poses!</li><br>
-                        <li>img2img Strength: This controls the strength of the img2img process, a higher number will result in a more accurate image but may result in a less accurate image.</li><br>
-                        <li>Inpainting: This enables the inpainting process where you can paint over an image to remove or add elements to/from it!</li><br>
-                        <li>Inpainting "Use Original Model": This enables the inpainting process to use the model selected in the model dropdown, otherwise it will use an inpainting specific model!</li><br>
-                        <li>CFG: This controls the amount of control the AI has over the image, a higher number will result in more control but may result in a less accurate image.</li><br>
-                        <li>Seed: This controls the seed used for the image generation, a seed of -1 will generate a random seed.</li><br>
-                        <li>Generate Image: Click this button to generate your image!</li><br>
-                    </ul>
-                </details>
+                </script> -->
 
                 <div id="autocomplete-space"></div>
 
                 <details open>
                     <summary>Prompt & Negative Prompt</summary>
                         <div class="form-control">
-                            <!-- make the label and span on the same line -->
-                            <!-- <label for="prompt">Prompt: <span id="promptWordCount">(70)</span></label> -->
                             <a for="prompt">Prompt: <a id="promptWordCount">(70)</a></a>
                             <br>
-
-                            <textarea id="prompt" name="prompt" rows="4" required><%= promptValue %></textarea>
+                            <textarea id="prompt" name="prompt" rows="4" required></textarea>
                         </div>
-
-                        <!-- <div class="form-control">
-                            <label for="enhance_prompt">Enhance Prompt:</label>
-                            <input type="checkbox" id="enhance_prompt" name="enhance_prompt">
-                        </div> -->
 
                         <div class="form-control">
                             <a for="negativeprompt">Negative Prompt: <a id="negativePromptWordCount">(70)</a></a>
-                            <textarea id="negativeprompt" name="negativeprompt" rows="4"><%=negativePromptValue%></textarea>
+                            <textarea id="negativeprompt" name="negativeprompt" rows="4">worst quality, low quality, watermark, signature, bad anatomy, bad hands, deformed limbs, blurry, cropped, cross-eyed, extra arms, extra legs, extra limbs, extra pupils, bad proportions, poorly drawn hands, simple background, bad background, bad lighting, bad perspective,</textarea>
                         </div>
 
                 </details>
@@ -508,20 +860,6 @@
                             <option value="Landscape">Landscape (768 x 512)</option>
                         </select>
                     </div>
-
-                    <script>
-                        // get the aspectRatio select element
-                        const aspectRatioSelect = document.getElementById('aspectRatio')
-                        const aspectRatioValue = '<%=aspectRatioValue%>'
-
-                        for (let i = 0; i < aspectRatioSelect.options.length; i++) {
-                            const option = aspectRatioSelect.options[i]
-                            if (option.value === aspectRatioValue) {
-                                option.selected = true;
-                            }
-                        }
-                    </script>
-    
     
                     <div class="form-control">
                         <label for="model">Model:</label>
@@ -533,22 +871,9 @@
                             <option value="realisticVision">realisticVision (Realstic)</option>
                         </select>
     
-                        <script>
-                            // get the model select element
-                            const modelSelect = document.getElementById('model')
-                            const modelValue = '<%=modelValue%>'
-    
-                            for (let i = 0; i < modelSelect.options.length; i++) {
-                                const option = modelSelect.options[i]
-                                if (option.value === modelValue) {
-                                    option.selected = true;
-                                }
-                            }
-                        </script>
                     </div>
                 </details>
 
-                
                 <div class="advanced">
                     <div></div>
                     <div></div>
@@ -565,10 +890,10 @@
                             <!-- style-lora-count / style-lora-total -->
                             <div class="form-control">
                                 <a for="style-lora">Style Lora's <span id="style-lora-summary"></span></a>
-                                <% if (data.style) { %>
+                                <% if (lora_data.style) { %>
                                     <select class="loraSelection" id="style-lora" name="style-lora" multiple>
-                                        <% Object.entries(data.style).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.style.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% Object.entries(lora_data.style).forEach(([key, value]) => { %>
+                                            <option id="<%= key %>" value="<%= key %>" ><%= value.name || key %></option>
                                         <% }); %>
                                     </select>
                                 <% } %>
@@ -576,10 +901,10 @@
 
                             <div class="form-control">
                                 <a for="effect-lora">Effect Lora's <span id="effect-lora-summary"></span></a>
-                                <% if (data.effect) { %>
+                                <% if (lora_data.effect) { %>
                                     <select class="loraSelection" id="effect-lora" name="effect-lora" multiple>
-                                        <% Object.entries(data.effect).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.effect.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% Object.entries(lora_data.effect).forEach(([key, value]) => { %>
+                                            <option id="<%= key %>" value="<%= key %>" ><%= value.name || key %></option>
                                         <% }); %>
                                     </select>
                                 <% } %>
@@ -587,10 +912,10 @@
 
                             <div class="form-control">
                                 <a for="concept-lora">Concept Lora's <span id="concept-lora-summary"></span></a>
-                                <% if (data.concept) { %>
+                                <% if (lora_data.concept) { %>
                                     <select class="loraSelection" id="concept-lora" name="concept-lora" multiple>
-                                        <% Object.entries(data.concept).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.concept.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% Object.entries(lora_data.concept).forEach(([key, value]) => { %>
+                                            <option id="<%= key %>" value="<%= key %>" ><%= value.name || key %></option>
                                         <% }); %>
                                     </select>
                                 <% } %>
@@ -598,10 +923,10 @@
 
                             <div class="form-control">
                                 <a for="clothing-lora">Clothing Lora's <span id="clothing-lora-summary"></span></a>
-                                <% if (data.clothing) { %>
+                                <% if (lora_data.clothing) { %>
                                     <select class="loraSelection" id="clothing-lora" name="clothing-lora" multiple>
-                                        <% Object.entries(data.clothing).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.clothing.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% Object.entries(lora_data.clothing).forEach(([key, value]) => { %>
+                                            <option id="<%= key %>" value="<%= key %>" ><%= value.name || key %></option>
                                         <% }); %>
                                     </select>
                                 <% } %>
@@ -609,10 +934,10 @@
 
                             <div class="form-control">
                                 <a for="character-lora">Character Lora's <span id="character-lora-summary"></span></a>
-                                <% if (data.character) { %>
+                                <% if (lora_data.character) { %>
                                     <select class="loraSelection" id="character-lora" name="character-lora" multiple>
-                                        <% Object.entries(data.character).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.character.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% Object.entries(lora_data.character).forEach(([key, value]) => { %>
+                                            <option id="<%= key %>" value="<%= key %>" ><%= value.name || key %></option>
                                         <% }); %>
                                     </select>
                                 <% } %>
@@ -620,10 +945,10 @@
 
                             <div class="form-control">
                                 <a for="pose-lora">Pose Lora's <span id="pose-lora-summary"></span></a>
-                                <% if (data.pose) { %>
+                                <% if (lora_data.pose) { %>
                                     <select class="loraSelection" id="pose-lora" name="pose-lora" multiple>
-                                        <% Object.entries(data.pose).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.pose.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% Object.entries(lora_data.pose).forEach(([key, value]) => { %>
+                                            <option id="<%= key %>" value="<%= key %>" ><%= value.name || key %></option>
                                         <% }); %>
                                     </select>
                                 <% } %>
@@ -631,10 +956,10 @@
 
                             <div class="form-control">
                                 <a for="background-lora">Background Lora's <span id="background-lora-summary"></span></a>
-                                <% if (data.background) { %>
+                                <% if (lora_data.background) { %>
                                     <select class="loraSelection" id="background-lora" name="background-lora" multiple>
-                                        <% Object.entries(data.background).forEach(([key, value]) => { %>
-                                            <option value="<%= key %>" <%= selectedLoras.background.includes(key) ? 'selected' : '' %>><%= value.name || key %></option>
+                                        <% Object.entries(lora_data.background).forEach(([key, value]) => { %>
+                                            <option id="<%= key %>" value="<%= key %>" ><%= value.name || key %></option>
                                         <% }); %>
                                     </select>
                                 <% } %>
@@ -642,70 +967,6 @@
 
                         </div>
 
-
-                        <!-- filter loras with the string of: loraSearch: -->
-                        <script>
-                            // get the loraSearch element
-                            const loraSearch = document.getElementById('loraSearch');
-
-                            // get all the loraSelection classes
-                            loraSelections = document.querySelectorAll('.loraSelection');
-
-                            // make it so the height is smaller when there are less active loras, and 0 when they have no loras left, also filter out the loras that dont match the search:
-                            loraSearch.addEventListener('input', function() {
-                                // if the search is empty
-                                if (this.value == '') {
-                                    // empty
-
-                                }
-
-                                // get the search value
-                                const searchValue = this.value.toLowerCase();
-
-                                // loop through each loraSelection
-                                loraSelections.forEach(loraSelection => {
-                                    // loop through each option in the loraSelection
-                                    for (let i = 0; i < loraSelection.options.length; i++) {
-                                        // get the option
-                                        const option = loraSelection.options[i];
-
-                                        // if the option doesnt match the search value
-                                        if (!option.innerText.toLowerCase().includes(searchValue)) {
-                                            // hide the option
-                                            // if the option is selected keep it visible
-                                            if (option.selected) {
-                                                option.style.display = 'block';
-                                            } else {
-                                                option.style.display = 'none';
-                                            }
-                                        } else {
-                                            // show the option
-                                            option.style.display = 'block';
-                                        }
-
-                                        // update the height of the loraSelection based on the number of options that are visible, maximum of 12rem:
-                                        // get the number of visible options
-                                        let visibleOptionsCount = 0;
-                                        for (let i = 0; i < loraSelection.options.length; i++) {
-                                            if (loraSelection.options[i].style.display == 'block') {
-                                                visibleOptionsCount++;
-                                            }
-                                        }
-                                        // set the height of the loraSelection
-                                        loraSelection.style.height = `${Math.min(visibleOptionsCount * 2.5, 16)}rem`;
-                                        // if there are no visible options set the display to none
-                                        if (visibleOptionsCount == 0) {
-                                            loraSelection.style.display = 'none';
-                                        } else {
-                                            loraSelection.style.display = 'block';
-                                        }
-
-                                    }
-                                });
-                            });
-                            loraSearch.dispatchEvent(new Event('input'));
-                            
-                        </script>
                     
                     </details>
 
@@ -735,149 +996,25 @@
                     <button type="button" id="clearAllLorasButton">Clear All Lora's</button>
                     <br>
 
-                    <!-- calculate the totalLorasSelected and the totalLoras from all the loraSelection classes and display it -->
-                    <script>
-                        // get all the loraSelection classes
-                        const loraSelections = document.querySelectorAll('.loraSelection');
-
-                        // get the totalLorasSelected and totalLoras elements
-                        const totalLorasSelected = document.getElementById('totalLorasSelected');
-                        const totalLoras = document.getElementById('totalLoras');
-
-                        // get the total number of loras
-                        let totalLorasCount = 0;
-                         loraSelections.forEach(loraSelection => {
-                            totalLorasCount += loraSelection.options.length;
-                        });
-
-                        // get the total number of loras selected
-                        let totalLorasSelectedCount = 0;
-
-                        // loop through each loraSelection
-                        loraSelections.forEach(loraSelection => {
-                            // add an event listener for when the selection changes
-                            loraSelection.addEventListener('change', function() {
-                                // update the totalLorasSelectedCount
-                                totalLorasSelectedCount = 0;
-                                loraSelections.forEach(loraSelection => {
-                                    totalLorasSelectedCount += loraSelection.selectedOptions.length;
-                                });
-
-                                // update the totalLorasSelected and totalLoras elements
-                                totalLorasSelected.innerText = totalLorasSelectedCount;
-                                totalLoras.innerText = totalLorasCount;
-                            });
-                        });
-                    </script>
-                    
-                    <script>
-                        // clear all loras button functionality
-                        document.getElementById('clearAllLorasButton').addEventListener('click', function() {
-                            // loop through each loraSelection
-                            loraSelections.forEach(loraSelection => {
-                                // loop through each option in the loraSelection
-                                for (let i = 0; i < loraSelection.options.length; i++) {
-                                    // set the option to not selected
-                                    loraSelection.options[i].selected = false;
-                                }
-                            });
-
-                            // update the totalLorasSelectedCount
-                            totalLorasSelectedCount = 0;
-                            loraSelections.forEach(loraSelection => {
-                                totalLorasSelectedCount += loraSelection.selectedOptions.length;
-                            });
-
-                            // update the totalLorasSelected and totalLoras elements and their <span id="character-lora-count">(5)</span> elements to 0
-                            totalLorasSelected.innerText = totalLorasSelectedCount;
-                            totalLoras.innerText = totalLorasCount;
-                            loraSelections.forEach(loraSelection => {
-                                document.getElementById(`${loraSelection.id}`).dispatchEvent(new Event('change'));
-                            });
-
-
-
-                        });
-                    </script>
-
                 </div>
-
-                <script>
-                    // Update the count of selected loras when the selection changes
-                    // background-lora
-                    document.getElementById('background-lora').addEventListener('change', function() {
-                        document.getElementById('background-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
-                    });
-                    document.getElementById('background-lora').dispatchEvent(new Event('change'));
-
-                    // pose-lora
-                    document.getElementById('pose-lora').addEventListener('change', function() {
-                        document.getElementById('pose-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
-                    });
-                    document.getElementById('pose-lora').dispatchEvent(new Event('change'));
-
-                    // character-lora
-                    document.getElementById('character-lora').addEventListener('change', function() {
-                        document.getElementById('character-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
-                    });
-                    document.getElementById('character-lora').dispatchEvent(new Event('change'));
-
-                    // clothing-lora
-                    document.getElementById('clothing-lora').addEventListener('change', function() {
-                        document.getElementById('clothing-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
-                    });
-                    document.getElementById('clothing-lora').dispatchEvent(new Event('change'));
-
-                    // concept-lora
-                    document.getElementById('concept-lora').addEventListener('change', function() {
-                        document.getElementById('concept-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
-                    });
-                    document.getElementById('concept-lora').dispatchEvent(new Event('change'));
-
-                    // effect-lora
-                    document.getElementById('effect-lora').addEventListener('change', function() {
-                        document.getElementById('effect-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
-                    });
-                    document.getElementById('effect-lora').dispatchEvent(new Event('change'));
-
-                    // style-lora
-                    document.getElementById('style-lora').addEventListener('change', function() {
-                        document.getElementById('style-lora-summary').innerText = `(${this.selectedOptions.length}/${this.options.length})`;
-                    });
-                    document.getElementById('style-lora').dispatchEvent(new Event('change'));
-
-                </script>
-
-                <% if (session.loggedIn === undefined || session.loggedIn == false) { %>
-                    <input id="maxStepsCountWanted" value=70 min=10 hidden>
-                    <input id="maxImageQuantityWanted" value=9 hidden>
-                <% } else if (session.accountId == "0") { %>
-                    <input id="maxStepsCountWanted" value=150 min=10 hidden>
-                    <input id="maxImageQuantityWanted" value=10 hidden>
-                <% } else { %>
-                    <input id="maxStepsCountWanted" value=70 min=10 hidden>
-                    <input id="maxImageQuantityWanted" value=9 hidden>
-                <% } %>
 
                 <input name="user-session" id="user-session" value="<%-session.accountId%>" hidden>
 
 
-                <div class="advanced">
+                <div>
                     <details open>
                         <summary>Settings (Steps, Quanitity & more)</summary>
                         <div class="form-control inline-slider">
                             <label for="steps">Steps:</label>
-                            <input type="range" id="steps" name="steps" min="10" max="100" step="1" value="20">
+                            <input type="range" id="steps" name="steps" min="10" max="50" step="1" value="20">
                             <span id="stepsValue" class="range-value">20</span>
                         </div>
         
                         <div class="form-control inline-slider">
                             <label for="quantity">Image Quantity:</label>
-                            <input type="range" id="quantity" name="quantity" min="1" max="9" step="1" value="4">
+                            <input type="range" id="quantity" name="quantity" min="1" max="4" step="1" value="4">
                             <span id="quantityValue" class="range-value">4</span>
                         </div>
-
-
 
                         <details>
                             <summary>(CFG, Seed)</summary>
@@ -897,6 +1034,46 @@
                         
                     </details>
                 </div>
+
+
+                <script>
+                    // update the labels for the steps and quantity sliders on change and initially:
+                    // function to update the stepsValue and quantityValue labels:
+                    function updateLabels() {
+                        document.getElementById('stepsValue').innerText = document.getElementById('steps').value;
+                        document.getElementById('quantityValue').innerText = document.getElementById('quantity').value;
+                        document.getElementById('cfguidanceValue').innerText = document.getElementById('cfguidance').value;
+                    }
+
+
+                    // checks when the steps slider changes and updates the label:
+                    document.getElementById('steps').addEventListener('input', function() {
+                        updateLabels()
+                    })
+                    document.getElementById('steps').dispatchEvent(new Event('input'));
+
+
+                    // checks when the quantity slider changes and updates the label:
+                    document.getElementById('quantity').addEventListener('input', function() {
+                        updateLabels()
+                    })
+                    document.getElementById('quantity').dispatchEvent(new Event('input'));
+
+
+                    // checks when the cfguidance slider changes and updates the label:
+                    document.getElementById('cfguidance').addEventListener('input', function() {
+                        updateLabels()
+                    })
+                    document.getElementById('cfguidance').dispatchEvent(new Event('input'));
+
+
+
+                    setInterval(() => {
+                        updateLabels()
+                    }, 1000);
+
+                </script>
+
             
                 <details>
                     <summary>Image2Image & Inpainting</summary>
@@ -1020,10 +1197,7 @@
 
 
                 <center>
-                    <% if (session.loggedIn == false) { %>
-                        <p style="color: rgba(255, 255, 255, 0.249)"> Register for up to 150 steps from 50!</p>
-                    <% } %>
-                    <h2>We are hosting a <a style="color: gold;">$100 AI Contest!</a> Be sure to check the <a href="https://discord.gg/MPnnudQGRa" style="color: #c259ff;">discord</a> for more information!</h2>
+                    <!-- <h2>We are hosting a <a style="color: gold;">$100 AI Contest!</a> Be sure to check the <a href="https://discord.gg/MPnnudQGRa" style="color: #c259ff;">discord</a> for more information!</h2> -->
                     <!-- <p style="color: rgba(255, 255, 255, 0.8)">(Just be sure to use the ai-generated tag when you upload or else your post will be removed!)</p> -->
                     <br>
                 </center>
@@ -1056,15 +1230,81 @@
         <img id="overlayImage" src="" alt="Enlarged view" />
     </div>    
 
+    
 
     <script>
+        // Get all the elements
+        const loraSearch = document.getElementById('loraSearch');
+        const loraSelections = document.querySelectorAll('.loraSelection');
+        const totalLorasSelected = document.getElementById('totalLorasSelected');
+        const totalLoras = document.getElementById('totalLoras');
+        const clearAllLorasButton = document.getElementById('clearAllLorasButton');
 
+        // Function to update total selected and total Loras
+        function updateTotalCounts() {
+            let totalLorasCount = 0;
+            let totalLorasSelectedCount = 0;
+
+            loraSelections.forEach(loraSelection => {
+                totalLorasCount += loraSelection.options.length;
+                totalLorasSelectedCount += loraSelection.selectedOptions.length;
+            });
+
+            totalLorasSelected.innerText = totalLorasSelectedCount;
+            totalLoras.innerText = totalLorasCount;
+        }
+
+        // Event listener for loraSearch input
+        loraSearch.addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+
+            loraSelections.forEach(loraSelection => {
+                let visibleOptionsCount = 0;
+
+                Array.from(loraSelection.options).forEach(option => {
+                    const isVisible = option.innerText.toLowerCase().includes(searchValue);
+                    option.style.display = isVisible || option.selected ? 'block' : 'none';
+                    visibleOptionsCount += isVisible || option.selected ? 1 : 0;
+                });
+
+                loraSelection.style.height = `${Math.min(visibleOptionsCount * 2.5, 16)}rem`;
+                loraSelection.style.display = visibleOptionsCount === 0 ? 'none' : 'block';
+            });
+
+            updateTotalCounts();
+        });
+
+        // Event listener for changes in loraSelections
+        loraSelections.forEach(loraSelection => {
+            loraSelection.addEventListener('change', function() {
+                const summaryElementId = `${loraSelection.id}-summary`;
+                const summaryElement = document.getElementById(summaryElementId);
+                if(summaryElement) {
+                    summaryElement.innerText = `(${loraSelection.selectedOptions.length}/${loraSelection.options.length})`;
+                }
+                updateTotalCounts();
+            });
+        });
+
+        // Event listener for clear all Loras button
+        clearAllLorasButton.addEventListener('click', function() {
+            loraSelections.forEach(loraSelection => {
+                Array.from(loraSelection.options).forEach(option => {
+                    option.selected = false;
+                });
+                // Trigger the change event to update the counts
+                loraSelection.dispatchEvent(new Event('change'));
+            });
+            updateTotalCounts();
+        });
+
+        setInterval(updateTotalCounts, 1000)
+
+
+        // Initialize the counts on load
+        loraSearch.dispatchEvent(new Event('input'));
+        loraSelections.forEach(loraSelection => loraSelection.dispatchEvent(new Event('change')));
     </script>
-
-
-
-
-
 
 
     <script>
@@ -1087,11 +1327,6 @@
         });
         document.getElementById('img2imgStrength').dispatchEvent(new Event('input'));
 
-        document.getElementById('cfguidance').addEventListener('input', function() {
-            document.getElementById('cfguidanceValue').innerText = `${this.value}/${this.max}`;
-        });
-        document.getElementById('cfguidance').dispatchEvent(new Event('input'));
-
         // inpainting checkbox
         document.getElementById('inpaintingCheckbox').addEventListener('change', function() {
             const isChecked = this.checked;
@@ -1108,11 +1343,6 @@
 
 
 
-
-
-
-
-
     <script>
         function updateWordCount() {
             const promptTextarea = document.getElementById('prompt');
@@ -1120,9 +1350,6 @@
 
             const promptWordCount = promptTextarea.value.trim().split(/\s+/).filter(word => word !== '').length;
             const negativePromptWordCount = negativePromptInput.value.trim().split(/\s+/).filter(word => word !== '').length;
-
-            const totalWordCount = promptWordCount + negativePromptWordCount;
-            const remainingWords = 70 - totalWordCount;
 
             // Display the total word count
             // display the remaining words to 2 spans: one for the prompt and one for the negative prompt like this: 10 (70)
@@ -1208,12 +1435,10 @@
 
     <script>
 
-        document.getElementById('advancedToggle').dispatchEvent(new Event('change'));
+        // document.getElementById('advancedToggle').dispatchEvent(new Event('change'));
 
     </script>
     
-    <script src="../scripts/ai-slider-balancing.js?v20122023"></script>
-
     <script src="../scripts/ai-form.js?v20122023"></script>
     <script src="../scripts/ai-autocomplete.js?v20122023"></script>
     <script src="../scripts/ai-strength.js?v20122023"></script>

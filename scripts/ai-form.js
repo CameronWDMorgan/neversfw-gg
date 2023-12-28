@@ -81,7 +81,9 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     let combinedLora = []
 
-    let advancedToggle = formData.get('advancedToggle')
+    let advancedToggle = "on"
+
+    // let advancedToggle = formData.get('advancedToggle')
     
     let enhance_prompt = formData.get('enhance_prompt')
 
@@ -221,11 +223,11 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         document.getElementById('response').innerText = "Requesting Image, please wait...";
 
         // POSTs to the autosaving thingy, uses mongodb
-        fetch('/ai-generate', {
-            method: 'POST',
-            headers: getDefaultHeaders(), // Set the headers for the POST request
-            body: JSON.stringify(data)
-        })
+        // fetch('/ai-generate', {
+        //     method: 'POST',
+        //     headers: getDefaultHeaders(), // Set the headers for the POST request
+        //     body: JSON.stringify(data)
+        // })
 
         const response = await fetch(`${API_BASE}/generate`, {
             method: 'POST',
