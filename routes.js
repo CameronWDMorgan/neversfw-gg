@@ -1452,6 +1452,7 @@ module.exports = async function(app){
     app.get('/user/:username', async function(req, res){
         let foundUserAccount = await userProfileSchema.findOne({username: req.params.username })
         if(!foundUserAccount) {
+            
             urlEnd = req.path.split('/')
             res.render('sysmessage', {session: req.session, message: `There is no account with the Username: ${urlEnd[2]}`, messageType: 'error', buttonText: 'Go Back', buttonLink: 'history.back()' })
             return
@@ -1573,9 +1574,13 @@ module.exports = async function(app){
     app.get('/beta/user/:username', async function(req, res){
         let foundUserAccount = await userProfileSchema.findOne({username: req.params.username })
         if(!foundUserAccount) {
-            urlEnd = req.path.split('/')
-            res.render('sysmessage', {session: req.session, message: `There is no account with the Username: ${urlEnd[2]}`, messageType: 'error', buttonText: 'Go Back', buttonLink: 'history.back()' })
-            return
+            foundUserAccount = await userProfileSchema.findOne({accountId: req.params.username })
+            if (!foundUserAccount) {
+                urlEnd = req.path.split('/')
+                res.render('sysmessage', {session: req.session, message: `There is no account with the Username: ${urlEnd[2]}`, messageType: 'error', buttonText: 'Go Back', buttonLink: 'history.back()' })
+                return
+            }
+
         }
         let foundUserContent = await userContentSchema.find({ accountId: foundUserAccount.accountId }).sort({timestamp:-1})
 
