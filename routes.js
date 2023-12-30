@@ -2610,8 +2610,6 @@ module.exports = async function(app){
                 aiSaveSlots = []
             }
 
-            console.log(typeof(foundAccount))
-
             res.render('ai', { 
                 session: req.session,
                 lora_data: cachedYAMLData,
@@ -2660,8 +2658,6 @@ module.exports = async function(app){
         }
         nextSaveSlotId = userProfile.aiSaveSlots.length
         String(nextSaveSlotId)
-
-        console.log(req.body)
 
         /* 
         
@@ -2720,8 +2716,6 @@ module.exports = async function(app){
         }
         
         saveSlotId = req.body.saveSlotId
-
-        console.log(req.body)
 
         /* 
         

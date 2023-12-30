@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
         maskCtx.lineCap = 'round';
         maskCtx.strokeStyle = 'white';
-        if(maskCtx.lineWidth < 50) {
-            maskCtx.lineWidth = 50;
+        if(maskCtx.lineWidth < 20) {
+            maskCtx.lineWidth = 20;
         }
     
         maskCtx.lineTo(x, y);
