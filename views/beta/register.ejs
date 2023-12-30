@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | NeverSFW.gg</title>
+    <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+    <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+    <meta name="author" content="MiningP">
+    <meta name="juicyads-site-verification" content="da00b2314e338e83450b5bf9040a1fa6">
+    
+    <link rel="stylesheet" href="../betasite.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=TAG_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-FFEW0Y6QFQ');
+    </script>
+</head>
+<body>
+
+    <%- include('../partials/_floatAdvert'); -%>
+
+    <div class="page-sidebar">
+        <!-- Side Navigation Partial -->
+        <%- include('../partials/_sideNav'); -%>
+    </div>
+
+    <div class="page-left" style="margin-top: 22rem;">
+        <!-- Tower Advert Partial -->
+        <%- include('../partials/_towerAdvert'); -%>
+    </div>
+
+    <div class="page-right">
+        <div class="center-content" style="margin-top: 12rem;">
+                    
+            <img src="https://www.neversfw.gg/nsfwlogobanner.png" class="neversfw-banner">
+            <br>
+            <br>
+                <%- include('../partials/_bannerAdvert'); -%>
+            
+            <br><br>
+            <%- include('../partials/_mobileNavigation'); -%>
+            <!-- Banner Advert Partial -->
+        </div>
+
+        <div class="round-frosted" style="padding: 20px;">
+            <center>
+                <h1>Register Account</h1>
+                <form method="post" action="/register/" autocomplete="off">
+                    <p></p>
+                    <label>Username (4-20 Characters)</label>
+                    <p></p>
+                    <div>
+                        
+                        <input autocomplete="off" name="username" placeholder="Username" required>
+                    </div>
+                    <p></p>
+                    <label>Password (7+ Characters)</label>
+                    <p></p>
+                    <div>
+                        
+                        <input autocomplete="off" type="password" name="password" id="password" placeholder="Password" required>
+                        <button onclick="togglePassword()">Show Password</button>
+                        <script>
+                            function togglePassword() {
+                                var passwordInput = document.getElementById("password");
+                                var type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                                passwordInput.setAttribute("type", type);
+                            }
+                        </script>
+                    </div>
+                    <p></p>
+                    <label>Email</label>
+                    <p></p>
+                    <div>
+                        
+                        <input autocomplete="off" name="email" placeholder="Email" required>
+                    </div>
+                    <p></p>
+                    <button>Register</button>
+                    <p>By using our website and creating an account, you agree to be bound by our <a href="https://www.neversfw.gg/termsofservice">Terms of Service</a></p>
+        
+                    <p>Already have an account? Click <a href="https://www.neversfw.gg/login">Here</a> to login!</p>
+
+                </form>
+            </center>
+        </div>
+
+
+        <div style="height: 20rem;"></div>
+
+        <!-- Footer Partial -->
+        <%- include('../partials/_footerNew'); -%>
+        
+    </div>
+
+</body>
+</html>

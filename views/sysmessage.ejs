@@ -1,45 +1,76 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=TAG_ID"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-FFEW0Y6QFQ');
-        </script>
-
-        <title>Sysmessage | NeverSFW.gg</title>
-
-        <meta charset="UTF-8">
-        <meta name="description" content="Watch Minecraft Porn / Hentai / r34 for free here!">
-        <meta name="keywords" content="Minecraft, Porn, Hentai, rule34, r34">
-        <meta name="author" content="MiningP">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <link rel="stylesheet" href="https://www.neversfw.gg/uwu.css">
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sysmessage | NeverSFW.gg</title>
+    <meta name="description" content="A hub for NSFW Images, Videos & Games!">
+    <meta name="keywords" content="nsfw, Porn, Hentai, rule34, r34">
+    <meta name="author" content="MiningP">
+    <meta name="juicyads-site-verification" content="da00b2314e338e83450b5bf9040a1fa6">
     
-    
-    <body>
-        <%- include('../partials/_nav'); -%>
-        <%- include('../partials/_floatAdvert'); -%>
-        <center>
+    <link rel="stylesheet" href="../betasite.css">
 
-            <div style="margin-top: 80px;"></div>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=TAG_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-            <% if (messageType == "success") { %>
-                <p class="sysmessage-success"> <%= message %>  </p>
-            <% } if (messageType == "error") { %>
-                <p class="sysmessage-error"> <%= message %>  </p>
-            <% } %>
+        gtag('config', 'G-FFEW0Y6QFQ');
+    </script>
+</head>
+<body>
 
-            <button onclick="<%=buttonLink%>"><%= buttonText %></button>
+    <%- include('../partials/_floatAdvert'); -%>
+
+    <div class="page-sidebar">
+        <!-- Side Navigation Partial -->
+        <%- include('../partials/_sideNav'); -%>
+    </div>
+
+    <div class="page-left" style="margin-top: 22rem;">
+        <!-- Tower Advert Partial -->
+        <%- include('../partials/_towerAdvert'); -%>
+    </div>
+
+    <div class="page-right">
+        <div class="center-content" style="margin-top: 12rem;">
+                    
+            <img src="https://www.neversfw.gg/nsfwlogobanner.png" class="neversfw-banner">
+            <br>
+            <br>
+                <%- include('../partials/_bannerAdvert'); -%>
             
-        </center>
+            <br><br>
+            <%- include('../partials/_mobileNavigation'); -%>
+            <!-- Banner Advert Partial -->
+        </div>
 
-        <%- include('../partials/_footer'); -%>
-    </body>
+        <div class="round-frosted" style="padding: 20px;">
+            <center>
+
+                <div style="margin-top: 80px;"></div>
+    
+                <% if (messageType == "success") { %>
+                    <p class="sysmessage-success"> <%= message %>  </p>
+                <% } if (messageType == "error") { %>
+                    <p class="sysmessage-error"> <%= message %>  </p>
+                <% } %>
+    
+                <button onclick="<%=buttonLink%>"><%= buttonText %></button>
+                
+            </center>
+        </div>
+
+
+        <div style="height: 20rem;"></div>
+
+        <!-- Footer Partial -->
+        <%- include('../partials/_footerNew'); -%>
+        
+    </div>
+
+</body>
 </html>

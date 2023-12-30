@@ -1425,11 +1425,11 @@ module.exports = async function(app){
     })
 
     app.get('/register', async function(req,res) {
-        res.render('register', {session: req.session})
+        res.render('beta/register', {session: req.session})
     })
 
     app.get('/login', async function(req,res) {
-        res.render('login', {session: req.session})
+        res.render('beta/login', {session: req.session})
     })
 
     app.get('/logout', async function(req, res){
