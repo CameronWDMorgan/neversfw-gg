@@ -1006,7 +1006,7 @@
                         <summary>Settings (Steps, Quanitity & more)</summary>
                         <div class="form-control inline-slider">
                             <label for="steps">Steps:</label>
-                            <input type="range" id="steps" name="steps" min="10" max="50" step="1" value="20">
+                            <input type="range" id="steps" name="steps" min="5" max="50" step="1" value="20">
                             <span id="stepsValue" class="range-value">20</span>
                         </div>
         
@@ -1040,9 +1040,26 @@
                     // update the labels for the steps and quantity sliders on change and initially:
                     // function to update the stepsValue and quantityValue labels:
                     function updateLabels() {
-                        document.getElementById('stepsValue').innerText = document.getElementById('steps').value;
-                        document.getElementById('quantityValue').innerText = document.getElementById('quantity').value;
-                        document.getElementById('cfguidanceValue').innerText = document.getElementById('cfguidance').value;
+
+                        let steps = document.getElementById('steps')
+                        let quantity = document.getElementById('quantity')
+                        let cfguidance = document.getElementById('cfguidance')
+
+                        if (quantity.value == 1) {
+                            steps.max = 100
+                        } else {
+                            steps.max = 50
+                        } 
+
+                        if (steps.value < 10) {
+                            quantity.max = 8
+                        } else {
+                            quantity.max = 4
+                        }
+
+                        document.getElementById('stepsValue').innerText = `${steps.value}/${steps.max}`
+                        document.getElementById('quantityValue').innerText = `${quantity.value}/${quantity.max}`
+                        document.getElementById('cfguidanceValue').innerText = cfguidance.value;
                     }
 
 
