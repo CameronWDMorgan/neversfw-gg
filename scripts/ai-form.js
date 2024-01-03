@@ -39,21 +39,6 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
 
     targetQuantity = formData.get('quantity')
 
-    if(accountId !== "0" ){
-
-        if(targetQuantity > 6 || targetQuantity < 0) {
-            if(targetSteps > 100) {
-                targetQuantity = 1
-            }
-        }
-
-        if(targetSteps > 150 || targetSteps < 0) {
-            if(targetQuantity > 3) {
-                targetSteps = 20
-            }
-        }
-    }
-
     targetQuantity = Number(targetQuantity)
     targetSteps = Number(targetSteps)
 
