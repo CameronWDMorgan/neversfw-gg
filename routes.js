@@ -2662,7 +2662,11 @@ module.exports = async function(app){
         if(userProfile.aiSaveSlots === null) {
             userProfile.aiSaveSlots = []
         }
-        nextSaveSlotId = userProfile.aiSaveSlots.length
+
+        // get the last save slot id and add 1 to it to get the next save slot id:
+        mostRecentSaveSlotId = Number(userProfile.aiSaveSlots[userProfile.aiSaveSlots.length - 1].saveSlotId)
+        nextSaveSlotId = mostRecentSaveSlotId + 1
+
         String(nextSaveSlotId)
 
         /* 
@@ -2720,7 +2724,7 @@ module.exports = async function(app){
         if(userProfile.aiSaveSlots === null) {
             userProfile.aiSaveSlots = []
         }
-        
+
         saveSlotId = req.body.saveSlotId
 
         /* 
