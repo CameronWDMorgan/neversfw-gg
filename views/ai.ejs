@@ -1091,31 +1091,6 @@
 
                 </script>
 
-            
-                <details>
-                    <summary>Image2Image & Inpainting</summary>
-                    <div class="form-control">
-                        <label for="img2imgCheckbox">Enable Image2Image:</label>
-                        <input type="checkbox" id="img2imgCheckbox" name="img2imgCheckbox">
-                    </div>
-                    
-                    <div class="form-control" id="img2imgControls" style="display: none;">
-                        <label for="uploadedImage">Upload Image:</label>
-                        <input type="file" id="uploadedImage" name="uploadedImage" accept="image/*">
-                    </div>
-    
-                    <div class="form-control inline-slider" id="img2imgStrengthControl" style="display: none;">
-                        <label for="img2imgStrength">img2img Strength:</label>
-                        <input type="range" id="img2imgStrength" name="img2imgStrength" min="0" max="100" step="1" value="50">
-                        <span id="img2imgStrengthValue" class="range-value">50%</span>
-                    </div>
-    
-                    <!-- inpainting checkbox -->
-                    <div class="form-control">
-                        <label for="inpaintingCheckbox">Enable Inpainting:</label>
-                        <input type="checkbox" id="inpaintingCheckbox" name="inpaintingCheckbox">
-                    </div>
-                </details>
 
                 <style>
                     .canvas-container {
@@ -1126,7 +1101,7 @@
                         justify-content: center; /* Center horizontally */
                         align-items: center; /* Center vertically */
                     }
-                
+
                     #maskCanvas, #displayCanvas {
                         max-width: 100%; /* This ensures that the canvas doesn't exceed the width of its container */
                         height: auto; /* Maintain the aspect ratio */
@@ -1135,51 +1110,111 @@
                         left: 0;
                         border: 1px solid black;
                     }
-                
+
                     #maskCanvas {
                         z-index: 10; /* Ensures the maskCanvas is on top */
                     }
-                
+
                     #displayCanvas {
                         z-index: 9; /* Below the maskCanvas */
                     }
                 </style>
 
-                <div class="form-control" id="inpaintingControls" style="display: none;" >
-                    <label for="inpaintingImage">Upload Image:</label>
-                    <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
-
-                    <label for="inpaintingOriginalCheckbox">Use Original Model:</label>
-                    <input type="checkbox" id="inpaintingOriginalCheckbox">
-                    <!-- Pen Size Slider -->
-                    <label for="penSize">Pen Size (<span id="penSizeValue">20</span>)</label>
-                    <input type="range" id="penSize" min="20" max="200" value="20">
-                    
-                    <!-- Eraser Toggle -->
-                    <label for="eraserToggle">Eraser:</label>
-                    <input type="checkbox" id="eraserToggle">
-                    <div class="canvas-container">
-                        <canvas id="maskCanvas"></canvas>
-                        <canvas id="displayCanvas"></canvas>
+            
+                <details>
+                    <summary>Image2Image, Inpainting, ControlNet</summary>
+                    <div class="form-control">
+                        <label for="img2imgCheckbox">Enable Image2Image:</label>
+                        <input type="checkbox" id="img2imgCheckbox" name="img2imgCheckbox">
                     </div>
-                    <script src="../scripts/ai-inpainting.js" type="text/javascript"></script>
 
-                    <script>
-                        // get the penSize element
-                        const penSize = document.getElementById('penSize');
+                    <div class>
 
-                        // get the penSizeValue element
-                        const penSizeValue = document.getElementById('penSizeValue');
+                    </div>
+                    
+                    <div class="form-control" id="img2imgControls" style="display: none;">
+                        <label for="uploadedImage">Upload Image:</label>
+                        <input type="file" id="uploadedImage" name="uploadedImage" accept="image/*">
+                        <br>
+                        <label for="img2imgStrength">img2img Strength:</label>
+                        <input type="range" id="img2imgStrength" name="img2imgStrength" min="0" max="100" step="1" value="50">
+                        <span id="img2imgStrengthValue" class="range-value">50%</span>
+                    </div>
 
-                        // add an event listener for when the penSize changes
-                        penSize.addEventListener('input', function() {
-                            // update the penSizeValue
-                            penSizeValue.innerText = this.value;
-                        });
-                        penSize.dispatchEvent(new Event('input'));
-                    </script>
 
-                </div>
+                    <!-- controlNet controls -->
+
+                    <div class="form-control">
+                        <label for="controlNetImg2ImgCheckbox">Enable ControlNetImg2Img:</label>
+                        <input type="checkbox" id="controlNetImg2ImgCheckbox" name="controlNetImg2ImgCheckbox">
+                    </div>
+
+                    <div class="form-control" id="controlNetControls" style="display: none;">
+                        <label for="controlNetImage">Upload Image:</label>
+                        <input type="file" id="controlNetImage" name="controlNetImage" accept="image/*">
+                    </div>
+
+
+    
+                    <!-- inpainting checkbox -->
+                    <div class="form-control">
+                        <label for="inpaintingCheckbox">Enable Inpainting:</label>
+                        <input type="checkbox" id="inpaintingCheckbox" name="inpaintingCheckbox">
+                    </div>
+
+                    <div class="form-control" id="inpaintingControls" style="display: none;" >
+                        <label for="inpaintingImage">Upload Image:</label>
+                        <input type="file" id="imageLoader" name="imageLoader" accept="image/*">
+    
+                        <label for="inpaintingOriginalCheckbox">Use Original Model:</label>
+                        <input type="checkbox" id="inpaintingOriginalCheckbox">
+                        <!-- Pen Size Slider -->
+                        <label for="penSize">Pen Size (<span id="penSizeValue">20</span>)</label>
+                        <input type="range" id="penSize" min="20" max="200" value="20">
+                        
+                        <!-- Eraser Toggle -->
+                        <label for="eraserToggle">Eraser:</label>
+                        <input type="checkbox" id="eraserToggle">
+                        <div class="canvas-container">
+                            <canvas id="maskCanvas"></canvas>
+                            <canvas id="displayCanvas"></canvas>
+                        </div>
+                        <script src="../scripts/ai-inpainting.js" type="text/javascript"></script>
+    
+                        <script>
+                            // get the penSize element
+                            const penSize = document.getElementById('penSize');
+    
+                            // get the penSizeValue element
+                            const penSizeValue = document.getElementById('penSizeValue');
+    
+                            // add an event listener for when the penSize changes
+                            penSize.addEventListener('input', function() {
+                                // update the penSizeValue
+                                penSizeValue.innerText = this.value;
+                            });
+                            penSize.dispatchEvent(new Event('input'));
+                        </script>
+    
+                    </div>
+
+                </details>
+
+                <script>
+                    // show the controlNetControls when the controlNetImg2ImgCheckbox is checked
+                    document.getElementById('controlNetImg2ImgCheckbox').addEventListener('change', function() {
+                        // if the controlNetImg2ImgCheckbox is checked
+                        if (this.checked) {
+                            // show the controlNetControls
+                            document.getElementById('controlNetControls').style.display = 'block';
+                        } else {
+                            // hide the controlNetControls
+                            document.getElementById('controlNetControls').style.display = 'none';
+                        }
+                    });
+                </script>
+
+                
 
 
             <!-- <script> to make inpaintingCheckbox and img2imgCheckbox exclusive: -->
@@ -1187,6 +1222,12 @@
                 // get the inpaintingCheckbox and img2imgCheckbox elements
                 const inpaintingCheckbox = document.getElementById('inpaintingCheckbox');
                 const img2imgCheckbox = document.getElementById('img2imgCheckbox');
+                const controlNetImg2ImgCheckbox = document.getElementById('controlNetImg2ImgCheckbox');
+
+                // get the inpaintingControls and img2imgControls elements
+                const inpaintingControls = document.getElementById('inpaintingControls');
+                const img2imgControls = document.getElementById('img2imgControls');
+                const controlNetControls = document.getElementById('controlNetControls');
 
                 // add an event listener for when the inpaintingCheckbox changes
                 inpaintingCheckbox.addEventListener('change', function() {
@@ -1195,6 +1236,9 @@
                         // uncheck the img2imgCheckbox
                         img2imgCheckbox.checked = false;
                         img2imgControls.style.display = 'none';
+                        // uncheck the controlNetImg2ImgCheckbox
+                        controlNetImg2ImgCheckbox.checked = false;
+                        controlNetControls.style.display = 'none';
                     }
                 });
 
@@ -1205,6 +1249,22 @@
                         // uncheck the inpaintingCheckbox
                         inpaintingCheckbox.checked = false;
                         inpaintingControls.style.display = 'none';
+                        // uncheck the controlNetImg2ImgCheckbox
+                        controlNetImg2ImgCheckbox.checked = false;
+                        controlNetControls.style.display = 'none';
+                    }
+                });
+
+                // add an event listener for when the controlNetImg2ImgCheckbox changes
+                controlNetImg2ImgCheckbox.addEventListener('change', function() {
+                    // if the controlNetImg2ImgCheckbox is checked
+                    if (this.checked) {
+                        // uncheck the inpaintingCheckbox
+                        inpaintingCheckbox.checked = false;
+                        inpaintingControls.style.display = 'none';
+                        // uncheck the img2imgCheckbox
+                        img2imgCheckbox.checked = false;
+                        img2imgControls.style.display = 'none';
                     }
                 });
 
@@ -1328,14 +1388,11 @@
         document.getElementById('img2imgCheckbox').addEventListener('change', function() {
             const isChecked = this.checked;
             const img2imgControls = document.getElementById('img2imgControls');
-            const img2imgStrengthControl = document.getElementById('img2imgStrengthControl');
 
             if (isChecked) {
                 img2imgControls.style.display = 'block';
-                img2imgStrengthControl.style.display = 'block';
             } else {
                 img2imgControls.style.display = 'none';
-                img2imgStrengthControl.style.display = 'none';
             }
         });
 

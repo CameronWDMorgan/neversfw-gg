@@ -157,13 +157,20 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     let imageBase64
 
     if(document.getElementById('img2imgCheckbox').checked) {
-        console.log("AAAAAAAAAAAAAAAAAAAAa")
         let file = document.getElementById('uploadedImage').files[0];
         imageBase64 = await getBase64(file)
     }
     if(document.getElementById('inpaintingCheckbox').checked) {
         let file = originalImage
         imageBase64 = await getBase64(file)
+    }
+
+    if(document.getElementById('controlNetImg2ImgCheckbox').checked) {
+        let file = document.getElementById('controlNetImage').files[0];
+        imageBase64 = await getBase64(file)
+        controlNetCheckboxImg2ImgChecked = true
+    } else {
+        controlNetCheckboxImg2ImgChecked = false
     }
 
     if(document.getElementById('inpaintingOriginalCheckbox').checked) {
@@ -176,6 +183,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         reqType = "img2img"
     } else if(document.getElementById('inpaintingCheckbox').checked) {
         reqType = "inpainting"
+    } else if(document.getElementById('controlNetImg2ImgCheckbox').checked) {
+        reqType = "controlnet_img2img"
     } else {
         reqType = "txt2img"
     }
@@ -201,7 +210,7 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         inpainting: inpaintingToggle,
         inpaintingMask: formData.get('mask'),
         accountId: accountId,
-        inpainting_original_option: inpainting_original_option
+        inpainting_original_option: inpainting_original_option,
     };
 
     try {
