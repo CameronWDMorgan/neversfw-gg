@@ -1262,11 +1262,13 @@
                 const inpaintingCheckbox = document.getElementById('inpaintingCheckbox');
                 const img2imgCheckbox = document.getElementById('img2imgCheckbox');
                 const controlNetImg2ImgCheckbox = document.getElementById('controlNetImg2ImgCheckbox');
+                const openposeCheckbox = document.getElementById('openposeCheckbox');
 
                 // get the inpaintingControls and img2imgControls elements
                 const inpaintingControls = document.getElementById('inpaintingControls');
                 const img2imgControls = document.getElementById('img2imgControls');
                 const controlNetControls = document.getElementById('controlNetControls');
+                const openposeControls = document.getElementById('openposeControls');
 
                 // add an event listener for when the inpaintingCheckbox changes
                 inpaintingCheckbox.addEventListener('change', function() {
@@ -1278,6 +1280,9 @@
                         // uncheck the controlNetImg2ImgCheckbox
                         controlNetImg2ImgCheckbox.checked = false;
                         controlNetControls.style.display = 'none';
+
+                        openposeCheckbox.checked = false;
+                        openposeControls.style.display = 'none';
                     }
                 });
 
@@ -1291,6 +1296,9 @@
                         // uncheck the controlNetImg2ImgCheckbox
                         controlNetImg2ImgCheckbox.checked = false;
                         controlNetControls.style.display = 'none';
+
+                        openposeCheckbox.checked = false;
+                        openposeControls.style.display = 'none';
                     }
                 });
 
@@ -1304,8 +1312,29 @@
                         // uncheck the img2imgCheckbox
                         img2imgCheckbox.checked = false;
                         img2imgControls.style.display = 'none';
+
+                        openposeCheckbox.checked = false;
+                        openposeControls.style.display = 'none';
                     }
                 });
+
+                // add an event listener for when the openposeCheckbox changes
+                openposeCheckbox.addEventListener('change', function() {
+                    // if the openposeCheckbox is checked
+                    if (this.checked) {
+                        // uncheck the inpaintingCheckbox
+                        inpaintingCheckbox.checked = false;
+                        inpaintingControls.style.display = 'none';
+                        // uncheck the img2imgCheckbox
+                        img2imgCheckbox.checked = false;
+                        img2imgControls.style.display = 'none';
+                        // uncheck the controlNetImg2ImgCheckbox
+                        controlNetImg2ImgCheckbox.checked = false;
+                        controlNetControls.style.display = 'none';
+                    }
+                });
+
+
 
             </script>
 
