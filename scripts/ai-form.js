@@ -55,6 +55,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
     let targetGuidance = formData.get('cfguidance')
 
 
+    let imageBase64
+
 
     console.log(`H${targetHeight} W${targetWidth} S${targetSteps} Q${targetQuantity} M${targetModel}`)
 
@@ -154,8 +156,6 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         });
     }
 
-    let imageBase64
-
     if(document.getElementById('img2imgCheckbox').checked) {
         let file = document.getElementById('uploadedImage').files[0];
         imageBase64 = await getBase64(file)
@@ -173,6 +173,10 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         controlNetCheckboxImg2ImgChecked = false
     }
 
+    if(document.getElementById('openposeCheckbox').checked) {
+        imageBase64 = getOpenPoseCanvasDataUrl();
+    }
+
     if(document.getElementById('inpaintingOriginalCheckbox').checked) {
         inpainting_original_option = true
     } else {
@@ -185,6 +189,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
         reqType = "inpainting"
     } else if(document.getElementById('controlNetImg2ImgCheckbox').checked) {
         reqType = "controlnet_img2img"
+    } else if(document.getElementById('openposeCheckbox').checked) {
+        reqType = "openpose"
     } else {
         reqType = "txt2img"
     }

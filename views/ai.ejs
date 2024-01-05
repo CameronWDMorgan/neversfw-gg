@@ -1142,7 +1142,7 @@
                     </div>
 
 
-                    <!-- controlNet controls -->
+                    <!-- controlNetImg2Img controls -->
 
                     <div class="form-control">
                         <label for="controlNetImg2ImgCheckbox">Enable ControlNetImg2Img:</label>
@@ -1153,6 +1153,45 @@
                         <label for="controlNetImage">Upload Image:</label>
                         <input type="file" id="controlNetImage" name="controlNetImage" accept="image/*">
                     </div>
+
+                    <style>
+                        #openposeControls {
+                            max-width: 100%; /* Adjust this as needed */
+                            /* Add more styling as needed */
+                        }
+                    
+                        #stickCanvas {
+                            width: 100%; /* This will scale the canvas to fit the container */
+                            height: auto; /* Maintain aspect ratio */
+                            display: block; /* Prevents extra space below the canvas */
+                        }
+                    </style>
+                    
+
+                    <div class="form-control">
+                        <label for="openposeCheckbox">OpenPose:</label>
+                        <input type="checkbox" id="openposeCheckbox" name="openposeCheckbox">
+                    </div>
+
+                    <div class="form-control" id="openposeControls">
+                        <canvas id="stickCanvas" width="512" height="756" style="background-color: black;"></canvas>
+                        <script src="../scripts/openpose.js" type="text/javascript"></script>
+                    </div>
+
+                    <script>
+                        // show the openposeControls when the openposeCheckbox is checked:
+                        document.getElementById('openposeCheckbox').addEventListener('change', function() {
+                            // if the openpose checkbox is checked
+                            if (this.checked) {
+                                // show the openposeControls
+                                document.getElementById('openposeControls').style.display = 'block';
+                            } else {
+                                // hide the openposeControls
+                                document.getElementById('openposeControls').style.display = 'none';
+                            }
+                        });
+                        document.getElementById('openposeCheckbox').dispatchEvent(new Event('change'));
+                    </script>
 
 
     
