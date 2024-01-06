@@ -28,9 +28,22 @@ document.addEventListener("DOMContentLoaded", function () {
     let dragStartX = 0;
     let dragStartY = 0;
 
+    setInterval(() => {
+        let aspectRatio = document.getElementById('aspectRatio').value;
+        if(aspectRatio == "Square") {
+            canvas.width = 512;
+            canvas.height = 512;
+        } else if (aspectRatio == "Landscape") {
+            canvas.width = 756;
+            canvas.height = 512;
+        } else if (aspectRatio == "Portrait") {
+            canvas.width = 512;
+            canvas.height = 756;
+        }
+        redraw()
+    }, 1000);
 
-    canvas.width = 512;
-    canvas.height = 756;
+    
 
     // Function to draw a joint
     function drawJoint(joint) {
