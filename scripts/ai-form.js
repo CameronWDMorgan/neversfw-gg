@@ -265,6 +265,13 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                     const positionData = await positionResponse.json();
 
                     console.log(positionData)
+
+                    if(positionData.status == "error") {
+                        document.getElementById('response').innerText = "An error occurred: " + positionData.message;
+                        generateButton.disabled = false;
+                        generateButton.classList.remove('generating'); // Remove the class when there's an error
+                        break; // Exit the loop if there's an error
+                    }
                 
                     if(positionData.status == "not found") {
                         document.getElementById('response').innerText = "An error occurred: " + positionData.message;
