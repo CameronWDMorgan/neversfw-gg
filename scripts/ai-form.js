@@ -263,6 +263,8 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                         headers: getDefaultHeaders() // Set the headers for the GET request
                     });
                     const positionData = await positionResponse.json();
+
+                    console.log(positionData)
                 
                     if(positionData.status == "not found") {
                         document.getElementById('response').innerText = "An error occurred: " + positionData.message;
@@ -271,9 +273,9 @@ document.getElementById('generatorForm').addEventListener('submit', async functi
                         break; // Exit the loop if there's an error
                     }
                     
-                    if (positionData.status === "waiting") {
+                    if (positionData.status == "waiting") {
                         document.getElementById('positionNumber').innerText = positionData.position;
-                        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for 1 second before the next check
+                        await new Promise(resolve => setTimeout(resolve, 500)); // Wait for 1 second before the next check
                     } else if (positionData.status === "completed") {
                         document.getElementById('response').innerText = "Your image is ready and will be displayed shortly...";
                         isCompleted = true; // Set the flag to exit the loop
